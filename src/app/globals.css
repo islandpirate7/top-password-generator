@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500&family=Bebas+Neue&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 224 71% 98%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 215 85% 35%;  /* Darker blue color */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 25 90% 45%; /* Dark orange color */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 12 91% 55%;  /* Orange color from logo */
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 215 85% 35%;  /* Darker blue color */
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 215 85% 35%;  /* Darker blue color */
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 25 90% 45%; /* Dark orange color */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 12 91% 55%;  /* Orange color from logo */
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 215 85% 35%;  /* Darker blue color */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+.gradient-bg {
+  @apply min-h-screen bg-white;
+}
+
+.glass-effect {
+  @apply bg-white shadow-sm;
+}
+
+.password-font {
+  font-family: 'Source Code Pro', monospace;
+}
+
+.title-font {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.heading-font {
+  font-family: 'Poppins', sans-serif;
+}
+
+.body-font {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Text styles */
+.mega-title {
+  @apply text-5xl font-bold tracking-tight;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.section-title {
+  @apply text-2xl font-semibold;
+  font-family: 'Poppins', sans-serif;
+}
+
+.subtitle {
+  @apply text-lg font-light;
+  font-family: 'Inter', sans-serif;
+}
+
+.label-text {
+  @apply text-sm font-medium;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Button Hover Effects */
+.hover-effect {
+  @apply transition-all duration-200;
+}
+
+.hover-effect:hover {
+  @apply transform scale-105;
+}
+
+/* Custom gradients */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600;
+}
+
+.text-gradient-alt {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}

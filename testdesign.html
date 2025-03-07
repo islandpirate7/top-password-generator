@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+        
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .password-box {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 18px;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        button {
+            background: #2575fc;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            background: #1a5fd0;
+        }
+        
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        
+        input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Generator</h1>
+        <div class="password-box">
+            <span id="password">Click Generate</span>
+            <button onclick="copyPassword()">Copy</button>
+        </div>
+        <div class="toggle-switch">
+            <label>Uppercase Letters</label>
+            <input type="checkbox" id="uppercase">
+        </div>
+        <div class="toggle-switch">
+            <label>Numbers</label>
+            <input type="checkbox" id="numbers">
+        </div>
+        <div class="toggle-switch">
+            <label>Special Characters</label>
+            <input type="checkbox" id="special">
+        </div>
+        <button onclick="generatePassword()">Generate Password</button>
+    </div>
+
+    <script>
+        function generatePassword() {
+            const length = 12;
+            const uppercase = document.getElementById("uppercase").checked;
+            const numbers = document.getElementById("numbers").checked;
+            const special = document.getElementById("special").checked;
+            
+            let chars = "abcdefghijklmnopqrstuvwxyz";
+            if (uppercase) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (numbers) chars += "0123456789";
+            if (special) chars += "!@#$%^&*()_+";
+            
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            document.getElementById("password").innerText = password;
+        }
+        
+        function copyPassword() {
+            const passwordText = document.getElementById("password").innerText;
+            navigator.clipboard.writeText(passwordText);
+            alert("Password copied!");
+        }
+    </script>
+</body>
+</html>

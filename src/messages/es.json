@@ -1,0 +1,19 @@
+{
+  "title": "Generador de Contraseñas",
+  "description": "Crea contraseñas fuertes y seguras para mantener tu cuenta segura en línea.",
+  "random": "Aleatoria",
+  "memorable": "Memorable",
+  "pin": "PIN",
+  "copy": "Copiar",
+  "copied": "¡Copiado!",
+  "copiedDescription": "La contraseña ha sido copiada al portapapeles",
+  "passwordLength": "Longitud de la Contraseña",
+  "pinLength": "Longitud del PIN",
+  "options": {
+    "uppercase": "Letras Mayúsculas",
+    "lowercase": "Letras Minúsculas",
+    "numbers": "Números",
+    "symbols": "Caracteres Especiales"
+  },
+  "generate": "Generar Contraseña"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Password Generator",
+  "description": "Create strong and secure passwords to keep your account safe online.",
+  "random": "Random",
+  "memorable": "Memorable",
+  "pin": "PIN",
+  "copy": "Copy",
+  "copied": "Copied!",
+  "copiedDescription": "Password has been copied to clipboard",
+  "passwordLength": "Password Length",
+  "pinLength": "PIN Length",
+  "options": {
+    "uppercase": "Uppercase Letters",
+    "lowercase": "Lowercase Letters",
+    "numbers": "Numbers",
+    "symbols": "Special Characters"
+  },
+  "generate": "Generate Password"
+}
