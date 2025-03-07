@@ -36,10 +36,10 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
   }, []);
 
   return (
-    <div className={`ad-container flex justify-center items-center ${className}`}>
+    <div className={`ad-container ${className}`}>
       <ins
         className="adsbygoogle"
-        style={{ display: 'block', margin: '0 auto', textAlign: 'center' }}
+        style={{ display: 'block' }}
         data-ad-client="pub-7164870963379403"
         data-ad-slot={slot}
         data-ad-format={format}
@@ -52,7 +52,7 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
 
 export function SidebarAd() {
   return (
-    <div className="sticky top-4 flex justify-center">
+    <div className="sticky top-4">
       <Ad slot="1234567890" format="vertical" className="min-h-[600px] w-[300px]" />
     </div>
   );
@@ -60,7 +60,7 @@ export function SidebarAd() {
 
 export function BottomBannerAd() {
   return (
-    <div className="my-8 w-full flex justify-center">
+    <div className="my-8 w-full">
       <Ad slot="0987654321" format="horizontal" className="min-h-[90px]" />
     </div>
   );
@@ -68,7 +68,7 @@ export function BottomBannerAd() {
 
 export function InContentAd() {
   return (
-    <div className="my-4 w-full flex justify-center">
+    <div className="my-4 w-full">
       <Ad slot="1122334455" format="rectangle" className="min-h-[250px]" />
     </div>
   );

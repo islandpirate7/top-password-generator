@@ -30,18 +30,16 @@ export default function RootLayout({
         <link rel="alternate icon" href="/favicon.ico" />
       </head>
       <body className="body-font">
-        <div className="flex min-h-screen flex-col items-center">
-          <header className="border-b bg-white w-full">
+        <div className="flex min-h-screen flex-col">
+          <header className="border-b bg-white">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
               {/* Header title removed as we're using the logo in the main component */}
             </div>
           </header>
           
-          <main className="w-full flex flex-col items-center mobile-center">
-            {children}
-          </main>
+          {children}
           
-          <footer className="mt-auto border-t py-8 bg-gray-50 w-full">
+          <footer className="mt-auto border-t py-8 bg-gray-50">
             <div className="container mx-auto px-4">
               <div className="text-center text-sm text-gray-600">
                 &copy; {new Date().getFullYear()} Top Password Generator. All rights reserved.
