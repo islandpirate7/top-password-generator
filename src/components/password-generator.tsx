@@ -173,7 +173,7 @@ export function PasswordGenerator() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center px-0 py-8 mobile-center">
+    <div className="w-full flex flex-col items-center justify-center py-8 mobile-center">
       <div className="flex flex-col items-center mb-8 w-full max-w-4xl px-4">
         <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2">
           <div className="w-full h-full flex items-center justify-center">
