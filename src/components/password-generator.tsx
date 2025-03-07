@@ -173,8 +173,8 @@ export function PasswordGenerator() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="flex flex-col items-center mb-8">
+    <div className="container mx-auto px-4 py-8 max-w-4xl flex flex-col items-center">
+      <div className="flex flex-col items-center mb-8 w-full">
         <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2">
           <div className="w-full h-full flex items-center justify-center">
             {/* Colorful lock icon matching the shared image */}
@@ -206,13 +206,13 @@ export function PasswordGenerator() {
       </div>
       
       <Tabs defaultValue="random" onValueChange={handleTabChange}>
-        <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-8 bg-gray-100">
-          <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white">Random</TabsTrigger>
-          <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white">Memorable</TabsTrigger>
-          <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white">Mnemonic</TabsTrigger>
-          <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white">Pattern</TabsTrigger>
-          <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white">PIN</TabsTrigger>
-          <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white">QR Code</TabsTrigger>
+        <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-8 bg-gray-100 shadow-sm">
+          <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Random</TabsTrigger>
+          <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Memorable</TabsTrigger>
+          <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Mnemonic</TabsTrigger>
+          <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Pattern</TabsTrigger>
+          <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">PIN</TabsTrigger>
+          <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">QR Code</TabsTrigger>
         </TabsList>
         
         <TabsContent value="random">
@@ -424,7 +424,7 @@ export function PasswordGenerator() {
                 <Input
                   value={password}
                   readOnly
-                  className="pr-10 font-mono text-lg"
+                  className="pr-10 font-mono text-lg text-black dark:text-white"
                 />
                 <Button
                   variant="ghost"
