@@ -156,7 +156,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
                   className="min-h-[80px]"
                 />
                 <p className="text-sm text-gray-500">
-                  Remember this sentence to help recall your password. The first letter of each word forms your password.
+                  Words like &quot;apple&quot;, &quot;blue&quot;, &quot;happy&quot; are easier to remember than random characters
                 </p>
               </div>
             </div>

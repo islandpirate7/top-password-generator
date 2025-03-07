@@ -84,8 +84,8 @@ export function decodeQRCodeData(data: string): {
           // Decrypt the data
           const decrypted = CryptoJS.AES.decrypt(parsedData.data, parsedData.key).toString(CryptoJS.enc.Utf8);
           
-          // Check if the decrypted data is JSON (might contain expiration)
-          if (decrypted.startsWith('{') && decrypted.endsWith('}')) {
+          try {
+            // Check if the decrypted data is JSON (might contain expiration)
             const decryptedObj = JSON.parse(decrypted);
             
             // Check expiration
@@ -111,14 +111,14 @@ export function decodeQRCodeData(data: string): {
               password: decryptedObj.password,
               expired: false
             };
+          } catch (_) {
+            // If not JSON, it's just the password
+            return {
+              password: decrypted,
+              expired: false
+            };
           }
-          
-          // If not JSON, it's just the password
-          return {
-            password: decrypted,
-            expired: false
-          };
-        } catch (error) {
+        } catch (_) {
           return {
             password: null,
             expired: false,
@@ -160,7 +160,7 @@ export function decodeQRCodeData(data: string): {
       password: data,
       expired: false
     };
-  } catch (error) {
+  } catch (_) {
     return {
       password: null,
       expired: false,
