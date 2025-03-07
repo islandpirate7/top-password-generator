@@ -154,16 +154,3 @@ body {
     color: rgba(0, 0, 0, 0.9) !important;
   }
 }
-
-/* Force center alignment for all containers on mobile */
-@media (max-width: 768px) {
-  body {
-    overflow-x: hidden;
-  }
-  
-  /* Reset any potential horizontal scroll */
-  html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-}

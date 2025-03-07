@@ -110,16 +110,17 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           
           {password && (
             <div className="space-y-4">
-              <div className="space-y-2">
+              <div>
                 <Label htmlFor="generated-password">Generated Password</Label>
                 <div className="relative">
                   <Input
                     id="generated-password"
                     value={password}
                     readOnly
-                    className="pr-10"
+                    className="pr-10 font-mono"
                   />
                   <Button
+                    type="button"
                     variant="ghost"
                     size="icon"
                     className="absolute right-0 top-0 h-full"
@@ -128,36 +129,37 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
                     <CopyIcon className="h-4 w-4" />
                   </Button>
                 </div>
-                
-                {strength && (
-                  <div className="flex items-center space-x-2 mt-1">
-                    <div 
-                      className="h-2 flex-1 rounded-full overflow-hidden" 
-                      style={{ 
-                        background: `linear-gradient(to right, 
-                          ${strength.score <= 1 ? 'var(--destructive)' : 'transparent'} ${strength.score >= 1 ? '20%' : '0%'}, 
-                          ${strength.score <= 2 ? 'var(--accent)' : 'transparent'} ${strength.score >= 2 ? '40%' : '20%'}, 
-                          ${strength.score <= 3 ? 'var(--accent)' : 'transparent'} ${strength.score >= 3 ? '60%' : '40%'}, 
-                          ${strength.score <= 4 ? 'var(--primary)' : 'transparent'} ${strength.score >= 4 ? '80%' : '60%'}, 
-                          ${strength.score >= 5 ? 'var(--primary)' : 'transparent'} 100%)` 
-                      }}
-                    />
-                    <span className="text-sm font-medium">{strength.strength}</span>
-                  </div>
-                )}
               </div>
               
-              <div className="space-y-2">
+              <div>
                 <Label htmlFor="mnemonic-sentence">Mnemonic Sentence</Label>
                 <Textarea
                   id="mnemonic-sentence"
                   value={mnemonic}
                   readOnly
-                  className="min-h-[80px]"
+                  className="min-h-[80px] font-medium"
                 />
-                <p className="text-sm text-gray-500">
-                  Words like &quot;apple&quot;, &quot;blue&quot;, &quot;happy&quot; are easier to remember than random characters
+                <p className="text-sm text-gray-500 mt-1">
+                  Use this sentence to help you remember your password
                 </p>
+              </div>
+              
+              <div className="flex space-x-2">
+                <Button 
+                  onClick={generateMnemonic} 
+                  className="flex-1"
+                >
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Regenerate
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => copyPassword(mnemonic)}
+                >
+                  <CopyIcon className="h-4 w-4 mr-2" />
+                  Copy Mnemonic
+                </Button>
               </div>
             </div>
           )}

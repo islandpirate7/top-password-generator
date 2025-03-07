@@ -188,35 +188,30 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
             </div>
           </div>
           
-          <div className="flex flex-col items-center justify-center space-y-4">
-            {qrData ? (
-              <>
-                <div className="bg-white p-4 rounded-lg shadow-md">
+          <div className="space-y-4">
+            {qrData && (
+              <div className="space-y-4">
+                <div className="border rounded-md p-4 bg-white">
                   <QRCodeSVG
                     id="password-qr-code"
                     value={qrData}
                     size={options.size}
-                    level={options.level}
-                    includeMargin
+                    level={options.level as any}
+                    includeMargin={true}
                   />
                 </div>
                 
-                <div className="text-sm text-center">
-                  {options.encrypted && (
-                    <div className="text-amber-600 font-semibold mb-1">
-                      Encrypted QR Code
-                    </div>
-                  )}
-                  {options.expiresIn && options.expiresIn > 0 && (
-                    <div className="text-blue-600 font-semibold">
-                      {formatExpirationTime()}
-                    </div>
-                  )}
+                {expiresAt && (
+                  <div className="text-sm text-gray-500">
+                    {formatExpirationTime()}
+                  </div>
+                )}
+                
+                <div className="flex space-x-2">
+                  <Button onClick={downloadQRCode} className="flex-1">
+                    Download QR Code
+                  </Button>
                 </div>
-              </>
-            ) : (
-              <div className="text-center text-gray-500 p-8 border border-dashed rounded-lg flex items-center justify-center min-h-[200px]">
-                <p>QR code will appear here after generation</p>
               </div>
             )}
           </div>

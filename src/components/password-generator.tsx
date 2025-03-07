@@ -174,7 +174,7 @@ export function PasswordGenerator() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="flex flex-col items-center mb-8 w-full">
+      <div className="mb-8">
         <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2">
           <div className="w-full h-full flex items-center justify-center">
             {/* Colorful lock icon matching the shared image */}
@@ -202,7 +202,7 @@ export function PasswordGenerator() {
             </div>
           </div>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold font-montserrat text-center dark:text-black">Top Password Generator</h1>
+        <h1 className="text-3xl md:text-4xl font-bold font-montserrat dark:text-black">Top Password Generator</h1>
       </div>
       
       <Tabs defaultValue="random" onValueChange={handleTabChange}>
@@ -215,7 +215,7 @@ export function PasswordGenerator() {
           <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">QR Code</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="random" className="w-full flex justify-center">
+        <TabsContent value="random" className="w-full">
           <Card className="w-full">
             <CardHeader className="border-b border-gray-100">
               <CardTitle className="text-primary">Random Password</CardTitle>
@@ -292,7 +292,7 @@ export function PasswordGenerator() {
           </Card>
         </TabsContent>
         
-        <TabsContent value="memorable" className="w-full flex justify-center">
+        <TabsContent value="memorable" className="w-full">
           <Card className="w-full">
             <CardHeader className="border-b border-gray-100">
               <CardTitle className="text-primary">Memorable Password</CardTitle>
@@ -369,7 +369,7 @@ export function PasswordGenerator() {
           </Card>
         </TabsContent>
         
-        <TabsContent value="pin" className="w-full flex justify-center">
+        <TabsContent value="pin" className="w-full">
           <Card className="w-full">
             <CardHeader className="border-b border-gray-100">
               <CardTitle className="text-primary">PIN Generator</CardTitle>
@@ -400,15 +400,15 @@ export function PasswordGenerator() {
           </Card>
         </TabsContent>
         
-        <TabsContent value="mnemonic" className="w-full flex justify-center">
+        <TabsContent value="mnemonic" className="w-full">
           <MnemonicSection onPasswordGenerated={setPassword} />
         </TabsContent>
         
-        <TabsContent value="pattern" className="w-full flex justify-center">
+        <TabsContent value="pattern" className="w-full">
           <PatternSection onPasswordGenerated={setPassword} />
         </TabsContent>
         
-        <TabsContent value="qrcode" className="w-full flex justify-center">
+        <TabsContent value="qrcode" className="w-full">
           <QRCodeSection password={password} />
         </TabsContent>
       </Tabs>
