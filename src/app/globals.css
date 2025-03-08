@@ -267,8 +267,8 @@ button[role="switch"][data-state="checked"]::before {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   /* Ensure text doesn't overflow */
@@ -858,8 +858,8 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none !important;
   width: 20px !important;
   height: 20px !important;
-  background: #3b82f6 !important;
   border-radius: 50% !important;
+  background: #3b82f6 !important;
   border: none !important;
   margin-top: -6px !important;
   cursor: pointer !important;
@@ -891,8 +891,8 @@ input[type="range"]::-moz-range-thumb {
   transform: translateY(-50%) !important;
   width: 20px !important;
   height: 20px !important;
-  background: #3b82f6 !important;
   border-radius: 50% !important;
+  background: #3b82f6 !important;
   border: none !important;
   cursor: pointer !important;
   z-index: 20 !important;
