@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AD_SIZES } from '@/lib/constants';
 
 interface AdProps {
@@ -17,6 +17,7 @@ declare global {
 
 export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
   const adRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     // Load Google AdSense script if it's not already loaded
@@ -29,21 +30,47 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
       document.head.appendChild(script);
     }
 
-    // Only push the ad after ensuring the container has dimensions
+    // Create an intersection observer to detect when the ad is in the viewport
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (adRef.current) {
+      observer.observe(adRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Initialize AdSense only when the ad is visible and has dimensions
+  useEffect(() => {
+    if (!isVisible) return;
+
     const timer = setTimeout(() => {
       if (adRef.current && adRef.current.offsetWidth > 0) {
         try {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
+          console.log(`AdSense initialized for slot ${slot} with width ${adRef.current.offsetWidth}px`);
         } catch (err) {
           console.error('Error loading AdSense:', err);
         }
       } else {
         console.warn('Ad container has zero width, not initializing AdSense');
       }
-    }, 500); // Give the container time to render with proper dimensions
+    }, 1000); // Increased timeout to ensure container has rendered
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isVisible, slot]);
 
   // Get dimensions based on format
   const getAdDimensions = () => {
@@ -69,7 +96,8 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
         minWidth: format !== 'auto' ? `${dimensions.width}px` : '300px',
         minHeight: format !== 'auto' ? `${dimensions.height}px` : '100px',
         display: 'block',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        visibility: 'visible'
       }}
     >
       <ins
@@ -77,7 +105,8 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
         style={{ 
           display: 'block',
           width: format !== 'auto' ? `${dimensions.width}px` : '100%',
-          height: format !== 'auto' ? `${dimensions.height}px` : '100%'
+          height: format !== 'auto' ? `${dimensions.height}px` : '100%',
+          visibility: 'visible'
         }}
         data-ad-client="pub-7164870963379403"
         data-ad-slot={slot}
