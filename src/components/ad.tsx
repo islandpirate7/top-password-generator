@@ -15,11 +15,15 @@ declare global {
   }
 }
 
-export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
+// Use a single placeholder slot ID until you have real ones from AdSense
+const DEFAULT_SLOT = "1234567890";
+
+export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdProps) {
   const adRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [adWidth, setAdWidth] = useState(0);
+  const [adError, setAdError] = useState<string | null>(null);
 
   // Determine ad size based on container width
   useEffect(() => {
@@ -46,6 +50,10 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
       script.async = true;
       script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7164870963379403';
       script.crossOrigin = 'anonymous';
+      script.onerror = () => {
+        console.error('Failed to load AdSense script');
+        setAdError('Failed to load advertisement');
+      };
       document.head.appendChild(script);
     }
   }, []);
@@ -86,6 +94,7 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
           setIsInitialized(true);
         } catch (err) {
           console.error('Error loading AdSense:', err);
+          setAdError('Failed to load advertisement');
         }
       } else {
         console.warn('Ad container has zero width, not initializing AdSense');
@@ -109,9 +118,41 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
   const adSize = getAdSize();
   const { width, height } = AD_SIZES[adSize] || AD_SIZES.medium;
 
+  // Don't render anything if we're in development mode or if there's an error
+  if (process.env.NODE_ENV === 'development') {
+    return (
+      <div 
+        className={`ad-container ${className}`} 
+        style={{ 
+          height: `${height}px`, 
+          border: '1px dashed #ccc',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#f9f9f9'
+        }}
+      >
+        <p className="text-sm text-gray-400">Ad Placeholder (Dev Mode)</p>
+      </div>
+    );
+  }
+
   return (
     <div className={`ad-container ${className}`} ref={adRef}>
-      {adWidth > 0 && (
+      {adError ? (
+        <div 
+          style={{ 
+            height: `${height}px`, 
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#f9f9f9',
+            border: '1px solid #eee'
+          }}
+        >
+          <p className="text-sm text-gray-400">Advertisement</p>
+        </div>
+      ) : adWidth > 0 ? (
         <ins
           className="adsbygoogle"
           style={{ display: 'block', width: '100%', height: `${height}px`, maxWidth: '100%' }}
@@ -120,19 +161,20 @@ export function Ad({ slot, format = 'auto', className = '' }: AdProps) {
           data-ad-format={format === 'auto' ? 'auto' : 'rectangle'}
           data-full-width-responsive="true"
         />
-      )}
+      ) : null}
     </div>
   );
 }
 
+// Use a single ad component with consistent slot ID
 export function SidebarAd() {
-  return <Ad slot="1234567890" format="vertical" className="hidden md:block" />;
+  return <Ad slot={DEFAULT_SLOT} format="vertical" className="hidden md:block" />;
 }
 
 export function BottomBannerAd() {
-  return <Ad slot="9876543210" format="horizontal" className="mt-8 mb-4" />;
+  return <Ad slot={DEFAULT_SLOT} format="horizontal" className="mt-8 mb-4" />;
 }
 
 export function InContentAd() {
-  return <Ad slot="5432167890" format="auto" className="my-6" />;
+  return <Ad slot={DEFAULT_SLOT} format="auto" className="my-6" />;
 }
