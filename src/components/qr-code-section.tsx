@@ -75,15 +75,15 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
   };
   
   return (
-    <Card className="w-full">
-      <CardHeader className="border-b border-gray-100">
+    <Card className="w-full flex flex-col items-start">
+      <CardHeader className="border-b border-gray-100 w-full">
         <CardTitle className="text-primary text-left">QR Code Generator</CardTitle>
         <CardDescription className="text-left">
           Create a QR code for your password that can be scanned by another device
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4 pt-6">
+      <CardContent className="space-y-4 pt-6 w-full flex flex-col items-start">
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="qr-password">Password</Label>
@@ -188,10 +188,10 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
             </div>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-4 w-full">
             {qrData && (
-              <div className="space-y-4">
-                <div className="border rounded-md p-4 bg-white text-left">
+              <div className="space-y-4 w-full flex flex-col items-start">
+                <div className="border rounded-md p-4 bg-white text-left w-full flex justify-start">
                   <QRCodeSVG
                     id="password-qr-code"
                     value={qrData}
@@ -202,13 +202,13 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 </div>
                 
                 {expiresAt && (
-                  <div className="text-sm text-gray-500 text-left">
+                  <div className="text-sm text-gray-500 text-left w-full">
                     {formatExpirationTime()}
                   </div>
                 )}
                 
-                <div className="flex space-x-2 justify-start">
-                  <Button onClick={downloadQRCode} className="flex-1">
+                <div className="flex space-x-2 justify-start w-full">
+                  <Button onClick={downloadQRCode} className="flex-1 text-left">
                     Download QR Code
                   </Button>
                 </div>

@@ -155,63 +155,69 @@ body {
   }
 }
 
-/* Mobile-specific overrides to ensure left alignment */
+/* Mobile-specific overrides to force left alignment */
 @media (max-width: 768px) {
-  /* Reset all centering */
   * {
     text-align: left !important;
-  }
-  
-  /* Force all flex containers to left-align */
-  .flex, 
-  div[class*="flex-"],
-  div[class*="items-center"],
-  div[class*="justify-center"] {
-    display: flex !important;
     align-items: flex-start !important;
     justify-content: flex-start !important;
   }
-  
-  /* Force all grid containers to left-align */
-  .grid,
-  div[class*="grid-"] {
+
+  /* Force all flex containers to align items to the start */
+  div, section, main, article, aside, header, footer, nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+
+  /* Force all grid containers to align items to the start */
+  .grid, [class*="grid-"] {
     justify-items: start !important;
-    justify-content: start !important;
-  }
-  
-  /* Fix tabs layout */
-  [role="tablist"] {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-  
-  /* Fix submenu overlap */
-  [role="tablist"] + div {
-    margin-top: 3rem !important;
-  }
-  
-  /* Fix card content */
-  .card,
-  .card-header,
-  .card-content,
-  .card-footer {
+    align-items: start !important;
     text-align: left !important;
-    align-items: flex-start !important;
   }
-  
-  /* Fix buttons */
+
+  /* Target specific shadcn components */
+  .tabs-list, 
+  .card, 
+  .card-header, 
+  .card-content, 
+  .card-footer,
+  .card-title,
+  .card-description,
+  [class*="tabs-"],
+  [class*="card-"] {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  /* Target buttons and form controls */
   button, 
-  .button,
-  [role="button"] {
+  .button, 
+  [class*="btn-"], 
+  input, 
+  select, 
+  textarea {
     text-align: left !important;
     justify-content: flex-start !important;
+    align-items: flex-start !important;
+    width: 100% !important;
   }
-  
-  /* Fix form controls */
-  .form-control,
-  label,
-  input,
-  select {
+
+  /* Fix for tab content */
+  [data-state="active"] {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
     text-align: left !important;
+  }
+
+  /* Ensure headings are left-aligned */
+  h1, h2, h3, h4, h5, h6, p, span, label {
+    text-align: left !important;
+    width: 100% !important;
   }
 }

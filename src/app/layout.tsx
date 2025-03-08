@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: "Top Password Generator - Create Strong & Secure Passwords",
   description: "Generate strong, secure, and unique passwords instantly. Choose from random passwords, memorable phrases, or PIN numbers. Free online password generator tool.",
+  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
   keywords: "password generator, strong password, secure password, random password, PIN generator, memorable password",
   icons: {
     icon: [
@@ -28,6 +29,7 @@ export default function RootLayout({
      crossOrigin="anonymous"></script>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="alternate icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </head>
       <body className="body-font">
         <div className="flex min-h-screen flex-col">
