@@ -75,15 +75,15 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
   };
   
   return (
-    <Card className="w-full">
-      <CardHeader className="border-b border-gray-100">
-        <CardTitle className="text-primary">QR Code Generator</CardTitle>
-        <CardDescription>
+    <Card className="w-full" style={{ textAlign: 'left' }}>
+      <CardHeader className="border-b border-gray-100" style={{ textAlign: 'left' }}>
+        <CardTitle className="text-primary text-left" style={{ textAlign: 'left' }}>QR Code Generator</CardTitle>
+        <CardDescription className="text-left" style={{ textAlign: 'left' }}>
           Create a QR code for your password that can be scanned by another device
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4 pt-6">
+      <CardContent className="space-y-4 pt-6" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="qr-password">Password</Label>
@@ -191,7 +191,7 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
           <div className="space-y-4">
             {qrData && (
               <div className="space-y-4">
-                <div className="border rounded-md p-4 bg-white text-left">
+                <div className="border rounded-md p-4 bg-white text-left" style={{ textAlign: 'left' }}>
                   <QRCodeSVG
                     id="password-qr-code"
                     value={qrData}
@@ -202,13 +202,13 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 </div>
                 
                 {expiresAt && (
-                  <div className="text-sm text-gray-500 text-left">
+                  <div className="text-sm text-gray-500 text-left" style={{ textAlign: 'left' }}>
                     {formatExpirationTime()}
                   </div>
                 )}
                 
-                <div className="flex space-x-2 justify-start">
-                  <Button onClick={downloadQRCode} className="flex-1">
+                <div className="flex space-x-2 justify-start" style={{ justifyContent: 'flex-start' }}>
+                  <Button onClick={downloadQRCode} className="flex-1 text-left justify-start" style={{ textAlign: 'left', justifyContent: 'flex-start' }}>
                     Download QR Code
                   </Button>
                 </div>

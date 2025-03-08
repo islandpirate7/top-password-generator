@@ -47,16 +47,16 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
   const strength = getPasswordStrength(password);
   
   return (
-    <Card className="w-full">
-      <CardHeader className="border-b border-gray-100">
-        <CardTitle className="text-primary">Mnemonic Password Generator</CardTitle>
-        <CardDescription>
+    <Card className="w-full" style={{ textAlign: 'left' }}>
+      <CardHeader className="border-b border-gray-100" style={{ textAlign: 'left' }}>
+        <CardTitle className="text-primary text-left" style={{ textAlign: 'left' }}>Mnemonic Password Generator</CardTitle>
+        <CardDescription className="text-left" style={{ textAlign: 'left' }}>
           Create memorable passwords with mnemonic sentences to help you remember them
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-6 pt-6">
-        <div className="space-y-6">
+      <CardContent className="space-y-4 pt-4" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
+        <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between">
               <Label htmlFor="password-length">Password Length</Label>
@@ -73,7 +73,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="flex items-center space-x-2 ml-0">
+            <div className="flex items-center space-x-2 ml-0" style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
               <Switch
                 id="uppercase"
                 checked={options.uppercase}
@@ -82,7 +82,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
               <Label htmlFor="uppercase">Uppercase</Label>
             </div>
             
-            <div className="flex items-center space-x-2 ml-0">
+            <div className="flex items-center space-x-2 ml-0" style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
               <Switch
                 id="include-numbers"
                 checked={options.includeNumbers}
@@ -91,7 +91,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
               <Label htmlFor="include-numbers">Include Numbers</Label>
             </div>
             
-            <div className="flex items-center space-x-2 ml-0">
+            <div className="flex items-center space-x-2 ml-0" style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
               <Switch
                 id="include-symbols"
                 checked={options.includeSymbols}
@@ -103,7 +103,8 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           
           <Button 
             onClick={generateMnemonic} 
-            className="w-full bg-primary hover:bg-primary/90"
+            className="w-full text-left justify-start bg-primary hover:bg-primary/90"
+            style={{ textAlign: 'left', justifyContent: 'flex-start' }}
           >
             Generate Mnemonic Password
           </Button>

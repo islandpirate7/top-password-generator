@@ -135,15 +135,15 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   };
   
   return (
-    <Card className="w-full">
-      <CardHeader className="border-b border-gray-100">
-        <CardTitle className="text-primary">Pattern Password Generator</CardTitle>
-        <CardDescription>
+    <Card className="w-full" style={{ textAlign: 'left' }}>
+      <CardHeader className="border-b border-gray-100" style={{ textAlign: 'left' }}>
+        <CardTitle className="text-primary text-left" style={{ textAlign: 'left' }}>Pattern Password Generator</CardTitle>
+        <CardDescription className="text-left" style={{ textAlign: 'left' }}>
           Create passwords using specific patterns for different websites and services
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-6 pt-6">
+      <CardContent className="space-y-4 pt-4" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
         <Tabs value={activeTab} onValueChange={(value) => {
           setActiveTab(value);
           setPassword(''); // Clear password when changing tabs
@@ -219,10 +219,11 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   </div>
                 </div>
                 
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 justify-start" style={{ justifyContent: 'flex-start' }}>
                   <Button 
                     onClick={generatePassword} 
-                    className="flex-1"
+                    className="flex-1 text-left justify-start"
+                    style={{ textAlign: 'left', justifyContent: 'flex-start' }}
                   >
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Regenerate
