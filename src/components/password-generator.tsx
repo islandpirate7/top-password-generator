@@ -172,6 +172,12 @@ export function PasswordGenerator() {
     }
   };
 
+  const copyPassword = () => {
+    navigator.clipboard.writeText(password);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8 w-full header-container">
@@ -236,47 +242,39 @@ export function PasswordGenerator() {
                 />
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2 ml-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                <div className="switch-container">
                   <Switch
                     id="uppercase"
                     checked={options.uppercase}
-                    onCheckedChange={(checked) =>
-                      setOptions((prev) => ({ ...prev, uppercase: checked }))
-                    }
+                    onCheckedChange={(checked) => setOptions({ ...options, uppercase: checked })}
                   />
                   <Label htmlFor="uppercase">Include Uppercase</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2 ml-0">
+                <div className="switch-container">
                   <Switch
                     id="lowercase"
                     checked={options.lowercase}
-                    onCheckedChange={(checked) =>
-                      setOptions((prev) => ({ ...prev, lowercase: checked }))
-                    }
+                    onCheckedChange={(checked) => setOptions({ ...options, lowercase: checked })}
                   />
                   <Label htmlFor="lowercase">Include Lowercase</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2 ml-0">
+                <div className="switch-container">
                   <Switch
                     id="numbers"
                     checked={options.numbers}
-                    onCheckedChange={(checked) =>
-                      setOptions((prev) => ({ ...prev, numbers: checked }))
-                    }
+                    onCheckedChange={(checked) => setOptions({ ...options, numbers: checked })}
                   />
                   <Label htmlFor="numbers">Include Numbers</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2 ml-0">
+                <div className="switch-container">
                   <Switch
                     id="symbols"
                     checked={options.symbols}
-                    onCheckedChange={(checked) =>
-                      setOptions((prev) => ({ ...prev, symbols: checked }))
-                    }
+                    onCheckedChange={(checked) => setOptions({ ...options, symbols: checked })}
                   />
                   <Label htmlFor="symbols">Include Symbols</Label>
                 </div>
@@ -311,47 +309,39 @@ export function PasswordGenerator() {
                 />
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2 ml-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                <div className="switch-container">
                   <Switch
                     id="memorable-uppercase"
                     checked={options.uppercase}
-                    onCheckedChange={(checked) =>
-                      setOptions((prev) => ({ ...prev, uppercase: checked }))
-                    }
+                    onCheckedChange={(checked) => setOptions({ ...options, uppercase: checked })}
                   />
                   <Label htmlFor="memorable-uppercase">Include Uppercase</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2 ml-0">
+                <div className="switch-container">
                   <Switch
                     id="memorable-lowercase"
                     checked={options.lowercase}
-                    onCheckedChange={(checked) =>
-                      setOptions((prev) => ({ ...prev, lowercase: checked }))
-                    }
+                    onCheckedChange={(checked) => setOptions({ ...options, lowercase: checked })}
                   />
                   <Label htmlFor="memorable-lowercase">Include Lowercase</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2 ml-0">
+                <div className="switch-container">
                   <Switch
                     id="memorable-numbers"
                     checked={options.numbers}
-                    onCheckedChange={(checked) =>
-                      setOptions((prev) => ({ ...prev, numbers: checked }))
-                    }
+                    onCheckedChange={(checked) => setOptions({ ...options, numbers: checked })}
                   />
                   <Label htmlFor="memorable-numbers">Include Numbers</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2 ml-0">
+                <div className="switch-container">
                   <Switch
                     id="memorable-symbols"
                     checked={options.symbols}
-                    onCheckedChange={(checked) =>
-                      setOptions((prev) => ({ ...prev, symbols: checked }))
-                    }
+                    onCheckedChange={(checked) => setOptions({ ...options, symbols: checked })}
                   />
                   <Label htmlFor="memorable-symbols">Include Symbols</Label>
                 </div>
@@ -406,15 +396,13 @@ export function PasswordGenerator() {
         </TabsContent>
       </Tabs>
       
-      {password && (activeTab === 'random' || activeTab === 'memorable' || activeTab === 'pin') && (
+      {password && (
         <div className="mt-6 space-y-4">
           <div className="space-y-2">
             <Label htmlFor="generated-password">Generated Password</Label>
             <div className="password-display-container">
               <div className="password-text">
-                <div className="flex items-center p-2 border rounded-md bg-gray-50">
-                  <code id="generated-password" className="text-sm font-mono break-all">{password}</code>
-                </div>
+                <code id="generated-password" className="text-sm font-mono break-all block p-2 border rounded-md bg-gray-50">{password}</code>
               </div>
               <div className="copy-button">
                 <Button
@@ -445,32 +433,23 @@ export function PasswordGenerator() {
           {passwordStrength && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Strength: {passwordStrength.strength}</span>
-                <span className="text-sm text-gray-500">{passwordStrength.feedback}</span>
+                <div>
+                  <div className="font-medium">Strength: {passwordStrength.strength}</div>
+                  <div className="text-sm text-gray-500">{passwordStrength.feedback}</div>
+                </div>
               </div>
               <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className={`h-full ${
-                    passwordStrength.strength === 'weak'
-                      ? 'bg-red-500'
-                      : passwordStrength.strength === 'medium'
-                      ? 'bg-accent'
-                      : passwordStrength.strength === 'strong'
-                      ? 'bg-primary'
-                      : 'bg-secondary'
-                  }`}
-                  style={{
-                    width: `${(passwordStrength.score / 6) * 100}%`,
-                  }}
-                />
+                  className={`h-full ${getStrengthColorClass(passwordStrength.score)}`}
+                  style={{ width: `${passwordStrength.score * 25}%` }}
+                ></div>
               </div>
             </div>
           )}
           
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-start">
+          <div className="button-container">
             <Button
               variant="outline"
-              className="flex-1 text-primary border-primary hover:bg-primary/10"
               onClick={handleGenerate}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
@@ -479,7 +458,6 @@ export function PasswordGenerator() {
             
             <Button
               variant="outline"
-              className="flex-1 text-primary border-primary hover:bg-primary/10"
               onClick={() => {
                 navigator.clipboard.writeText(password);
                 setCopied(true);
@@ -522,4 +500,14 @@ export function PasswordGenerator() {
       <InContentAd className="mt-8" />
     </div>
   )
+}
+
+function getStrengthColorClass(score: number) {
+  if (score < 2) {
+    return 'bg-red-500';
+  } else if (score < 4) {
+    return 'bg-accent';
+  } else {
+    return 'bg-primary';
+  }
 }

@@ -5,6 +5,8 @@ import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Switch } from './ui/switch';
+import { Slider } from './ui/slider';
 import { 
   PatternElement, 
   PatternTemplate, 
@@ -111,27 +113,29 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   // Get password strength
   const strength = password ? evaluatePasswordStrength(password) : null;
   
-  // Get element display name
-  const getElementDisplayName = (element: PatternElement) => {
+  // Get color for pattern element
+  const getElementColor = (element: string) => {
     switch (element) {
-      case 'L': return 'a';
-      case 'U': return 'A';
-      case 'D': return '0';
-      case 'S': return '#';
-      case 'A': return 'Aa';
-      case 'X': return '*';
+      case 'L': return 'bg-blue-100 hover:bg-blue-200 text-blue-800';
+      case 'U': return 'bg-green-100 hover:bg-green-200 text-green-800';
+      case 'D': return 'bg-red-100 hover:bg-red-200 text-red-800';
+      case 'S': return 'bg-purple-100 hover:bg-purple-200 text-purple-800';
+      case 'A': return 'bg-yellow-100 hover:bg-yellow-200 text-yellow-800';
+      case 'X': return 'bg-gray-100 hover:bg-gray-200 text-gray-800';
+      default: return '';
     }
   };
   
-  // Get element color
-  const getElementColor = (element: PatternElement) => {
+  // Get display name for pattern element
+  const getElementDisplayName = (element: string) => {
     switch (element) {
-      case 'L': return 'bg-blue-100 text-blue-800';
-      case 'U': return 'bg-purple-100 text-purple-800';
-      case 'D': return 'bg-green-100 text-green-800';
-      case 'S': return 'bg-red-100 text-red-800';
-      case 'A': return 'bg-indigo-100 text-indigo-800';
-      case 'X': return 'bg-gray-100 text-gray-800';
+      case 'L': return 'Lowercase (a)';
+      case 'U': return 'Uppercase (A)';
+      case 'D': return 'Digit (0)';
+      case 'S': return 'Symbol (#)';
+      case 'A': return 'Any Letter';
+      case 'X': return 'Any Character';
+      default: return element;
     }
   };
   
@@ -296,54 +300,18 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
               </div>
               
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('L')}
-                  className={getElementColor('L')}
-                >
-                  Lowercase (a)
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('U')}
-                  className={getElementColor('U')}
-                >
-                  Uppercase (A)
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('D')}
-                  className={getElementColor('D')}
-                >
-                  Digit (0)
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('S')}
-                  className={getElementColor('S')}
-                >
-                  Symbol (#)
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('A')}
-                  className={getElementColor('A')}
-                >
-                  Any Letter
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('X')}
-                  className={getElementColor('X')}
-                >
-                  Any Character
-                </Button>
+                {['L', 'U', 'D', 'S', 'A', 'X'].map((element) => (
+                  <div key={element} className="switch-container">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => addPatternElement(element)}
+                      className={getElementColor(element)}
+                    >
+                      {getElementDisplayName(element)}
+                    </Button>
+                  </div>
+                ))}
               </div>
               
               <div className="flex flex-col sm:flex-row gap-2">

@@ -78,31 +78,31 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-            <div className="flex items-center space-x-2">
+            <div className="switch-container">
               <Switch
-                id="uppercase"
+                id="mnemonic-uppercase"
                 checked={options.uppercase}
                 onCheckedChange={(checked) => setOptions({ ...options, uppercase: checked })}
               />
-              <Label htmlFor="uppercase">Uppercase</Label>
+              <Label htmlFor="mnemonic-uppercase">Include Uppercase</Label>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="switch-container">
               <Switch
-                id="include-numbers"
+                id="mnemonic-numbers"
                 checked={options.includeNumbers}
                 onCheckedChange={(checked) => setOptions({ ...options, includeNumbers: checked })}
               />
-              <Label htmlFor="include-numbers">Include Numbers</Label>
+              <Label htmlFor="mnemonic-numbers">Include Numbers</Label>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="switch-container">
               <Switch
-                id="include-symbols"
+                id="mnemonic-symbols"
                 checked={options.includeSymbols}
                 onCheckedChange={(checked) => setOptions({ ...options, includeSymbols: checked })}
               />
-              <Label htmlFor="include-symbols">Include Symbols</Label>
+              <Label htmlFor="mnemonic-symbols">Include Symbols</Label>
             </div>
           </div>
           
