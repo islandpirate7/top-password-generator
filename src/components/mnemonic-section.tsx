@@ -73,7 +73,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 ml-0">
               <Switch
                 id="uppercase"
                 checked={options.uppercase}
@@ -82,7 +82,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
               <Label htmlFor="uppercase">Uppercase</Label>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 ml-0">
               <Switch
                 id="include-numbers"
                 checked={options.includeNumbers}
@@ -91,7 +91,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
               <Label htmlFor="include-numbers">Include Numbers</Label>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 ml-0">
               <Switch
                 id="include-symbols"
                 checked={options.includeSymbols}

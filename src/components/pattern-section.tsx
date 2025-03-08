@@ -175,7 +175,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                 <div className="space-y-4">
                   <div>
                     <Label>Pattern Preview</Label>
-                    <div className="flex flex-wrap gap-2 mt-2 p-3 border rounded-md bg-gray-50">
+                    <div className="flex flex-wrap gap-2 mt-2 p-3 border rounded-md bg-gray-50 justify-start">
                       {selectedPattern.pattern.map((element, index) => (
                         <div 
                           key={index} 
@@ -189,7 +189,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   
                   <Button 
                     onClick={generatePassword} 
-                    className="w-full"
+                    className="w-full text-left"
                   >
                     Generate Password
                   </Button>

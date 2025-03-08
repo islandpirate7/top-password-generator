@@ -174,9 +174,9 @@ export function PasswordGenerator() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-8">
+      <div className="mb-8 text-left">
         <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2">
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-start">
             {/* Colorful lock icon matching the shared image */}
             <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
               {/* Lock body */}
@@ -202,7 +202,7 @@ export function PasswordGenerator() {
             </div>
           </div>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold font-montserrat dark:text-black">Top Password Generator</h1>
+        <h1 className="text-3xl md:text-4xl font-bold font-montserrat dark:text-black text-left">Top Password Generator</h1>
       </div>
       
       <Tabs defaultValue="random" onValueChange={handleTabChange}>
@@ -240,7 +240,7 @@ export function PasswordGenerator() {
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-0">
                   <Switch
                     id="uppercase"
                     checked={options.uppercase}
@@ -251,7 +251,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="uppercase">Include Uppercase</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-0">
                   <Switch
                     id="lowercase"
                     checked={options.lowercase}
@@ -262,7 +262,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="lowercase">Include Lowercase</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-0">
                   <Switch
                     id="numbers"
                     checked={options.numbers}
@@ -273,7 +273,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="numbers">Include Numbers</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-0">
                   <Switch
                     id="symbols"
                     checked={options.symbols}
@@ -285,7 +285,7 @@ export function PasswordGenerator() {
                 </div>
               </div>
               
-              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
+              <Button onClick={handleGenerate} className="w-full text-left justify-start bg-primary hover:bg-primary/90">
                 Generate Password
               </Button>
             </CardContent>
@@ -317,7 +317,7 @@ export function PasswordGenerator() {
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-0">
                   <Switch
                     id="memorable-uppercase"
                     checked={options.uppercase}
@@ -328,7 +328,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="memorable-uppercase">Include Uppercase</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-0">
                   <Switch
                     id="memorable-lowercase"
                     checked={options.lowercase}
@@ -339,7 +339,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="memorable-lowercase">Include Lowercase</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-0">
                   <Switch
                     id="memorable-numbers"
                     checked={options.numbers}
@@ -350,7 +350,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="memorable-numbers">Include Numbers</Label>
                 </div>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-0">
                   <Switch
                     id="memorable-symbols"
                     checked={options.symbols}
@@ -362,7 +362,7 @@ export function PasswordGenerator() {
                 </div>
               </div>
               
-              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
+              <Button onClick={handleGenerate} className="w-full text-left justify-start bg-primary hover:bg-primary/90">
                 Generate Memorable Password
               </Button>
             </CardContent>
@@ -393,7 +393,7 @@ export function PasswordGenerator() {
                 />
               </div>
               
-              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
+              <Button onClick={handleGenerate} className="w-full text-left justify-start bg-primary hover:bg-primary/90">
                 Generate PIN
               </Button>
             </CardContent>
@@ -461,10 +461,10 @@ export function PasswordGenerator() {
                 </div>
               )}
               
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-start">
                 <Button
                   variant="outline"
-                  className="flex-1 text-primary border-primary hover:bg-primary/10"
+                  className="flex-1 text-primary border-primary hover:bg-primary/10 justify-start"
                   onClick={handleGenerate}
                 >
                   <RefreshCw className="h-4 w-4 mr-2" />
@@ -473,7 +473,7 @@ export function PasswordGenerator() {
                 
                 <Button
                   variant="outline"
-                  className="flex-1 text-primary border-primary hover:bg-primary/10"
+                  className="flex-1 text-primary border-primary hover:bg-primary/10 justify-start"
                   onClick={copyToClipboard}
                 >
                   {copied ? <Check className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
@@ -484,7 +484,7 @@ export function PasswordGenerator() {
               <div className="pt-2">
                 <Button
                   variant="secondary"
-                  className="w-full bg-secondary hover:bg-secondary/90"
+                  className="w-full bg-secondary hover:bg-secondary/90 text-left justify-start"
                   onClick={checkBreach}
                   disabled={isCheckingBreach || !password}
                 >

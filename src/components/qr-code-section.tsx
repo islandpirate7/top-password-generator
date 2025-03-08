@@ -191,7 +191,7 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
           <div className="space-y-4">
             {qrData && (
               <div className="space-y-4">
-                <div className="border rounded-md p-4 bg-white">
+                <div className="border rounded-md p-4 bg-white text-left">
                   <QRCodeSVG
                     id="password-qr-code"
                     value={qrData}
@@ -202,12 +202,12 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 </div>
                 
                 {expiresAt && (
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-gray-500 text-left">
                     {formatExpirationTime()}
                   </div>
                 )}
                 
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 justify-start">
                   <Button onClick={downloadQRCode} className="flex-1">
                     Download QR Code
                   </Button>
