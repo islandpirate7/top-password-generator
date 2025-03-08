@@ -181,7 +181,7 @@ export function PasswordGenerator() {
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="mb-8 w-full header-container">
-        <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2 header-icon">
+        <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2 header-icon mx-auto">
           <div className="w-full h-full flex items-center justify-center">
             {/* Colorful lock icon matching the shared image */}
             <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
@@ -202,7 +202,7 @@ export function PasswordGenerator() {
             </div>
           </div>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold font-montserrat dark:text-black">Top Password Generator</h1>
+        <h1 className="text-3xl md:text-4xl font-bold font-montserrat text-black dark:text-white text-center">Top Password Generator</h1>
       </div>
       
       <Tabs defaultValue="random" onValueChange={handleTabChange} className="w-full">
