@@ -26,7 +26,7 @@ const Slider = React.forwardRef<
 Slider.displayName = SliderPrimitive.Root.displayName
 
 // Create a more mobile-friendly slider that uses native HTML input
-export const NativeSlider = React.forwardRef<
+const NativeSlider = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement> & { 
     label?: string;
