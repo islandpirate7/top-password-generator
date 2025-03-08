@@ -407,91 +407,115 @@ export function PasswordGenerator() {
       </Tabs>
       
       {password && (activeTab === 'random' || activeTab === 'memorable' || activeTab === 'pin') && (
-        <div className="mt-8">
-          <Card className="w-full">
-            <CardHeader className="border-b border-gray-100">
-              <CardTitle className="text-primary">Generated Password</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="relative">
-                <Input
-                  value={password}
-                  readOnly
-                  className="pr-10 font-mono text-lg text-black dark:text-white"
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-0 top-0 h-full"
-                  onClick={copyToClipboard}
-                >
-                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                </Button>
-              </div>
-              
-              {passwordStrength && (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Strength: {passwordStrength.strength}</span>
-                    <span className="text-sm text-gray-500">{passwordStrength.feedback}</span>
-                  </div>
-                  <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full ${
-                        passwordStrength.strength === 'weak'
-                          ? 'bg-red-500'
-                          : passwordStrength.strength === 'medium'
-                          ? 'bg-accent'
-                          : passwordStrength.strength === 'strong'
-                          ? 'bg-primary'
-                          : 'bg-secondary'
-                      }`}
-                      style={{
-                        width: `${(passwordStrength.score / 6) * 100}%`,
-                      }}
-                    />
-                  </div>
+        <div className="mt-6 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="generated-password">Generated Password</Label>
+            <div className="password-display-container">
+              <div className="password-text">
+                <div className="flex items-center p-2 border rounded-md bg-gray-50">
+                  <code id="generated-password" className="text-sm font-mono break-all">{password}</code>
                 </div>
+              </div>
+              <div className="copy-button">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    navigator.clipboard.writeText(password);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                >
+                  {copied ? (
+                    <>
+                      <Check className="h-4 w-4 mr-2" />
+                      Copied
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copy
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          {passwordStrength && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Strength: {passwordStrength.strength}</span>
+                <span className="text-sm text-gray-500">{passwordStrength.feedback}</span>
+              </div>
+              <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className={`h-full ${
+                    passwordStrength.strength === 'weak'
+                      ? 'bg-red-500'
+                      : passwordStrength.strength === 'medium'
+                      ? 'bg-accent'
+                      : passwordStrength.strength === 'strong'
+                      ? 'bg-primary'
+                      : 'bg-secondary'
+                  }`}
+                  style={{
+                    width: `${(passwordStrength.score / 6) * 100}%`,
+                  }}
+                />
+              </div>
+            </div>
+          )}
+          
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-start">
+            <Button
+              variant="outline"
+              className="flex-1 text-primary border-primary hover:bg-primary/10"
+              onClick={handleGenerate}
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Regenerate
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="flex-1 text-primary border-primary hover:bg-primary/10"
+              onClick={() => {
+                navigator.clipboard.writeText(password);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }}
+            >
+              {copied ? (
+                <>
+                  <Check className="h-4 w-4 mr-2" />
+                  Copied
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4 mr-2" />
+                  Copy
+                </>
               )}
-              
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-start">
-                <Button
-                  variant="outline"
-                  className="flex-1 text-primary border-primary hover:bg-primary/10"
-                  onClick={handleGenerate}
-                >
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Regenerate
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  className="flex-1 text-primary border-primary hover:bg-primary/10"
-                  onClick={copyToClipboard}
-                >
-                  {copied ? <Check className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
-                  {copied ? 'Copied' : 'Copy'}
-                </Button>
+            </Button>
+          </div>
+          
+          <div className="pt-2">
+            <Button
+              variant="secondary"
+              className="w-full bg-secondary hover:bg-secondary/90"
+              onClick={checkBreach}
+              disabled={isCheckingBreach || !password}
+            >
+              {isCheckingBreach ? 'Checking...' : 'Check if Password is Breached'}
+            </Button>
+            
+            {breachResult && (
+              <div className={`mt-2 p-3 rounded-md ${breachResult.breached ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                {breachResult.message}
               </div>
-              
-              <div className="pt-2">
-                <Button
-                  variant="secondary"
-                  className="w-full bg-secondary hover:bg-secondary/90"
-                  onClick={checkBreach}
-                  disabled={isCheckingBreach || !password}
-                >
-                  {isCheckingBreach ? 'Checking...' : 'Check if Password is Breached'}
-                </Button>
-                
-                {breachResult && (
-                  <div className={`mt-2 p-3 rounded-md ${breachResult.breached ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-                    {breachResult.message}
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+            )}
+          </div>
         </div>
       )}
       

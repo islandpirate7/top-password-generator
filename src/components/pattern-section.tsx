@@ -16,7 +16,7 @@ import {
   getAllPatterns
 } from '@/lib/pattern-generator';
 import { evaluatePasswordStrength } from '@/lib/utils';
-import { CopyIcon, PlusIcon, Trash2Icon, RefreshCw } from 'lucide-react';
+import { CopyIcon, PlusIcon, Trash2Icon, RefreshCw, Check } from 'lucide-react';
 
 interface PatternSectionProps {
   onPasswordGenerated: (password: string) => void;
@@ -27,6 +27,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   const [selectedPatternId, setSelectedPatternId] = useState<string>('');
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('create');
+  const [copied, setCopied] = useState(false);
   
   // New pattern form
   const [newPatternName, setNewPatternName] = useState('');
@@ -198,31 +199,45 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
             </div>
             
             {password && (
-              <div className="space-y-4 mt-4 pt-4 border-t">
-                <div>
+              <div className="mt-4 space-y-4">
+                <div className="space-y-2">
                   <Label htmlFor="generated-pattern-password">Generated Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="generated-pattern-password"
-                      value={password}
-                      readOnly
-                      className="pr-10 font-mono"
-                    />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-0 top-0 h-full"
-                      onClick={copyPassword}
-                    >
-                      <CopyIcon className="h-4 w-4" />
-                    </Button>
+                  <div className="password-display-container">
+                    <div className="password-text">
+                      <div className="flex items-center p-2 border rounded-md bg-gray-50">
+                        <code id="generated-pattern-password" className="text-sm font-mono break-all">{password}</code>
+                      </div>
+                    </div>
+                    <div className="copy-button">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          navigator.clipboard.writeText(password);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                      >
+                        {copied ? (
+                          <>
+                            <Check className="h-4 w-4 mr-2" />
+                            Copied
+                          </>
+                        ) : (
+                          <>
+                            <CopyIcon className="h-4 w-4 mr-2" />
+                            Copy
+                          </>
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 
                 <div className="flex space-x-2 justify-start">
                   <Button 
                     onClick={generatePassword} 
-                    className="flex-1"
+                    className="flex-1 text-center"
                   >
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Regenerate
@@ -241,6 +256,24 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                 onChange={(e) => setNewPatternName(e.target.value)}
                 placeholder="e.g., My Bank Password"
               />
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <Label htmlFor="pattern-length">Pattern Length</Label>
+                <span className="text-sm text-gray-500">{newPatternElements.length} characters</span>
+              </div>
+              <div className="relative">
+                <Slider
+                  id="pattern-length"
+                  min={4}
+                  max={32}
+                  step={1}
+                  value={[newPatternElements.length]}
+                  onValueChange={(value) => setNewPatternElements(new Array(value[0]).fill('L'))}
+                  className="w-full"
+                />
+              </div>
             </div>
             
             <div className="space-y-2">

@@ -155,28 +155,60 @@ body {
   }
 }
 
-/* Desktop-specific styles for proper centering */
+/* Global styles for all screen sizes */
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.header-icon {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Fix for sliders to ensure they're visible and properly sized */
+input[type="range"] {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+}
+
+/* Fix for buttons to ensure text is readable */
+button, 
+.button,
+[class*="btn-"] {
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Fix for copy button positioning */
+.password-display-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-text {
+  flex-grow: 1;
+}
+
+.copy-button {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+/* Desktop-specific styles */
 @media (min-width: 769px) {
-  .header-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-  }
-
-  .header-container h1 {
-    text-align: center !important;
-  }
-
-  .header-icon {
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   /* Center tab lists on desktop */
   .tabs-container {
     display: flex;
@@ -190,6 +222,81 @@ body {
     text-align: left;
     align-items: flex-start;
     width: 100%;
+  }
+}
+
+/* Tablet-specific styles */
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Ensure sliders are visible on tablet */
+  input[type="range"] {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Fix button text wrapping on tablet */
+  button, .button {
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* Mobile-specific overrides */
+@media (max-width: 480px) {
+  /* Keep header centered on mobile */
+  .header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100%;
+  }
+
+  .header-container h1 {
+    text-align: center !important;
+  }
+
+  .header-icon {
+    margin: 0 auto !important;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* Ensure sliders are visible on mobile */
+  input[type="range"] {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* Force left alignment for content */
+  .content-container * {
+    text-align: left !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  }
+  
+  /* Fix button text wrapping on mobile */
+  button, .button {
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Add spacing between elements */
+  .space-y-4 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  .space-y-2 > * + * {
+    margin-top: 0.75rem !important;
   }
 }
 

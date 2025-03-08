@@ -202,13 +202,13 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 </div>
                 
                 {expiresAt && (
-                  <div className="text-sm text-gray-500 text-left w-full">
+                  <div className="text-sm text-gray-500 text-center w-full">
                     {formatExpirationTime()}
                   </div>
                 )}
                 
                 <div className="flex space-x-2 justify-center w-full">
-                  <Button onClick={downloadQRCode} className="flex-1">
+                  <Button onClick={downloadQRCode} className="flex-1 text-center">
                     Download QR Code
                   </Button>
                 </div>

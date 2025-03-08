@@ -8,7 +8,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { generateRandomMnemonicPassword, generateMnemonicForPassword, generatePasswordFromMnemonic } from '@/lib/mnemonic-generator';
 import { evaluatePasswordStrength } from '@/lib/utils';
-import { CopyIcon, RefreshCw } from 'lucide-react';
+import { CopyIcon, RefreshCw, Check } from 'lucide-react';
 
 interface MnemonicSectionProps {
   onPasswordGenerated: (password: string) => void;
@@ -20,10 +20,12 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
     uppercase: false,
     includeNumbers: false,
     includeSymbols: false,
+    length: 4,
   });
   
   const [password, setPassword] = useState('');
   const [mnemonic, setMnemonic] = useState('');
+  const [copied, setCopied] = useState(false);
   
   // Generate a random mnemonic password
   const generateMnemonic = () => {
@@ -59,17 +61,20 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label htmlFor="password-length">Password Length</Label>
-              <span className="text-sm text-gray-500">{length} characters</span>
+              <Label htmlFor="mnemonic-length">Number of Words</Label>
+              <span className="text-sm text-gray-500">{options.length} words</span>
             </div>
-            <Slider
-              id="password-length"
-              min={4}
-              max={16}
-              step={1}
-              value={[length]}
-              onValueChange={(value) => setLength(value[0])}
-            />
+            <div className="relative">
+              <Slider
+                id="mnemonic-length"
+                min={2}
+                max={10}
+                step={1}
+                value={[options.length]}
+                onValueChange={(value) => setOptions({ ...options, length: value[0] })}
+                className="w-full"
+              />
+            </div>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
@@ -103,31 +108,44 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           
           <Button 
             onClick={generateMnemonic} 
-            className="w-full bg-primary hover:bg-primary/90"
+            className="w-full bg-primary hover:bg-primary/90 text-center"
           >
             Generate Mnemonic Password
           </Button>
           
           {password && (
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="generated-password">Generated Password</Label>
-                <div className="relative">
-                  <Input
-                    id="generated-password"
-                    value={password}
-                    readOnly
-                    className="pr-10 font-mono"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full"
-                    onClick={() => copyPassword(password)}
-                  >
-                    <CopyIcon className="h-4 w-4" />
-                  </Button>
+            <div className="mt-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="generated-mnemonic">Generated Password</Label>
+                <div className="password-display-container">
+                  <div className="password-text">
+                    <div className="flex items-center p-2 border rounded-md bg-gray-50">
+                      <code id="generated-mnemonic" className="text-sm font-mono break-all">{password}</code>
+                    </div>
+                  </div>
+                  <div className="copy-button">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        navigator.clipboard.writeText(password);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }}
+                    >
+                      {copied ? (
+                        <>
+                          <Check className="h-4 w-4 mr-2" />
+                          Copied
+                        </>
+                      ) : (
+                        <>
+                          <CopyIcon className="h-4 w-4 mr-2" />
+                          Copy
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </div>
               
