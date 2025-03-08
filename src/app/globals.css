@@ -157,37 +157,61 @@ body {
 
 /* Mobile-specific overrides to ensure left alignment */
 @media (max-width: 768px) {
-  .container,
+  /* Reset all centering */
+  * {
+    text-align: left !important;
+  }
+  
+  /* Force all flex containers to left-align */
+  .flex, 
+  div[class*="flex-"],
+  div[class*="items-center"],
+  div[class*="justify-center"] {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  }
+  
+  /* Force all grid containers to left-align */
+  .grid,
+  div[class*="grid-"] {
+    justify-items: start !important;
+    justify-content: start !important;
+  }
+  
+  /* Fix tabs layout */
+  [role="tablist"] {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  /* Fix submenu overlap */
+  [role="tablist"] + div {
+    margin-top: 3rem !important;
+  }
+  
+  /* Fix card content */
   .card,
+  .card-header,
   .card-content,
-  h1, h2, h3, h4, h5, h6,
-  p, div, span,
-  button,
-  input,
-  select,
-  textarea,
-  .flex,
-  .grid {
+  .card-footer {
     text-align: left !important;
     align-items: flex-start !important;
+  }
+  
+  /* Fix buttons */
+  button, 
+  .button,
+  [role="button"] {
+    text-align: left !important;
     justify-content: flex-start !important;
   }
-
-  .flex-col, 
-  .flex-row {
-    align-items: flex-start !important;
-  }
-
-  /* Force left alignment for specific components */
-  [class*="items-center"] {
-    align-items: flex-start !important;
-  }
-
-  [class*="justify-center"] {
-    justify-content: flex-start !important;
-  }
-
-  [class*="text-center"] {
+  
+  /* Fix form controls */
+  .form-control,
+  label,
+  input,
+  select {
     text-align: left !important;
   }
 }

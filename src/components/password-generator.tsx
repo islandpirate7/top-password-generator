@@ -173,55 +173,52 @@ export function PasswordGenerator() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl" style={{ textAlign: 'left' }}>
-      <div className="mb-8 text-left" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
-        <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2" style={{ margin: '0', textAlign: 'left' }}>
-          <div className="w-full h-full flex items-center justify-start" style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="mb-8 text-left">
+        <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2">
+          <div className="w-full h-full flex items-start justify-start">
             {/* Colorful lock icon matching the shared image */}
             <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
               {/* Lock body */}
-              <div className="absolute bottom-0 w-full h-3/5 rounded-md overflow-hidden">
-                {/* Left side - teal gradient */}
-                <div className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-br from-teal-400 to-blue-600"></div>
-                {/* Right side - purple/red gradient */}
-                <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-bl from-red-500 to-purple-600"></div>
-                {/* Keyhole */}
-                <div className="absolute left-1/2 top-1/2 w-1/4 h-1/4 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
-                {/* Keyhole slot */}
-                <div className="absolute left-1/2 bottom-1/4 w-[2px] h-1/5 bg-white transform -translate-x-1/2"></div>
+              <div className="absolute inset-0 rounded-t-full overflow-hidden">
+                <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-cyan-400 to-blue-500"></div>
+                <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-r from-fuchsia-500 to-pink-500"></div>
               </div>
-              {/* Lock arc */}
-              <div className="absolute top-0 left-0 w-full h-3/5 overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-full rounded-t-full overflow-hidden">
-                  {/* Left side - teal gradient */}
-                  <div className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-r from-teal-400 to-blue-500"></div>
-                  {/* Right side - orange/red gradient */}
-                  <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-red-500 to-orange-400"></div>
-                </div>
+              
+              {/* Lock base */}
+              <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden">
+                <div className="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-r from-blue-500 to-cyan-400"></div>
+                <div className="absolute bottom-0 right-0 w-1/2 h-full bg-gradient-to-r from-orange-500 to-red-500"></div>
               </div>
+              
+              {/* Lock hole */}
+              <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-1/4 h-1/4 bg-white rounded-full"></div>
             </div>
           </div>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold font-montserrat dark:text-black text-left" style={{ textAlign: 'left' }}>Top Password Generator</h1>
+        <h1 className="text-3xl md:text-4xl font-bold font-montserrat dark:text-black text-left">Top Password Generator</h1>
       </div>
       
-      <Tabs defaultValue="random" onValueChange={handleTabChange} className="w-full" style={{ textAlign: 'left' }}>
-        <TabsList className="grid w-full grid-cols-3 mb-2" style={{ justifyContent: 'flex-start' }}>
+      <Tabs defaultValue="random" onValueChange={handleTabChange} className="w-full">
+        <TabsList className="grid w-full grid-cols-3 mb-4">
           <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Random</TabsTrigger>
           <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Memorable</TabsTrigger>
           <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Mnemonic</TabsTrigger>
+        </TabsList>
+        
+        <TabsList className="grid w-full grid-cols-3 mb-8">
           <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Pattern</TabsTrigger>
           <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">PIN</TabsTrigger>
           <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">QR Code</TabsTrigger>
         </TabsList>
         
         <TabsContent value="random" className="mt-4">
-          <Card className="w-full" style={{ textAlign: 'left' }}>
-            <CardHeader className="border-b border-gray-100" style={{ textAlign: 'left' }}>
-              <CardTitle className="text-primary text-left" style={{ textAlign: 'left' }}>Random Password</CardTitle>
-              <CardDescription className="text-left" style={{ textAlign: 'left' }}>Generate a secure random password with custom options</CardDescription>
+          <Card className="w-full">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-primary text-left">Random Password</CardTitle>
+              <CardDescription className="text-left">Generate a secure random password with custom options</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 pt-4" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
+            <CardContent className="space-y-4 pt-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <Label htmlFor="password-length">Password Length</Label>
@@ -283,7 +280,7 @@ export function PasswordGenerator() {
                 </div>
               </div>
               
-              <Button onClick={handleGenerate} className="w-full text-left justify-start bg-primary hover:bg-primary/90">
+              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
                 Generate Password
               </Button>
             </CardContent>
@@ -291,12 +288,12 @@ export function PasswordGenerator() {
         </TabsContent>
         
         <TabsContent value="memorable" className="mt-4">
-          <Card className="w-full" style={{ textAlign: 'left' }}>
-            <CardHeader className="border-b border-gray-100" style={{ textAlign: 'left' }}>
-              <CardTitle className="text-primary text-left" style={{ textAlign: 'left' }}>Memorable Password</CardTitle>
-              <CardDescription className="text-left" style={{ textAlign: 'left' }}>Generate an easy-to-remember password using common words</CardDescription>
+          <Card className="w-full">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-primary text-left">Memorable Password</CardTitle>
+              <CardDescription className="text-left">Generate an easy-to-remember password using common words</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 pt-4" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
+            <CardContent className="space-y-4 pt-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <Label htmlFor="memorable-length">Number of Words</Label>
@@ -358,7 +355,7 @@ export function PasswordGenerator() {
                 </div>
               </div>
               
-              <Button onClick={handleGenerate} className="w-full text-left justify-start bg-primary hover:bg-primary/90">
+              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
                 Generate Memorable Password
               </Button>
             </CardContent>
@@ -366,12 +363,12 @@ export function PasswordGenerator() {
         </TabsContent>
         
         <TabsContent value="pin" className="mt-4">
-          <Card className="w-full" style={{ textAlign: 'left' }}>
-            <CardHeader className="border-b border-gray-100" style={{ textAlign: 'left' }}>
-              <CardTitle className="text-primary text-left" style={{ textAlign: 'left' }}>PIN Generator</CardTitle>
-              <CardDescription className="text-left" style={{ textAlign: 'left' }}>Generate a secure PIN code</CardDescription>
+          <Card className="w-full">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-primary text-left">PIN Generator</CardTitle>
+              <CardDescription className="text-left">Generate a secure PIN code</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 pt-4" style={{ textAlign: 'left', alignItems: 'flex-start' }}>
+            <CardContent className="space-y-4 pt-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <Label htmlFor="pin-length">PIN Length</Label>
@@ -387,7 +384,7 @@ export function PasswordGenerator() {
                 />
               </div>
               
-              <Button onClick={handleGenerate} className="w-full text-left justify-start bg-primary hover:bg-primary/90">
+              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
                 Generate PIN
               </Button>
             </CardContent>
@@ -458,7 +455,7 @@ export function PasswordGenerator() {
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-start">
                 <Button
                   variant="outline"
-                  className="flex-1 text-primary border-primary hover:bg-primary/10 justify-start"
+                  className="flex-1 text-primary border-primary hover:bg-primary/10"
                   onClick={handleGenerate}
                 >
                   <RefreshCw className="h-4 w-4 mr-2" />
@@ -467,7 +464,7 @@ export function PasswordGenerator() {
                 
                 <Button
                   variant="outline"
-                  className="flex-1 text-primary border-primary hover:bg-primary/10 justify-start"
+                  className="flex-1 text-primary border-primary hover:bg-primary/10"
                   onClick={copyToClipboard}
                 >
                   {copied ? <Check className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
@@ -478,7 +475,7 @@ export function PasswordGenerator() {
               <div className="pt-2">
                 <Button
                   variant="secondary"
-                  className="w-full bg-secondary hover:bg-secondary/90 text-left justify-start"
+                  className="w-full bg-secondary hover:bg-secondary/90"
                   onClick={checkBreach}
                   disabled={isCheckingBreach || !password}
                 >
