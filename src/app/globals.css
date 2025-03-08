@@ -227,71 +227,80 @@ button[role="switch"][data-state="checked"] span {
   font-size: 14px !important;
 }
 
-/* Completely reset and redefine slider styles */
+/* Fix for tab alignment to ensure consistent left alignment */
+[role="tablist"] {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: flex-start !important; /* Force left alignment */
+}
+
+[role="tablist"] [role="tab"] {
+  flex: 1 1 auto !important;
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+/* Fix for selected tab to prevent right alignment */
+[role="tablist"] [role="tab"][data-state="active"] {
+  justify-content: center !important;
+  text-align: center !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* More aggressive fix for sliders to ensure they're always visible */
+input[type="range"],
 [role="slider"],
 .slider,
-[data-orientation="horizontal"] {
-  position: relative !important;
+[data-orientation="horizontal"],
+span[data-orientation="horizontal"] {
   display: block !important;
-  width: 100% !important;
-  height: 24px !important;
-  touch-action: none !important;
-  user-select: none !important;
-  -webkit-user-select: none !important;
   visibility: visible !important;
   opacity: 1 !important;
-}
-
-/* Target the Radix UI slider track */
-[role="slider"] span[data-orientation="horizontal"] {
-  position: relative !important;
-  display: block !important;
   width: 100% !important;
-  height: 4px !important;
-  background-color: #e5e7eb !important;
-  border-radius: 9999px !important;
-  margin-top: 10px !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  position: relative !important;
+  z-index: 10 !important;
+  margin: 10px 0 !important;
+  /* Force native appearance */
+  -webkit-appearance: slider-horizontal !important;
+  appearance: slider-horizontal !important;
 }
 
-/* Target the Radix UI slider range (filled part) */
-[role="slider"] span[data-orientation="horizontal"] span {
-  position: absolute !important;
-  height: 100% !important;
-  background-color: #3b82f6 !important;
-  border-radius: 9999px !important;
+/* Ensure all switches have consistent width */
+.switch-container:first-child button[role="switch"],
+.switch-container:first-of-type button[role="switch"],
+.switch-container button[role="switch"] {
+  width: 42px !important;
+  max-width: 42px !important;
+  min-width: 42px !important;
+  flex-basis: 42px !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
 }
 
-/* Target the Radix UI slider thumb */
-[role="slider"] span[data-orientation="horizontal"] span[role="slider"] {
-  position: absolute !important;
-  display: block !important;
-  width: 16px !important;
-  height: 16px !important;
-  background-color: white !important;
-  border: 2px solid #3b82f6 !important;
-  border-radius: 50% !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  cursor: pointer !important;
-}
-
-/* Ensure consistent slider appearance across all screen sizes */
+/* Reduce gap between configuration and generated password on mobile */
 @media (max-width: 768px) {
-  [role="slider"],
-  .slider,
-  [data-orientation="horizontal"] {
-    height: 24px !important;
-    margin-bottom: 16px !important;
+  .mt-6 {
+    margin-top: 1rem !important;
   }
   
-  button[role="switch"] {
-    width: 42px !important;
-    height: 22px !important;
+  .space-y-4 > * + * {
+    margin-top: 0.75rem !important;
   }
   
-  button[role="switch"] span {
-    width: 18px !important;
-    height: 18px !important;
+  .space-y-2 > * + * {
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Ensure consistent spacing throughout the form */
+  form > * + *,
+  .card > * + *,
+  .card-content > * + * {
+    margin-top: 0.75rem !important;
   }
 }
 
