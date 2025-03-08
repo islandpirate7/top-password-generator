@@ -70,4 +70,4 @@ export const NativeSlider = React.forwardRef<
 });
 NativeSlider.displayName = "NativeSlider";
 
-export { Slider, NativeSlider }
+export { Slider }
