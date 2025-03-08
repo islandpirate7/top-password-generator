@@ -70,6 +70,109 @@
   }
 }
 
+/* Simplified Root and Body Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Consolidated Container Styles */
+.container {
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+/* Mobile-Specific Fixes */
+@media (max-width: 768px) {
+  .container, 
+  main, 
+  .card,
+  .card-content {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  /* Remove horizontal scroll */
+  .card, .card-content {
+    overflow-x: hidden;
+  }
+}
+
+/* Remove Duplicate Rules and Simplify */
+*, *::before, *::after {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* Order of CSS Rules */
+.tabs-list {
+  width: 100%;
+}
+
+[data-state="active"] {
+  background-color: #2563eb;
+  color: white;
+}
+
+.card {
+  width: 100%;
+}
+
+/* Remove excessive !important tags */
+input[type="range"] {
+  width: 100%;
+  height: 24px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+}
+
+h1.font-montserrat {
+  color: black;
+}
+
+.dark h1.font-montserrat {
+  color: white;
+}
+
+body::before {
+  display: none;
+  content: none;
+}
+
 /* Global container fixes */
 .container {
   width: 100% !important;
