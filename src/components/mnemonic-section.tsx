@@ -54,7 +54,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
   const strength = getPasswordStrength(password);
   
   return (
-    <Card className="w-full">
+    <Card className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 mx-auto">
       <CardHeader className="border-b border-gray-100">
         <CardTitle className="text-primary">Mnemonic Password Generator</CardTitle>
         <CardDescription className="text-left">

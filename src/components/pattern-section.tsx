@@ -140,13 +140,13 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   };
   
   return (
-    <Card className="w-full">
+    <Card className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 mx-auto">
       <CardHeader className="border-b border-gray-100">
         <CardTitle className="text-primary">Pattern-Based Password</CardTitle>
         <CardDescription className="text-left">Create passwords based on patterns for specific websites or services</CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4 pt-4">
+      <CardContent className="space-y-4 pt-4 w-full">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger value="use" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Use Pattern</TabsTrigger>
@@ -195,7 +195,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                     )}
                   </div>
                   
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 w-full">
                     <Button onClick={generatePassword} className="w-full bg-primary hover:bg-primary/90">
                       Generate Password
                     </Button>
@@ -303,7 +303,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
       </CardContent>
       
       {password && (
-        <CardFooter className="flex flex-col space-y-4 border-t border-gray-100 pt-4">
+        <CardFooter className="flex flex-col space-y-4 border-t border-gray-100 pt-4 w-full">
           <div className="space-y-2 w-full">
             <Label htmlFor="pattern-password">Generated Password</Label>
             <div className="flex items-center space-x-2 w-full">
