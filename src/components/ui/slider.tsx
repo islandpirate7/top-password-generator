@@ -46,9 +46,9 @@ export const NativeSlider = React.forwardRef<
     <div className="w-full mobile-slider-container">
       {label && (
         <div className="flex justify-between items-center mb-2">
-          <label className="text-sm font-medium">{label}</label>
-          {showValue && <span className="text-sm font-medium">{value}</span>}
-        </div>
+        <label className="text-sm font-medium">{label}</label>
+        {showValue && <span className="text-sm font-medium">{value}</span>}
+      </div>
       )}
       <div className="relative py-4">
         <input
@@ -70,4 +70,4 @@ export const NativeSlider = React.forwardRef<
 });
 NativeSlider.displayName = "NativeSlider";
 
-export { Slider, NativeSlider }
+export { Slider }
