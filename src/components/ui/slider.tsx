@@ -43,23 +43,28 @@ export const NativeSlider = React.forwardRef<
   };
   
   return (
-    <div className="w-full">
+    <div className="w-full mobile-slider-container">
       {label && (
         <div className="flex justify-between items-center mb-2">
           <label className="text-sm font-medium">{label}</label>
           {showValue && <span className="text-sm font-medium">{value}</span>}
         </div>
       )}
-      <input
-        type="range"
-        ref={ref}
-        className={cn(
-          "w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer",
-          className
-        )}
-        onChange={handleChange}
-        {...props}
-      />
+      <div className="relative py-4">
+        <input
+          type="range"
+          ref={ref}
+          className={cn(
+            "w-full h-4 bg-secondary rounded-lg appearance-none cursor-pointer native-slider",
+            className
+          )}
+          onChange={handleChange}
+          style={{
+            background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${(Number(value) - Number(props.min || 0)) / (Number(props.max || 100) - Number(props.min || 0)) * 100}%, var(--secondary) ${(Number(value) - Number(props.min || 0)) / (Number(props.max || 100) - Number(props.min || 0)) * 100}%, var(--secondary) 100%)`
+          }}
+          {...props}
+        />
+      </div>
     </div>
   );
 });

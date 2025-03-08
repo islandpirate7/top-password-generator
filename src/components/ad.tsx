@@ -24,6 +24,7 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
   const [isInitialized, setIsInitialized] = useState(false);
   const [adWidth, setAdWidth] = useState(0);
   const [adError, setAdError] = useState<string | null>(null);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   // Determine ad size based on container width
   useEffect(() => {
@@ -43,23 +44,41 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
 
   // Load AdSense script
   useEffect(() => {
-    // Load Google AdSense script if it's not already loaded
-    if (!document.getElementById('google-adsense-script')) {
-      const script = document.createElement('script');
-      script.id = 'google-adsense-script';
-      script.async = true;
-      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7164870963379403';
-      script.crossOrigin = 'anonymous';
-      script.onerror = () => {
-        console.error('Failed to load AdSense script');
-        setAdError('Failed to load advertisement');
-      };
-      document.head.appendChild(script);
+    // Only load in production
+    if (process.env.NODE_ENV !== 'production') {
+      return;
     }
-  }, []);
+
+    // Load Google AdSense script if it's not already loaded
+    if (!document.getElementById('google-adsense-script') && !scriptLoaded) {
+      try {
+        const script = document.createElement('script');
+        script.id = 'google-adsense-script';
+        script.async = true;
+        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7164870963379403';
+        script.crossOrigin = 'anonymous';
+        script.onerror = () => {
+          console.error('Failed to load AdSense script');
+          setAdError('Failed to load advertisement');
+        };
+        script.onload = () => {
+          console.log('AdSense script loaded successfully');
+          setScriptLoaded(true);
+        };
+        document.head.appendChild(script);
+      } catch (err) {
+        console.error('Error adding AdSense script:', err);
+        setAdError('Failed to load advertisement');
+      }
+    }
+  }, [scriptLoaded]);
 
   // Create an intersection observer to detect when the ad is in the viewport
   useEffect(() => {
+    if (process.env.NODE_ENV !== 'production') {
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
@@ -70,7 +89,7 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
           }
         });
       },
-      { threshold: 0.1, rootMargin: '100px' }
+      { threshold: 0.1, rootMargin: '200px' }
     );
 
     if (adRef.current) {
@@ -84,14 +103,21 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
 
   // Initialize AdSense only when the ad is visible and has dimensions
   useEffect(() => {
-    if (!isVisible || isInitialized || adWidth === 0) return;
+    if (process.env.NODE_ENV !== 'production' || !isVisible || isInitialized || adWidth === 0 || !scriptLoaded) {
+      return;
+    }
 
     const timer = setTimeout(() => {
       if (adRef.current && adRef.current.offsetWidth > 0) {
         try {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-          console.log(`AdSense initialized for slot ${slot} with width ${adRef.current.offsetWidth}px`);
-          setIsInitialized(true);
+          if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
+            window.adsbygoogle.push({});
+            console.log(`AdSense initialized for slot ${slot} with width ${adRef.current.offsetWidth}px`);
+            setIsInitialized(true);
+          } else {
+            console.warn('AdSense not available yet');
+            setAdError('Advertisement not available');
+          }
         } catch (err) {
           console.error('Error loading AdSense:', err);
           setAdError('Failed to load advertisement');
@@ -99,10 +125,10 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
       } else {
         console.warn('Ad container has zero width, not initializing AdSense');
       }
-    }, 1000); // Increased timeout to ensure container has rendered
+    }, 2000); // Increased timeout to ensure container has rendered
 
     return () => clearTimeout(timer);
-  }, [isVisible, isInitialized, adWidth, slot]);
+  }, [isVisible, isInitialized, adWidth, slot, scriptLoaded]);
 
   // Get appropriate ad size based on format and container width
   const getAdSize = () => {
