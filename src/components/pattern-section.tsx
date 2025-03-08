@@ -6,7 +6,7 @@ import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Switch } from './ui/switch';
-import { Slider } from './ui/slider';
+import { NativeSlider } from './ui/slider';
 import { 
   PatternElement, 
   PatternTemplate, 
@@ -268,13 +268,13 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                 <span className="text-sm text-gray-500">{newPatternElements.length} characters</span>
               </div>
               <div className="relative">
-                <Slider
+                <NativeSlider
                   id="pattern-length"
                   min={4}
                   max={32}
                   step={1}
-                  value={[newPatternElements.length]}
-                  onValueChange={(value) => setNewPatternElements(new Array(value[0]).fill('L'))}
+                  value={newPatternElements.length}
+                  onChange={(e) => setNewPatternElements(new Array(parseInt(e.target.value)).fill('L'))}
                   className="w-full"
                 />
               </div>

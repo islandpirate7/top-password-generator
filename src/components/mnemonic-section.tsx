@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Switch } from './ui/switch';
-import { Slider } from './ui/slider';
+import { NativeSlider } from './ui/slider';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { generateRandomMnemonicPassword, generateMnemonicForPassword, generatePasswordFromMnemonic } from '@/lib/mnemonic-generator';
@@ -20,7 +20,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
     uppercase: false,
     includeNumbers: false,
     includeSymbols: false,
-    length: 4,
+    wordCount: 4,
   });
   
   const [password, setPassword] = useState('');
@@ -28,11 +28,16 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
   const [copied, setCopied] = useState(false);
   
   // Generate a random mnemonic password
-  const generateMnemonic = () => {
-    const result = generateRandomMnemonicPassword(length, options);
-    setPassword(result.password);
-    setMnemonic(result.mnemonic);
-    onPasswordGenerated(result.password);
+  const generateMnemonicPassword = () => {
+    const newPassword = generateRandomMnemonicPassword({
+      wordCount: options.wordCount,
+      uppercase: options.uppercase,
+      includeNumbers: options.includeNumbers,
+      includeSymbols: options.includeSymbols
+    });
+    setPassword(newPassword.password);
+    setMnemonic(newPassword.mnemonic);
+    onPasswordGenerated(newPassword.password);
   };
   
   // Copy password to clipboard
@@ -62,19 +67,16 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           <div className="space-y-2">
             <div className="flex justify-between">
               <Label htmlFor="mnemonic-length">Number of Words</Label>
-              <span className="text-sm text-gray-500">{options.length} words</span>
+              <span className="text-sm text-gray-500">{options.wordCount} words</span>
             </div>
-            <div className="relative">
-              <Slider
-                id="mnemonic-length"
-                min={2}
-                max={10}
-                step={1}
-                value={[options.length]}
-                onValueChange={(value) => setOptions({ ...options, length: value[0] })}
-                className="w-full"
-              />
-            </div>
+            <NativeSlider
+              id="mnemonic-length"
+              min={3}
+              max={10}
+              step={1}
+              value={options.wordCount}
+              onChange={(e) => setOptions({ ...options, wordCount: parseInt(e.target.value) })}
+            />
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
@@ -107,7 +109,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           </div>
           
           <Button 
-            onClick={generateMnemonic} 
+            onClick={generateMnemonicPassword} 
             className="w-full bg-primary hover:bg-primary/90 text-center"
           >
             Generate Mnemonic Password
@@ -164,7 +166,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
               
               <div className="flex space-x-2">
                 <Button 
-                  onClick={generateMnemonic} 
+                  onClick={generateMnemonicPassword} 
                   className="flex-1"
                 >
                   <RefreshCw className="h-4 w-4 mr-2" />

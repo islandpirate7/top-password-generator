@@ -28,15 +28,27 @@ export const MEMORABLE_WORDS = {
 };
 
 export const AD_SIZES = {
-  SIDEBAR: {
+  mobile: {
     width: 300,
-    height: 600
+    height: 250
   },
-  BOTTOM_BANNER: {
+  medium: {
+    width: 336,
+    height: 280
+  },
+  large: {
     width: 728,
     height: 90
   },
-  IN_CONTENT: {
+  vertical: {
+    width: 300,
+    height: 600
+  },
+  horizontal: {
+    width: 728,
+    height: 90
+  },
+  rectangle: {
     width: 300,
     height: 250
   }

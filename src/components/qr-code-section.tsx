@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Switch } from './ui/switch';
-import { Slider } from './ui/slider';
+import { NativeSlider } from './ui/slider';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { generateQRCodeData, QRCodeOptions } from '@/lib/qr-code-generator';
@@ -103,18 +103,18 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="qr-size">QR Code Size</Label>
-              <div className="flex items-center space-x-2">
-                <Slider
-                  id="qr-size"
-                  min={100}
-                  max={400}
-                  step={10}
-                  value={[options.size]}
-                  onValueChange={(value) => setOptions({ ...options, size: value[0] })}
-                />
-                <span className="w-12 text-sm text-right">{options.size}px</span>
+              <div className="flex justify-between">
+                <Label htmlFor="qr-size">QR Code Size</Label>
+                <span className="text-sm text-gray-500">{options.size}px</span>
               </div>
+              <NativeSlider
+                id="qr-size"
+                min={100}
+                max={400}
+                step={10}
+                value={options.size}
+                onChange={(e) => setOptions({ ...options, size: parseInt(e.target.value) })}
+              />
             </div>
             
             <div className="space-y-2">

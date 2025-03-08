@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Slider } from '@/components/ui/slider'
+import { NativeSlider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { useToast } from '@/components/ui/use-toast'
 import { PASSWORD_LENGTHS, PIN_LENGTHS } from '@/lib/constants'
@@ -232,13 +232,13 @@ export function PasswordGenerator() {
                   <Label htmlFor="password-length">Password Length</Label>
                   <span className="text-sm text-gray-500">{length} characters</span>
                 </div>
-                <Slider
+                <NativeSlider
                   id="password-length"
                   min={4}
                   max={64}
                   step={1}
-                  value={[length]}
-                  onValueChange={(value) => setLength(value[0])}
+                  value={length}
+                  onChange={(e) => setLength(parseInt(e.target.value))}
                 />
               </div>
               
@@ -299,13 +299,13 @@ export function PasswordGenerator() {
                   <Label htmlFor="memorable-length">Number of Words</Label>
                   <span className="text-sm text-gray-500">{length} words</span>
                 </div>
-                <Slider
+                <NativeSlider
                   id="memorable-length"
                   min={2}
                   max={8}
                   step={1}
-                  value={[length]}
-                  onValueChange={(value) => setLength(value[0])}
+                  value={length}
+                  onChange={(e) => setLength(parseInt(e.target.value))}
                 />
               </div>
               
@@ -366,13 +366,13 @@ export function PasswordGenerator() {
                   <Label htmlFor="pin-length">PIN Length</Label>
                   <span className="text-sm text-gray-500">{length} digits</span>
                 </div>
-                <Slider
+                <NativeSlider
                   id="pin-length"
                   min={4}
                   max={12}
                   step={1}
-                  value={[length]}
-                  onValueChange={(value) => setLength(value[0])}
+                  value={length}
+                  onChange={(e) => setLength(parseInt(e.target.value))}
                 />
               </div>
               

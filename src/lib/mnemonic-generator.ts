@@ -128,56 +128,87 @@ export function generatePasswordFromMnemonic(phrase: string, options: {
 }
 
 // Generate a random mnemonic password
-export function generateRandomMnemonicPassword(length: number = 8, options: {
+export function generateRandomMnemonicPassword(options: {
+  wordCount?: number;
   includeNumbers?: boolean;
   includeSymbols?: boolean;
   uppercase?: boolean;
 } = {}): { password: string; mnemonic: string } {
-  // Generate a random base string using only common letters
-  let basePassword = '';
+  const {
+    wordCount = 4,
+    includeNumbers = false,
+    includeSymbols = false,
+    uppercase = false
+  } = options;
   
-  for (let i = 0; i < length; i++) {
-    basePassword += commonLetters.charAt(Math.floor(Math.random() * commonLetters.length));
+  // Generate a password with the first letter of each word
+  let password = '';
+  let mnemonic = '';
+  
+  // Select a random template or create a custom one based on word count
+  let template = templates[Math.floor(Math.random() * templates.length)];
+  
+  // If word count is different from what the template would provide, create a custom template
+  const templateWordCount = (template.match(/\[adj\]|\[noun\]|\[verb\]/g) || []).length;
+  
+  if (templateWordCount !== wordCount) {
+    // Create a custom template with the right number of words
+    template = 'The';
+    
+    for (let i = 0; i < wordCount; i++) {
+      const wordType = ['[adj]', '[noun]', '[verb]'][i % 3];
+      template += ` ${wordType}`;
+    }
+    
+    template += '.';
   }
   
-  // Generate a mnemonic for this password
-  const mnemonic = generateMnemonicForPassword(basePassword);
+  // Build the sentence
+  let sentence = template;
   
-  // Extract just the first letters to create the actual password
-  const firstLetters = mnemonic.split(/\s+/)
-    .filter(word => word.match(/[a-zA-Z]/))
-    .map(word => word.charAt(0))
-    .join('');
+  // Replace placeholders with random words
+  sentence = sentence.replace(/\[adj\]/g, () => {
+    const word = adjectives[Math.floor(Math.random() * adjectives.length)];
+    password += word.charAt(0);
+    return word;
+  });
   
-  // Apply options to the first letters password
-  let finalPassword = firstLetters;
+  sentence = sentence.replace(/\[noun\]/g, () => {
+    const word = nouns[Math.floor(Math.random() * nouns.length)];
+    password += word.charAt(0);
+    return word;
+  });
   
-  // Apply uppercase if requested
-  if (options.uppercase) {
-    finalPassword = finalPassword.toUpperCase();
-  } else {
-    // Default is lowercase
-    finalPassword = finalPassword.toLowerCase();
+  sentence = sentence.replace(/\[verb\]/g, () => {
+    const word = verbs[Math.floor(Math.random() * verbs.length)];
+    password += word.charAt(0);
+    return word;
+  });
+  
+  mnemonic = sentence;
+  
+  // Apply options to the password
+  if (uppercase) {
+    password = password.toUpperCase();
   }
   
-  // Add numbers if requested (but don't add too many)
-  if (options.includeNumbers) {
-    // Add up to 2 numbers
-    const numbers = Math.floor(Math.random() * 100).toString().padStart(2, '0');
-    finalPassword += numbers;
+  if (includeNumbers) {
+    // Replace some letters with similar-looking numbers
+    password = password.replace(/[iol]/gi, (match) => {
+      const replacements: Record<string, string> = { i: '1', o: '0', l: '7', I: '1', O: '0', L: '7' };
+      return replacements[match] || match;
+    });
   }
   
-  // Add symbols if requested (but don't add too many)
-  if (options.includeSymbols) {
-    // Add 1 symbol
-    const symbols = ['!', '@', '#', '$', '%', '&', '*'];
-    finalPassword += symbols[Math.floor(Math.random() * symbols.length)];
+  if (includeSymbols) {
+    // Replace some letters with similar-looking symbols
+    password = password.replace(/[aes]/gi, (match) => {
+      const replacements: Record<string, string> = { a: '@', e: '3', s: '$', A: '@', E: '3', S: '$' };
+      return replacements[match] || match;
+    });
   }
   
-  return {
-    password: finalPassword,
-    mnemonic
-  };
+  return { password, mnemonic };
 }
 
 // Helper function to find a word starting with a specific character

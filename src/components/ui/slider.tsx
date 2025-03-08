@@ -12,7 +12,7 @@ const Slider = React.forwardRef<
   <SliderPrimitive.Root
     ref={ref}
     className={cn(
-      "relative flex w-full touch-none select-none items-center",
+      "relative flex w-full touch-none select-none items-center min-h-[24px]",
       className
     )}
     {...props}
@@ -25,4 +25,44 @@ const Slider = React.forwardRef<
 ))
 Slider.displayName = SliderPrimitive.Root.displayName
 
-export { Slider }
+// Create a more mobile-friendly slider that uses native HTML input
+export const NativeSlider = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement> & { 
+    label?: string;
+    showValue?: boolean;
+  }
+>(({ className, label, showValue = false, ...props }, ref) => {
+  const [value, setValue] = React.useState(props.value || props.defaultValue || 0);
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    if (props.onChange) {
+      props.onChange(e);
+    }
+  };
+  
+  return (
+    <div className="w-full">
+      {label && (
+        <div className="flex justify-between items-center mb-2">
+          <label className="text-sm font-medium">{label}</label>
+          {showValue && <span className="text-sm font-medium">{value}</span>}
+        </div>
+      )}
+      <input
+        type="range"
+        ref={ref}
+        className={cn(
+          "w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer",
+          className
+        )}
+        onChange={handleChange}
+        {...props}
+      />
+    </div>
+  );
+});
+NativeSlider.displayName = "NativeSlider";
+
+export { Slider, NativeSlider }
