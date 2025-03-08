@@ -28,7 +28,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   const [patterns, setPatterns] = useState<PatternTemplate[]>([]);
   const [selectedPatternId, setSelectedPatternId] = useState<string>('');
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState('create');
+  const [activeTab, setActiveTab] = useState('use');
   const [copied, setCopied] = useState(false);
   
   // New pattern form
@@ -142,34 +142,32 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   return (
     <Card className="w-full">
       <CardHeader className="border-b border-gray-100">
-        <CardTitle className="text-primary">Pattern Password Generator</CardTitle>
-        <CardDescription>
-          Create passwords using specific patterns for different websites and services
-        </CardDescription>
+        <CardTitle className="text-primary">Pattern-Based Password</CardTitle>
+        <CardDescription className="text-left">Create passwords based on patterns for specific websites or services</CardDescription>
       </CardHeader>
       
       <CardContent className="space-y-4 pt-4">
-        <Tabs value={activeTab} onValueChange={(value) => {
-          setActiveTab(value);
-          setPassword(''); // Clear password when changing tabs
-        }}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="create">Use Pattern</TabsTrigger>
-            <TabsTrigger value="manage">Manage Patterns</TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsTrigger value="use" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Use Pattern</TabsTrigger>
+            <TabsTrigger value="create" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Create Pattern</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="create" className="space-y-4 pt-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="pattern-select">Select Pattern</Label>
-                <Select value={selectedPatternId} onValueChange={setSelectedPatternId}>
-                  <SelectTrigger id="pattern-select">
-                    <SelectValue placeholder="Choose a pattern" />
+          <TabsContent value="use" className="w-full">
+            <div className="space-y-4 w-full">
+              <div className="space-y-2 w-full">
+                <Label htmlFor="pattern-select">Select a Pattern</Label>
+                <Select
+                  value={selectedPatternId}
+                  onValueChange={setSelectedPatternId}
+                >
+                  <SelectTrigger id="pattern-select" className="w-full">
+                    <SelectValue placeholder="Select a pattern" />
                   </SelectTrigger>
                   <SelectContent>
-                    {patterns.map(pattern => (
+                    {patterns.map((pattern) => (
                       <SelectItem key={pattern.id} value={pattern.id}>
-                        {pattern.name}
+                        {pattern.name} {pattern.website ? `(${pattern.website})` : ''}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -177,189 +175,165 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
               </div>
               
               {selectedPattern && (
-                <div className="space-y-4">
-                  <div>
-                    <Label>Pattern Preview</Label>
-                    <div className="flex flex-wrap gap-2 mt-2 p-3 border rounded-md bg-gray-50 justify-start">
-                      {selectedPattern.pattern.map((element, index) => (
-                        <div 
-                          key={index} 
-                          className={`px-2 py-1 rounded text-sm font-medium ${getElementColor(element)}`}
-                        >
-                          {getElementDisplayName(element)}
-                        </div>
-                      ))}
+                <div className="space-y-2 w-full">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 className="text-sm font-medium">{selectedPattern.name}</h3>
+                      <p className="text-xs text-gray-500">{selectedPattern.description}</p>
                     </div>
+                    
+                    {/* Only show delete button for custom patterns */}
+                    {!commonPatterns.some(p => p.id === selectedPattern.id) && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deletePattern(selectedPattern.id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2Icon className="h-4 w-4" />
+                      </Button>
+                    )}
                   </div>
                   
-                  <Button 
-                    onClick={generatePassword} 
-                    className="w-full text-left"
-                  >
-                    Generate Password
-                  </Button>
+                  <div className="flex items-center space-x-2">
+                    <Button onClick={generatePassword} className="w-full bg-primary hover:bg-primary/90">
+                      Generate Password
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
-            
-            {password && (
-              <div className="mt-4 space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="generated-pattern-password">Generated Password</Label>
-                  <div className="password-display-container">
-                    <div className="password-text">
-                      <div className="flex items-center p-2 border rounded-md bg-gray-50">
-                        <code id="generated-pattern-password" className="text-sm font-mono break-all">{password}</code>
-                      </div>
-                    </div>
-                    <div className="copy-button">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => {
-                          navigator.clipboard.writeText(password);
-                          setCopied(true);
-                          setTimeout(() => setCopied(false), 2000);
-                        }}
-                      >
-                        {copied ? (
-                          <>
-                            <Check className="h-4 w-4 mr-2" />
-                            Copied
-                          </>
-                        ) : (
-                          <>
-                            <CopyIcon className="h-4 w-4 mr-2" />
-                            Copy
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex space-x-2 justify-start">
-                  <Button 
-                    onClick={generatePassword} 
-                    className="flex-1 text-center"
-                  >
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Regenerate
-                  </Button>
-                </div>
-              </div>
-            )}
           </TabsContent>
           
-          <TabsContent value="manage" className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="new-pattern-name">Pattern Name</Label>
-              <Input
-                id="new-pattern-name"
-                value={newPatternName}
-                onChange={(e) => setNewPatternName(e.target.value)}
-                placeholder="e.g., My Bank Password"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <Label htmlFor="pattern-length">Pattern Length</Label>
-                <span className="text-sm text-gray-500">{newPatternElements.length} characters</span>
-              </div>
-              <div className="relative">
-                <NativeSlider
-                  id="pattern-length"
-                  min={4}
-                  max={32}
-                  step={1}
-                  value={newPatternElements.length}
-                  onChange={(e) => setNewPatternElements(new Array(parseInt(e.target.value)).fill('L'))}
+          <TabsContent value="create" className="w-full">
+            <div className="space-y-4 w-full">
+              <div className="space-y-2 w-full">
+                <Label htmlFor="new-pattern-name">Pattern Name</Label>
+                <Input
+                  id="new-pattern-name"
+                  placeholder="e.g., My Bank Pattern"
+                  value={newPatternName}
+                  onChange={(e) => setNewPatternName(e.target.value)}
                   className="w-full"
                 />
               </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label>Pattern Elements</Label>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {newPatternElements.map((element, index) => (
-                  <div 
-                    key={index} 
-                    className={`px-2 py-1 rounded text-xs font-mono ${getElementColor(element)}`}
-                  >
-                    {getElementDisplayName(element)}
-                  </div>
-                ))}
-                
-                {newPatternElements.length === 0 && (
-                  <div className="text-sm text-gray-500 italic">
-                    No elements added yet
-                  </div>
-                )}
+              
+              <div className="space-y-2 w-full">
+                <Label>Pattern Elements</Label>
+                <div className="flex flex-wrap gap-2 border p-2 rounded min-h-[100px] w-full">
+                  {newPatternElements.map((element, index) => (
+                    <div key={index} className="bg-gray-100 px-2 py-1 rounded text-sm">
+                      {element.type === 'static' ? element.value : `[${element.type}]`}
+                    </div>
+                  ))}
+                </div>
               </div>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                {['L', 'U', 'D', 'S', 'A', 'X'].map((element) => (
-                  <div key={element} className="switch-container">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => addPatternElement(element)}
-                      className={getElementColor(element)}
-                    >
-                      {getElementDisplayName(element)}
-                    </Button>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-2">
+              <div className="grid grid-cols-2 gap-2 w-full">
                 <Button
                   variant="outline"
-                  size="sm"
+                  onClick={() => addPatternElement({ type: 'lowercase', length: 3 })}
+                  className="w-full"
+                >
+                  Add Lowercase
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => addPatternElement({ type: 'uppercase', length: 3 })}
+                  className="w-full"
+                >
+                  Add Uppercase
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => addPatternElement({ type: 'number', length: 2 })}
+                  className="w-full"
+                >
+                  Add Numbers
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => addPatternElement({ type: 'symbol', length: 1 })}
+                  className="w-full"
+                >
+                  Add Symbols
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => addPatternElement({ type: 'static', value: '-' })}
+                  className="w-full"
+                >
+                  Add Hyphen
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => addPatternElement({ type: 'static', value: '_' })}
+                  className="w-full"
+                >
+                  Add Underscore
+                </Button>
+              </div>
+              
+              <div className="flex items-center space-x-2 w-full">
+                <Button
+                  variant="outline"
                   onClick={removeLastPatternElement}
+                  className="w-1/2"
                   disabled={newPatternElements.length === 0}
-                  className="flex-1"
                 >
                   Remove Last
                 </Button>
+                
                 <Button
                   onClick={saveNewPattern}
+                  className="w-1/2 bg-primary hover:bg-primary/90"
                   disabled={!newPatternName || newPatternElements.length === 0}
-                  className="flex-1 bg-primary hover:bg-primary/90"
                 >
                   Save Pattern
                 </Button>
               </div>
             </div>
-            
-            <Button
-              onClick={saveNewPattern}
-              disabled={!newPatternName || newPatternElements.length === 0}
-              className="w-full flex items-center justify-center"
-            >
-              <PlusIcon className="h-4 w-4 mr-2" />
-              Save and Use Pattern
-            </Button>
           </TabsContent>
         </Tabs>
       </CardContent>
       
-      <CardFooter className="text-sm text-gray-500">
-        <div className="space-y-2">
-          <p>
-            Pattern Legend: 
-            <span className={`ml-1 px-1 rounded ${getElementColor('L')}`}>a</span> = lowercase, 
-            <span className={`ml-1 px-1 rounded ${getElementColor('U')}`}>A</span> = uppercase, 
-            <span className={`ml-1 px-1 rounded ${getElementColor('D')}`}>0</span> = digit, 
-            <span className={`ml-1 px-1 rounded ${getElementColor('S')}`}>#</span> = symbol
-          </p>
-          <p>
-            Create patterns that match specific website requirements or your personal preferences.
-          </p>
-        </div>
-      </CardFooter>
+      {password && (
+        <CardFooter className="flex flex-col space-y-4 border-t border-gray-100 pt-4">
+          <div className="space-y-2 w-full">
+            <Label htmlFor="pattern-password">Generated Password</Label>
+            <div className="flex items-center space-x-2 w-full">
+              <Input
+                id="pattern-password"
+                value={password}
+                readOnly
+                className="font-mono w-full"
+              />
+              
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  copyPassword(password);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                className="shrink-0"
+              >
+                {copied ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <CopyIcon className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+        </CardFooter>
+      )}
     </Card>
   );
 }

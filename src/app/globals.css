@@ -878,104 +878,268 @@ button[role="switch"] span {
   left: 0 !important;
 }
 
-/* Completely eliminate gap between configuration and generated password on mobile */
-@media (max-width: 768px) {
-  .mt-6 {
-    margin-top: 0 !important;
-  }
-  
-  .space-y-4 > * + * {
-    margin-top: 0 !important;
-  }
-  
-  .space-y-2 > * + * {
-    margin-top: 0 !important;
-  }
-  
-  /* Ensure consistent spacing throughout the form */
-  form > * + *,
-  .card > * + *,
-  .card-content > * + * {
-    margin-top: 0 !important;
-  }
-  
-  /* Fix for password display container on mobile */
-  .password-display-container {
-    margin-top: 0 !important;
-  }
-  
-  /* Fix for button container on mobile */
+/* Consistent width styles for all sections */
+/* This ensures all sections have the same width regardless of content */
+.container {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.tabs-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.content-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Ensure all cards have consistent width */
+.card {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Fix for TabsContent to ensure consistent width */
+[role="tabpanel"] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Fix for TabsList to ensure consistent width */
+[role="tablist"] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Fix for TabsTrigger to ensure consistent width */
+[role="tab"] {
+  width: 100% !important;
+}
+
+/* Fix for form elements to ensure consistent width */
+.form-container,
+.form-group,
+.input-group {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Fix for button containers */
+.button-container {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+@media (min-width: 640px) {
   .button-container {
-    margin-top: 0 !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
   }
-  
-  /* Eliminate all margins and paddings that might create gaps */
+}
+
+/* Ensure all sections have consistent padding */
+.card-content,
+.card-header,
+.card-footer {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  box-sizing: border-box !important;
+}
+
+/* Global styles for mobile devices */
+@media (max-width: 768px) {
+  /* Fix text overflow */
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  /* Fix container width */
+  .container, 
+  main, 
+  .main-content,
   .card,
-  .card-header,
   .card-content,
-  .card-body,
+  .card-header,
   .card-footer,
-  form,
-  form > *,
-  .form-group,
-  .form-control,
-  .form-label,
-  .form-input,
-  .form-select,
-  .form-textarea,
-  .form-checkbox,
-  .form-radio,
-  .form-switch,
-  .form-button,
-  .form-help,
-  .form-error,
-  .form-success,
-  .form-warning,
-  .form-info,
-  .form-message,
-  .form-feedback,
-  .form-hint,
-  .form-note,
-  .form-text,
-  .form-caption,
-  .form-legend,
-  .form-fieldset,
-  .form-group-inline,
-  .form-group-stacked,
-  .form-group-horizontal,
-  .form-group-vertical,
-  .form-group-row,
-  .form-group-column,
-  .form-group-grid,
-  .form-group-flex,
-  .form-group-inline-flex,
-  .form-group-block,
-  .form-group-inline-block,
-  .form-group-table,
-  .form-group-table-cell,
-  .form-group-table-row,
-  .form-group-table-column,
-  .form-group-table-header,
-  .form-group-table-footer,
-  .form-group-table-caption,
-  .form-group-table-body,
-  .form-group-table-head,
-  .form-group-table-foot {
-    margin: 0 !important;
-    padding: 0 !important;
+  .card-title,
+  .card-description {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
   }
-  
-  /* Add minimal padding only where absolutely necessary */
-  .card-header,
-  .card-content,
-  .card-body,
+
+  /* Fix text color in Firefox */
+  h1, h2, h3, h4, h5, h6, p, span, label, a, button {
+    color: rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Fix card spacing */
+  .card {
+    margin-bottom: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  /* Ensure all content is visible */
+  .card-content {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  /* Fix switch alignment */
+  .switch-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Ensure labels are visible */
+  label {
+    font-weight: 500 !important;
+    color: rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* Aggressive slider fixes */
+  .mobile-slider-container {
+    margin: 16px 0 !important;
+    padding: 8px 0 !important;
+    width: 100% !important;
+  }
+
+  /* Make sliders more visible and touchable */
+  input[type="range"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 100% !important;
+    height: 24px !important;
+    background: transparent !important;
+    cursor: pointer !important;
+    margin: 12px 0 !important;
+  }
+
+  /* Style the slider thumb */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    background: hsl(var(--primary)) !important;
+    border: 2px solid white !important;
+    cursor: pointer !important;
+    margin-top: -10px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    background: hsl(var(--primary)) !important;
+    border: 2px solid white !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Style the slider track */
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100% !important;
+    height: 8px !important;
+    cursor: pointer !important;
+    background: hsl(var(--secondary)) !important;
+    border-radius: 4px !important;
+  }
+
+  input[type="range"]::-moz-range-track {
+    width: 100% !important;
+    height: 8px !important;
+    cursor: pointer !important;
+    background: hsl(var(--secondary)) !important;
+    border-radius: 4px !important;
+  }
+
+  /* Fix button alignment and size */
+  button {
+    width: 100% !important;
+    padding: 12px !important;
+    margin: 8px 0 !important;
+    font-weight: 500 !important;
+  }
+
+  /* Fix password display */
+  .password-display-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .password-text {
+    width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  .copy-button {
+    width: 100% !important;
+  }
+
+  /* Fix text overflow in code blocks */
+  code {
+    white-space: normal !important;
+    word-break: break-all !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Fix textarea */
+  textarea {
+    width: 100% !important;
+    min-height: 80px !important;
+  }
+
+  /* Fix card footer */
   .card-footer {
-    padding: 0.5rem !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    text-align: left !important;
   }
-  
-  /* Force all content to be visible */
-  * {
-    overflow: visible !important;
+}
+
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+  @media (max-width: 768px) {
+    h1, h2, h3, h4, h5, h6, p, span, label, a, button {
+      color: rgba(0, 0, 0, 0.9) !important;
+    }
+    
+    .card-title {
+      color: hsl(var(--primary)) !important;
+      font-weight: 600 !important;
+    }
+    
+    input[type="range"] {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
   }
 }
 

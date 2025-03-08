@@ -179,7 +179,7 @@ export function PasswordGenerator() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="w-full max-w-4xl mx-auto">
       <div className="mb-8 w-full header-container">
         <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2 header-icon">
           <div className="w-full h-full flex items-center justify-center">
