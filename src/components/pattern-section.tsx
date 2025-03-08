@@ -135,15 +135,15 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   };
   
   return (
-    <Card className="w-full flex flex-col items-start">
-      <CardHeader className="border-b border-gray-100 w-full">
-        <CardTitle className="text-primary text-left">Pattern Password Generator</CardTitle>
-        <CardDescription className="text-left">
+    <Card className="w-full">
+      <CardHeader className="border-b border-gray-100">
+        <CardTitle className="text-primary">Pattern Password Generator</CardTitle>
+        <CardDescription>
           Create passwords using specific patterns for different websites and services
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4 pt-4 w-full flex flex-col items-start">
+      <CardContent className="space-y-4 pt-4">
         <Tabs value={activeTab} onValueChange={(value) => {
           setActiveTab(value);
           setPassword(''); // Clear password when changing tabs
@@ -219,10 +219,10 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   </div>
                 </div>
                 
-                <div className="flex space-x-2 justify-start w-full">
+                <div className="flex space-x-2 justify-start">
                   <Button 
                     onClick={generatePassword} 
-                    className="flex-1 text-left"
+                    className="flex-1"
                   >
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Regenerate

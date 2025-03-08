@@ -75,15 +75,15 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
   };
   
   return (
-    <Card className="w-full flex flex-col items-start">
-      <CardHeader className="border-b border-gray-100 w-full">
-        <CardTitle className="text-primary text-left">QR Code Generator</CardTitle>
-        <CardDescription className="text-left">
+    <Card className="w-full">
+      <CardHeader className="border-b border-gray-100">
+        <CardTitle className="text-primary">QR Code Generator</CardTitle>
+        <CardDescription>
           Create a QR code for your password that can be scanned by another device
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4 pt-6 w-full flex flex-col items-start">
+      <CardContent className="space-y-4 pt-6">
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="qr-password">Password</Label>
@@ -190,8 +190,8 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
           
           <div className="space-y-4 w-full">
             {qrData && (
-              <div className="space-y-4 w-full flex flex-col items-start">
-                <div className="border rounded-md p-4 bg-white text-left w-full flex justify-start">
+              <div className="space-y-4">
+                <div className="border rounded-md p-4 bg-white flex justify-center">
                   <QRCodeSVG
                     id="password-qr-code"
                     value={qrData}
@@ -207,8 +207,8 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                   </div>
                 )}
                 
-                <div className="flex space-x-2 justify-start w-full">
-                  <Button onClick={downloadQRCode} className="flex-1 text-left">
+                <div className="flex space-x-2 justify-center w-full">
+                  <Button onClick={downloadQRCode} className="flex-1">
                     Download QR Code
                   </Button>
                 </div>

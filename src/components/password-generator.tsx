@@ -173,10 +173,10 @@ export function PasswordGenerator() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl flex flex-col items-start">
-      <div className="mb-8 w-full text-left">
-        <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2">
-          <div className="w-full h-full flex items-start justify-start">
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="mb-8 w-full header-container">
+        <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2 header-icon">
+          <div className="w-full h-full flex items-center justify-center">
             {/* Colorful lock icon matching the shared image */}
             <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
               {/* Lock body */}
@@ -196,31 +196,31 @@ export function PasswordGenerator() {
             </div>
           </div>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold font-montserrat dark:text-black text-left">Top Password Generator</h1>
+        <h1 className="text-3xl md:text-4xl font-bold font-montserrat dark:text-black">Top Password Generator</h1>
       </div>
       
-      <Tabs defaultValue="random" onValueChange={handleTabChange} className="w-full flex flex-col items-start">
-        <div className="w-full flex flex-col items-start">
-          <TabsList className="grid w-full grid-cols-3 mb-4 justify-items-start">
-            <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm text-left">Random</TabsTrigger>
-            <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm text-left">Memorable</TabsTrigger>
-            <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm text-left">Mnemonic</TabsTrigger>
+      <Tabs defaultValue="random" onValueChange={handleTabChange} className="w-full">
+        <div className="w-full tabs-container">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
+            <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Random</TabsTrigger>
+            <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Memorable</TabsTrigger>
+            <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Mnemonic</TabsTrigger>
           </TabsList>
           
-          <TabsList className="grid w-full grid-cols-3 mb-8 justify-items-start">
-            <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm text-left">Pattern</TabsTrigger>
-            <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm text-left">PIN</TabsTrigger>
-            <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm text-left">QR Code</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Pattern</TabsTrigger>
+            <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">PIN</TabsTrigger>
+            <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">QR Code</TabsTrigger>
           </TabsList>
         </div>
         
-        <TabsContent value="random" className="mt-4 w-full flex flex-col items-start">
-          <Card className="w-full flex flex-col items-start">
-            <CardHeader className="border-b border-gray-100 w-full">
-              <CardTitle className="text-primary text-left">Random Password</CardTitle>
+        <TabsContent value="random" className="mt-4 w-full content-container">
+          <Card className="w-full">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-primary">Random Password</CardTitle>
               <CardDescription className="text-left">Generate a secure random password with custom options</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 pt-4 w-full flex flex-col items-start">
+            <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <Label htmlFor="password-length">Password Length</Label>
@@ -289,13 +289,13 @@ export function PasswordGenerator() {
           </Card>
         </TabsContent>
         
-        <TabsContent value="memorable" className="mt-4 w-full flex flex-col items-start">
-          <Card className="w-full flex flex-col items-start">
-            <CardHeader className="border-b border-gray-100 w-full">
-              <CardTitle className="text-primary text-left">Memorable Password</CardTitle>
+        <TabsContent value="memorable" className="mt-4 w-full content-container">
+          <Card className="w-full">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-primary">Memorable Password</CardTitle>
               <CardDescription className="text-left">Generate an easy-to-remember password using common words</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 pt-4 w-full flex flex-col items-start">
+            <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <Label htmlFor="memorable-length">Number of Words</Label>
@@ -364,13 +364,13 @@ export function PasswordGenerator() {
           </Card>
         </TabsContent>
         
-        <TabsContent value="pin" className="mt-4 w-full flex flex-col items-start">
-          <Card className="w-full flex flex-col items-start">
-            <CardHeader className="border-b border-gray-100 w-full">
-              <CardTitle className="text-primary text-left">PIN Generator</CardTitle>
+        <TabsContent value="pin" className="mt-4 w-full content-container">
+          <Card className="w-full">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-primary">PIN Generator</CardTitle>
               <CardDescription className="text-left">Generate a secure PIN code</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 pt-4 w-full flex flex-col items-start">
+            <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <Label htmlFor="pin-length">PIN Length</Label>
@@ -393,15 +393,15 @@ export function PasswordGenerator() {
           </Card>
         </TabsContent>
         
-        <TabsContent value="mnemonic" className="mt-4 w-full flex flex-col items-start">
+        <TabsContent value="mnemonic" className="mt-4 w-full content-container">
           <MnemonicSection setPassword={setPassword} />
         </TabsContent>
         
-        <TabsContent value="pattern" className="mt-4 w-full flex flex-col items-start">
+        <TabsContent value="pattern" className="mt-4 w-full content-container">
           <PatternSection setPassword={setPassword} />
         </TabsContent>
         
-        <TabsContent value="qrcode" className="mt-4 w-full flex flex-col items-start">
+        <TabsContent value="qrcode" className="mt-4 w-full content-container">
           <QRCodeSection password={password} />
         </TabsContent>
       </Tabs>

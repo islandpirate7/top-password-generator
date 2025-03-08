@@ -155,6 +155,44 @@ body {
   }
 }
 
+/* Desktop-specific styles for proper centering */
+@media (min-width: 769px) {
+  .header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .header-container h1 {
+    text-align: center !important;
+  }
+
+  .header-icon {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Center tab lists on desktop */
+  .tabs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Keep content left-aligned */
+  .content-container {
+    text-align: left;
+    align-items: flex-start;
+    width: 100%;
+  }
+}
+
 /* Mobile-specific overrides to force left alignment */
 @media (max-width: 768px) {
   * {
@@ -219,5 +257,14 @@ body {
   h1, h2, h3, h4, h5, h6, p, span, label {
     text-align: left !important;
     width: 100% !important;
+  }
+
+  /* Add spacing between elements */
+  .space-y-4 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  .space-y-2 > * + * {
+    margin-top: 0.75rem !important;
   }
 }
