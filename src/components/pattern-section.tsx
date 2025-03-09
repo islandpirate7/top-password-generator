@@ -26,7 +26,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   const [patterns, setPatterns] = useState<PatternTemplate[]>([]);
   const [selectedPatternId, setSelectedPatternId] = useState<string>('');
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState('create');
+  const [activeTab, setActiveTab] = useState('manage');
   
   // New pattern form
   const [newPatternName, setNewPatternName] = useState('');
@@ -45,6 +45,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   // Clear password when component mounts
   useEffect(() => {
     setPassword('');
+    setActiveTab('manage');
   }, []);
   
   // Get the selected pattern
@@ -89,7 +90,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
     setNewPatternElements([]);
     
     // Switch to Use Pattern tab
-    setActiveTab('use');
+    setActiveTab('create');
   };
   
   // Delete a pattern
@@ -149,90 +150,11 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
           setPassword(''); // Clear password when changing tabs
         }}>
           <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="manage">Create Pattern</TabsTrigger>
             <TabsTrigger value="create">Use Pattern</TabsTrigger>
-            <TabsTrigger value="manage">Manage Patterns</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="create" className="space-y-4 pt-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="pattern-select" className="pattern-section-label">Select Pattern</Label>
-                <Select value={selectedPatternId} onValueChange={setSelectedPatternId}>
-                  <SelectTrigger id="pattern-select">
-                    <SelectValue placeholder="Choose a pattern" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {patterns.map(pattern => (
-                      <SelectItem key={pattern.id} value={pattern.id}>
-                        {pattern.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              {selectedPattern && (
-                <div className="space-y-4">
-                  <div>
-                    <Label className="pattern-section-label">Pattern Preview</Label>
-                    <div className="flex flex-wrap gap-2 mt-2 p-3 border rounded-md bg-gray-50 justify-start">
-                      {selectedPattern.pattern.map((element, index) => (
-                        <div 
-                          key={index} 
-                          className={`px-2 py-1 rounded text-sm font-medium ${getElementColor(element)}`}
-                        >
-                          {getElementDisplayName(element)}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <Button 
-                    onClick={generatePassword} 
-                    className="pattern-section-button"
-                  >
-                    Generate Password
-                  </Button>
-                </div>
-              )}
-            </div>
-            
-            {password && (
-              <div className="space-y-4 mt-4 pt-4 border-t">
-                <div>
-                  <Label htmlFor="generated-pattern-password">Generated Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="generated-pattern-password"
-                      value={password}
-                      readOnly
-                      className="pr-10 font-mono"
-                    />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-0 top-0 h-full"
-                      onClick={copyPassword}
-                    >
-                      <CopyIcon className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="flex space-x-2 justify-start">
-                  <Button 
-                    onClick={generatePassword} 
-                    className="flex-1"
-                  >
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Regenerate
-                  </Button>
-                </div>
-              </div>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="manage" className="space-y-6">
+          <TabsContent value="manage" className="space-y-4 pt-4">
             <div className="space-y-2">
               <Label htmlFor="new-pattern-name" className="pattern-section-label">Pattern Name</Label>
               <Input
@@ -336,11 +258,90 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
             <Button
               onClick={saveNewPattern}
               disabled={!newPatternName || newPatternElements.length === 0}
-              className="w-full flex items-center justify-center"
+              className="w-full flex items-center justify-center bg-primary hover:bg-primary/90"
             >
               <PlusIcon className="h-4 w-4 mr-2" />
               Save and Use Pattern
             </Button>
+          </TabsContent>
+          
+          <TabsContent value="create" className="space-y-4 pt-4">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="pattern-select" className="pattern-section-label">Select Pattern</Label>
+                <Select value={selectedPatternId} onValueChange={setSelectedPatternId}>
+                  <SelectTrigger id="pattern-select">
+                    <SelectValue placeholder="Choose a pattern" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {patterns.map(pattern => (
+                      <SelectItem key={pattern.id} value={pattern.id}>
+                        {pattern.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {selectedPattern && (
+                <div className="space-y-4">
+                  <div>
+                    <Label className="pattern-section-label">Pattern Preview</Label>
+                    <div className="flex flex-wrap gap-2 mt-2 p-3 border rounded-md bg-gray-50 justify-start">
+                      {selectedPattern.pattern.map((element, index) => (
+                        <div 
+                          key={index} 
+                          className={`px-2 py-1 rounded text-sm font-medium ${getElementColor(element)}`}
+                        >
+                          {getElementDisplayName(element)}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    onClick={generatePassword} 
+                    className="pattern-section-button"
+                  >
+                    Generate Password
+                  </Button>
+                </div>
+              )}
+            </div>
+            
+            {password && (
+              <div className="space-y-4 mt-4 pt-4 border-t">
+                <div>
+                  <Label htmlFor="generated-pattern-password">Generated Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="generated-pattern-password"
+                      value={password}
+                      readOnly
+                      className="pr-10 font-mono"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full"
+                      onClick={copyPassword}
+                    >
+                      <CopyIcon className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="flex space-x-2 justify-start">
+                  <Button 
+                    onClick={generatePassword} 
+                    className="flex-1"
+                  >
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Regenerate
+                  </Button>
+                </div>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </CardContent>
