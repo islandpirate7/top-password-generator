@@ -235,20 +235,20 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                 </Button>
               </div>
               
-              <div className="flex gap-2 mt-2">
+              <div className="mt-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={removeLastPatternElement}
                   disabled={newPatternElements.length === 0}
-                  className="w-1/2"
+                  className="w-full mb-2"
                 >
                   Remove Last
                 </Button>
                 <Button
                   onClick={saveNewPattern}
                   disabled={!newPatternName || newPatternElements.length === 0}
-                  className="w-1/2 bg-primary hover:bg-primary/90"
+                  className="w-full bg-primary hover:bg-primary/90"
                 >
                   Save Pattern
                 </Button>
