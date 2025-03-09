@@ -156,7 +156,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
           <TabsContent value="create" className="space-y-4 pt-4">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="pattern-select">Select Pattern</Label>
+                <Label htmlFor="pattern-select" className="pattern-section-label">Select Pattern</Label>
                 <Select value={selectedPatternId} onValueChange={setSelectedPatternId}>
                   <SelectTrigger id="pattern-select">
                     <SelectValue placeholder="Choose a pattern" />
@@ -174,7 +174,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
               {selectedPattern && (
                 <div className="space-y-4">
                   <div>
-                    <Label>Pattern Preview</Label>
+                    <Label className="pattern-section-label">Pattern Preview</Label>
                     <div className="flex flex-wrap gap-2 mt-2 p-3 border rounded-md bg-gray-50 justify-start">
                       {selectedPattern.pattern.map((element, index) => (
                         <div 
@@ -234,7 +234,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
           
           <TabsContent value="manage" className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="new-pattern-name">Pattern Name</Label>
+              <Label htmlFor="new-pattern-name" className="pattern-section-label">Pattern Name</Label>
               <Input
                 id="new-pattern-name"
                 value={newPatternName}
@@ -244,7 +244,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
             </div>
             
             <div className="space-y-2">
-              <Label>Pattern Elements</Label>
+              <Label className="pattern-section-label">Pattern Elements</Label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {newPatternElements.map((element, index) => (
                   <div 

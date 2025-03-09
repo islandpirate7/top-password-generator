@@ -226,8 +226,17 @@ h1.font-montserrat {
 
 /* Fix for tab highlighting */
 [data-state="active"] {
-  background-color: #2563eb;
+  background-color: hsl(var(--primary));
   color: white;
+  border-radius: var(--radius);
+}
+
+/* Fix for pattern section labels */
+.pattern-section-label {
+  background-color: transparent;
+  color: hsl(var(--foreground));
+  padding: 0.5rem;
+  font-weight: 500;
 }
 
 /* Fix for slider visibility */
