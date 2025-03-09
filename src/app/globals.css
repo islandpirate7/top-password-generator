@@ -369,3 +369,11 @@ input::placeholder, textarea::placeholder, select::placeholder {
 .select-item {
   color: hsl(var(--foreground));
 }
+
+/* Make dropdown arrows more visible */
+[role="combobox"] > svg {
+  color: black !important;
+  opacity: 1 !important;
+  width: 16px !important;
+  height: 16px !important;
+}
