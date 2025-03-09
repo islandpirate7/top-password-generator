@@ -251,6 +251,28 @@ h1.font-montserrat {
   width: 100%;
 }
 
+/* Fix for switch containers */
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.switch-container [role="switch"] {
+  height: 1.25rem;
+  width: 2.25rem;
+  min-width: 2.25rem;
+}
+
+.switch-container [role="switch"] span {
+  height: 0.875rem;
+  width: 0.875rem;
+}
+
+.switch-container [role="switch"][data-state="checked"] span {
+  transform: translateX(1rem);
+}
+
 /* Fix for slider visibility */
 input[type="range"] {
   width: 100%;
