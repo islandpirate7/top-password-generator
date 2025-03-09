@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { NativeSlider } from '@/components/ui/slider'
+import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { useToast } from '@/components/ui/use-toast'
 import { PASSWORD_LENGTHS, PIN_LENGTHS } from '@/lib/constants'
@@ -232,7 +232,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="password-length">Password Length</Label>
                   <span className="text-sm text-gray-500">{length} characters</span>
                 </div>
-                <NativeSlider
+                <Slider
                   id="password-length"
                   min={4}
                   max={64}
@@ -299,7 +299,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="memorable-length">Number of Words</Label>
                   <span className="text-sm text-gray-500">{length} words</span>
                 </div>
-                <NativeSlider
+                <Slider
                   id="memorable-length"
                   min={2}
                   max={8}
@@ -366,7 +366,7 @@ export function PasswordGenerator() {
                   <Label htmlFor="pin-length">PIN Length</Label>
                   <span className="text-sm text-gray-500">{length} digits</span>
                 </div>
-                <NativeSlider
+                <Slider
                   id="pin-length"
                   min={4}
                   max={12}

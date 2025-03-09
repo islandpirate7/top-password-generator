@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Switch } from './ui/switch';
-import { NativeSlider } from './ui/slider';
+import { Slider } from './ui/slider';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { generateQRCodeData, QRCodeOptions } from '@/lib/qr-code-generator';
@@ -107,13 +107,14 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 <Label htmlFor="qr-size">QR Code Size</Label>
                 <span className="text-sm text-gray-500">{options.size}px</span>
               </div>
-              <NativeSlider
+              <Slider
                 id="qr-size"
                 min={100}
                 max={400}
                 step={10}
-                value={options.size}
-                onChange={(e) => setOptions({ ...options, size: parseInt(e.target.value) })}
+                value={[options.size || 200]}
+                onValueChange={(value) => setOptions({ ...options, size: value[0] })}
+                className="w-full mobile-slider-container"
               />
             </div>
             
