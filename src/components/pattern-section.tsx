@@ -125,11 +125,11 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   // Get element color
   const getElementColor = (element: PatternElement) => {
     switch (element) {
-      case 'L': return 'bg-blue-100 text-blue-800';
-      case 'U': return 'bg-purple-100 text-purple-800';
-      case 'D': return 'bg-green-100 text-green-800';
-      case 'S': return 'bg-red-100 text-red-800';
-      case 'A': return 'bg-indigo-100 text-indigo-800';
+      case 'L': return 'bg-gray-100 text-gray-800';
+      case 'U': return 'bg-gray-100 text-gray-800';
+      case 'D': return 'bg-gray-100 text-gray-800';
+      case 'S': return 'bg-gray-100 text-gray-800';
+      case 'A': return 'bg-gray-100 text-gray-800';
       case 'X': return 'bg-gray-100 text-gray-800';
     }
   };
