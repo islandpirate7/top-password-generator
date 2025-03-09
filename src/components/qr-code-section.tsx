@@ -136,7 +136,7 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
               </Select>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="switch-container">
               <Switch
                 id="encrypted"
                 checked={options.encrypted}

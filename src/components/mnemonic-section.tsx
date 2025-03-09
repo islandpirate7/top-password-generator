@@ -27,7 +27,12 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
   
   // Generate a random mnemonic password
   const generateMnemonic = () => {
-    const result = generateRandomMnemonicPassword(length, options);
+    const result = generateRandomMnemonicPassword({
+      wordCount: length,
+      uppercase: options.uppercase,
+      includeNumbers: options.includeNumbers,
+      includeSymbols: options.includeSymbols
+    });
     setPassword(result.password);
     setMnemonic(result.mnemonic);
     onPasswordGenerated(result.password);
@@ -73,7 +78,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-            <div className="flex items-center space-x-2">
+            <div className="switch-container">
               <Switch
                 id="uppercase"
                 checked={options.uppercase}
@@ -82,7 +87,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
               <Label htmlFor="uppercase">Uppercase</Label>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="switch-container">
               <Switch
                 id="include-numbers"
                 checked={options.includeNumbers}
@@ -91,7 +96,7 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
               <Label htmlFor="include-numbers">Include Numbers</Label>
             </div>
             
-            <div className="flex items-center space-x-2">
+            <div className="switch-container">
               <Switch
                 id="include-symbols"
                 checked={options.includeSymbols}
