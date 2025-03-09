@@ -70,109 +70,6 @@
   }
 }
 
-/* Simplified Root and Body Styles */
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Consolidated Container Styles */
-.container {
-  width: 100%;
-  box-sizing: border-box;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin: 0 auto;
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-/* Mobile-Specific Fixes */
-@media (max-width: 768px) {
-  .container, 
-  main, 
-  .card,
-  .card-content {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-  
-  /* Remove horizontal scroll */
-  .card, .card-content {
-    overflow-x: hidden;
-  }
-}
-
-/* Remove Duplicate Rules and Simplify */
-*, *::before, *::after {
-  max-width: 100%;
-  overflow-wrap: break-word;
-}
-
-/* Order of CSS Rules */
-.tabs-list {
-  width: 100%;
-}
-
-[data-state="active"] {
-  background-color: #2563eb;
-  color: white;
-}
-
-.card {
-  width: 100%;
-}
-
-/* Remove excessive !important tags */
-input[type="range"] {
-  width: 100%;
-  height: 24px;
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #2563eb;
-  cursor: pointer;
-}
-
-input[type="range"]::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #2563eb;
-  cursor: pointer;
-}
-
-h1.font-montserrat {
-  color: black;
-}
-
-.dark h1.font-montserrat {
-  color: white;
-}
-
-body::before {
-  display: none;
-  content: none;
-}
-
 /* Global container fixes */
 .container {
   width: 100% !important;
@@ -356,6 +253,130 @@ button[role="switch"][data-state="checked"]::before {
 }
 
 /* Mobile-specific fixes */
+@media (max-width: 640px) {
+  /* Ensure all cards and containers are full width */
+  .card,
+  .container,
+  .tabs-container,
+  .tab-content,
+  .input-container,
+  .password-display-container,
+  .switch-container,
+  .button-container,
+  .slider-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Ensure text doesn't overflow */
+  h1, h2, h3, p, span, label, button {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  /* Ensure all form elements are full width */
+  input, 
+  select, 
+  textarea, 
+  button,
+  .tabs-list,
+  .tabs-content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Fix alignment issues */
+  .flex {
+    flex-wrap: wrap;
+  }
+
+  /* Make sliders more visible */
+  input[type="range"] {
+    width: 100% !important;
+    height: 24px !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background: transparent !important;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    background: #2563eb !important;
+    cursor: pointer !important;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    background: #2563eb !important;
+    cursor: pointer !important;
+  }
+
+  /* Ensure tab triggers are properly highlighted */
+  [data-state="active"] {
+    background-color: #2563eb !important;
+    color: white !important;
+    font-weight: bold !important;
+  }
+
+  /* Fix for Firefox title text */
+  h1.font-montserrat {
+    color: black !important;
+  }
+  
+  /* Dark mode fix for Firefox */
+  .dark h1.font-montserrat {
+    color: white !important;
+  }
+
+  /* Fix for black rectangle in Firefox */
+  body::before {
+    display: none !important;
+    content: none !important;
+  }
+}
+
+/* Global fixes for all screen sizes */
+.tabs-list {
+  width: 100% !important;
+}
+
+[data-state="active"] {
+  background-color: #2563eb !important;
+  color: white !important;
+}
+
+/* Fix for Firefox title text */
+h1.font-montserrat {
+  color: black !important;
+}
+
+/* Dark mode fix for Firefox */
+.dark h1.font-montserrat {
+  color: white !important;
+}
+
+/* Fix for black rectangle in Firefox */
+body::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Ensure consistent width for all cards */
+.card {
+  width: 100% !important;
+}
+
+/* Global styles for mobile devices */
 @media (max-width: 768px) {
   /* Fix text overflow */
   body {
@@ -837,8 +858,8 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none !important;
   width: 20px !important;
   height: 20px !important;
-  border-radius: 50% !important;
   background: #3b82f6 !important;
+  border-radius: 50% !important;
   border: none !important;
   margin-top: -6px !important;
   cursor: pointer !important;
@@ -870,8 +891,8 @@ input[type="range"]::-moz-range-thumb {
   transform: translateY(-50%) !important;
   width: 20px !important;
   height: 20px !important;
-  border-radius: 50% !important;
   background: #3b82f6 !important;
+  border-radius: 50% !important;
   border: none !important;
   cursor: pointer !important;
   z-index: 20 !important;
