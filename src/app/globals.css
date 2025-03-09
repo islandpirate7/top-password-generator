@@ -346,3 +346,16 @@ input, textarea, select {
 input::placeholder, textarea::placeholder, select::placeholder {
   color: hsl(var(--muted-foreground));
 }
+
+/* Fix for select dropdown text color */
+[data-radix-select-trigger] {
+  color: hsl(var(--foreground)) !important;
+}
+
+[data-radix-select-item] {
+  color: hsl(var(--foreground)) !important;
+}
+
+.select-item {
+  color: hsl(var(--foreground));
+}

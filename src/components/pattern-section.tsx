@@ -241,7 +241,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   size="sm"
                   onClick={removeLastPatternElement}
                   disabled={newPatternElements.length === 0}
-                  className="w-full mb-2"
+                  className="w-full mb-2 text-gray-800 border-gray-300"
                 >
                   Remove Last
                 </Button>
