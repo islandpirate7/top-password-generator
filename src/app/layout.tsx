@@ -27,7 +27,7 @@ export default function RootLayout({
         {/* Google AdSense Script */}
         <script 
           async 
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-7164870963379403"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7164870963379403"
           crossOrigin="anonymous"
         ></script>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

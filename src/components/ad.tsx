@@ -15,7 +15,7 @@ declare global {
   }
 }
 
-// Use a single placeholder slot ID until you have real ones from AdSense
+// Use a placeholder slot ID - IMPORTANT: Replace with real ad unit IDs from your AdSense account
 const DEFAULT_SLOT = "1234567890";
 
 export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdProps) {
@@ -49,29 +49,31 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
       return;
     }
 
-    // Load Google AdSense script if it's not already loaded
-    if (!document.getElementById('google-adsense-script') && !scriptLoaded) {
-      try {
-        const script = document.createElement('script');
-        script.id = 'google-adsense-script';
-        script.async = true;
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7164870963379403';
-        script.crossOrigin = 'anonymous';
-        script.onerror = () => {
-          console.error('Failed to load AdSense script');
-          setAdError('Failed to load advertisement');
-        };
-        script.onload = () => {
-          console.log('AdSense script loaded successfully');
-          setScriptLoaded(true);
-        };
-        document.head.appendChild(script);
-      } catch (err) {
-        console.error('Error adding AdSense script:', err);
-        setAdError('Failed to load advertisement');
+    // We don't need to load the script here since it's already loaded in layout.tsx
+    // Just check if it's available
+    const checkScriptLoaded = () => {
+      if (document.getElementById('google-adsense-script') || 
+          document.querySelector('script[src*="adsbygoogle.js"]')) {
+        setScriptLoaded(true);
+        return true;
       }
+      return false;
+    };
+
+    if (checkScriptLoaded()) {
+      return;
     }
-  }, [scriptLoaded]);
+
+    // Set a timeout to check again in case the script is still loading
+    const timer = setTimeout(() => {
+      if (!checkScriptLoaded()) {
+        console.warn('AdSense script not detected after timeout');
+        setAdError('Advertisement not available');
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Create an intersection observer to detect when the ad is in the viewport
   useEffect(() => {
