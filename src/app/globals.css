@@ -191,80 +191,100 @@ body {
     align-items: flex-start;
     width: 100%;
   }
-}
-
-/* Mobile-specific overrides to force left alignment */
-@media (max-width: 768px) {
-  * {
-    text-align: left !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-  }
-
-  /* Force all flex containers to align items to the start */
-  div, section, main, article, aside, header, footer, nav {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    text-align: left !important;
-  }
-
-  /* Force all grid containers to align items to the start */
-  .grid, [class*="grid-"] {
-    justify-items: start !important;
-    align-items: start !important;
-    text-align: left !important;
-  }
-
-  /* Target specific shadcn components */
-  .tabs-list, 
-  .card, 
-  .card-header, 
-  .card-content, 
-  .card-footer,
-  .card-title,
-  .card-description,
-  [class*="tabs-"],
-  [class*="card-"] {
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    text-align: left !important;
-    width: 100% !important;
-  }
-
-  /* Target buttons and form controls */
-  button, 
-  .button, 
-  [class*="btn-"], 
-  input, 
-  select, 
-  textarea {
-    text-align: left !important;
-    justify-content: flex-start !important;
-    align-items: flex-start !important;
-    width: 100% !important;
-  }
-
-  /* Fix for tab content */
-  [data-state="active"] {
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    text-align: left !important;
-  }
-
-  /* Ensure headings are left-aligned */
-  h1, h2, h3, h4, h5, h6, p, span, label {
-    text-align: left !important;
-    width: 100% !important;
-  }
-
-  /* Add spacing between elements */
-  .space-y-4 > * + * {
-    margin-top: 1.5rem !important;
+  
+  /* Fix for desktop layout */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
   }
   
-  .space-y-2 > * + * {
-    margin-top: 0.75rem !important;
+  /* Fix for desktop flex layout */
+  .flex-col.lg\:flex-row {
+    display: flex;
+    flex-direction: row;
   }
+  
+  /* Fix for desktop sidebar */
+  .lg\:w-auto {
+    width: auto;
+  }
+  
+  /* Fix for desktop main content */
+  .flex-1 {
+    flex: 1 1 0%;
+  }
+}
+
+/* Fix for Firefox title text color */
+h1.font-montserrat {
+  color: black;
+}
+
+.dark h1.font-montserrat {
+  color: white;
+}
+
+/* Fix for tab highlighting */
+[data-state="active"] {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* Fix for slider visibility */
+input[type="range"] {
+  width: 100%;
+  height: 24px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+}
+
+/* Fix for password display container */
+.password-display-container {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 8px;
+  position: relative;
+}
+
+.password-text {
+  flex-grow: 1;
+  width: calc(100% - 80px);
+  overflow-wrap: break-word;
+}
+
+.password-text code {
+  display: block;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.copy-button {
+  flex-shrink: 0;
+  width: 70px;
+  position: relative;
+  top: 0;
+  right: 0;
 }
