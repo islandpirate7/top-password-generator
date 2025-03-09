@@ -337,3 +337,12 @@ input[type="range"]::-moz-range-thumb {
   top: 0;
   right: 0;
 }
+
+/* Fix for input text color */
+input, textarea, select {
+  color: hsl(var(--foreground));
+}
+
+input::placeholder, textarea::placeholder, select::placeholder {
+  color: hsl(var(--muted-foreground));
+}
