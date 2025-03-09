@@ -27,6 +27,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   const [selectedPatternId, setSelectedPatternId] = useState<string>('');
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('manage');
+  const [copied, setCopied] = useState(false);
   
   // New pattern form
   const [newPatternName, setNewPatternName] = useState('');
@@ -106,6 +107,12 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   // Copy password to clipboard
   const copyPassword = () => {
     navigator.clipboard.writeText(password);
+    setCopied(true);
+    
+    // Reset copied state after 2 seconds
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
   
   // Get password strength
@@ -313,20 +320,32 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
               <div className="space-y-4 mt-4 pt-4 border-t">
                 <div>
                   <Label htmlFor="generated-pattern-password">Generated Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="generated-pattern-password"
-                      value={password}
-                      readOnly
-                      className="pr-10 font-mono"
-                    />
+                  <div className="flex space-x-2">
+                    <div className="relative flex-grow">
+                      <Input
+                        id="generated-pattern-password"
+                        value={password}
+                        readOnly
+                        className="font-mono"
+                      />
+                    </div>
                     <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-0 top-0 h-full"
                       onClick={copyPassword}
+                      className="flex items-center text-black"
+                      variant="outline"
                     >
-                      <CopyIcon className="h-4 w-4" />
+                      {copied ? (
+                        <>
+                          <span className="text-green-500 flex items-center">
+                            Copied!
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <CopyIcon className="h-4 w-4 mr-2 text-black" />
+                          Copy
+                        </>
+                      )}
                     </Button>
                   </div>
                 </div>
