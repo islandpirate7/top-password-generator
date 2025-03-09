@@ -18,6 +18,11 @@ declare global {
 // Use a placeholder slot ID - IMPORTANT: Replace with real ad unit IDs from your AdSense account
 const DEFAULT_SLOT = "1234567890";
 
+// Helper function to combine class names
+function cn(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
 export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdProps) {
   const adRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -46,14 +51,15 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
   useEffect(() => {
     // Only load in production
     if (process.env.NODE_ENV !== 'production') {
+      console.log('AdSense disabled in development mode');
       return;
     }
 
-    // We don't need to load the script here since it's already loaded in layout.tsx
-    // Just check if it's available
+    // Check if the AdSense script is available
     const checkScriptLoaded = () => {
-      if (document.getElementById('google-adsense-script') || 
-          document.querySelector('script[src*="adsbygoogle.js"]')) {
+      if (typeof window !== 'undefined' && 
+          (window as any).adsbygoogle !== undefined) {
+        console.log('AdSense script loaded successfully');
         setScriptLoaded(true);
         return true;
       }
@@ -65,14 +71,27 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
     }
 
     // Set a timeout to check again in case the script is still loading
-    const timer = setTimeout(() => {
+    const timer = setInterval(() => {
+      if (checkScriptLoaded()) {
+        clearInterval(timer);
+      } else {
+        console.log('AdSense not available yet');
+      }
+    }, 1000);
+
+    // Clear interval after 10 seconds to prevent infinite checking
+    const maxWaitTimer = setTimeout(() => {
+      clearInterval(timer);
       if (!checkScriptLoaded()) {
         console.warn('AdSense script not detected after timeout');
         setAdError('Advertisement not available');
       }
-    }, 3000);
+    }, 10000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearInterval(timer);
+      clearTimeout(maxWaitTimer);
+    };
   }, []);
 
   // Create an intersection observer to detect when the ad is in the viewport
@@ -103,56 +122,71 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
     };
   }, []);
 
-  // Initialize AdSense only when the ad is visible and has dimensions
+  // Initialize AdSense when the ad is visible and the script is loaded
   useEffect(() => {
     if (process.env.NODE_ENV !== 'production' || !isVisible || isInitialized || adWidth === 0 || !scriptLoaded) {
       return;
     }
 
-    const timer = setTimeout(() => {
-      if (adRef.current && adRef.current.offsetWidth > 0) {
-        try {
-          if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
-            window.adsbygoogle.push({});
-            console.log(`AdSense initialized for slot ${slot} with width ${adRef.current.offsetWidth}px`);
-            setIsInitialized(true);
-          } else {
-            console.warn('AdSense not available yet');
-            setAdError('Advertisement not available');
-          }
-        } catch (err) {
-          console.error('Error loading AdSense:', err);
-          setAdError('Failed to load advertisement');
-        }
-      } else {
-        console.warn('Ad container has zero width, not initializing AdSense');
+    try {
+      console.log('Initializing AdSense ad with format:', format, 'slot:', slot);
+      
+      // Make sure adsbygoogle is defined
+      if (typeof (window as any).adsbygoogle === 'undefined') {
+        console.error('AdSense script not loaded properly');
+        setAdError('Advertisement not available');
+        return;
       }
-    }, 2000); // Increased timeout to ensure container has rendered
 
-    return () => clearTimeout(timer);
-  }, [isVisible, isInitialized, adWidth, slot, scriptLoaded]);
+      // Push the ad configuration
+      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+      (window as any).adsbygoogle.push({});
+      
+      console.log('AdSense ad initialized successfully');
+      setIsInitialized(true);
+    } catch (error) {
+      console.error('Error initializing AdSense:', error);
+      setAdError('Failed to load advertisement');
+    }
+  }, [isVisible, isInitialized, adWidth, slot, format, scriptLoaded]);
 
   // Get appropriate ad size based on format and container width
   const getAdSize = () => {
-    if (format === 'auto') {
-      // Responsive sizing based on container width
-      if (adWidth < 400) return 'mobile';
-      if (adWidth < 800) return 'medium';
-      return 'large';
-    }
-    return format;
+    const { width, height } = (() => {
+      switch (format) {
+        case 'vertical':
+          return AD_SIZES.vertical;
+        case 'horizontal':
+          return AD_SIZES.horizontal;
+        case 'rectangle':
+          return adWidth > 336 ? AD_SIZES.medium : AD_SIZES.mobile;
+        case 'auto':
+        default:
+          // For mobile screens
+          if (adWidth < 336) {
+            return AD_SIZES.mobile;
+          }
+          // For medium screens
+          if (adWidth < 728) {
+            return AD_SIZES.medium;
+          }
+          // For large screens
+          return AD_SIZES.large;
+      }
+    })();
+
+    return { width, height };
   };
 
   const adSize = getAdSize();
-  const { width, height } = AD_SIZES[adSize] || AD_SIZES.medium;
 
   // Don't render anything if we're in development mode or if there's an error
   if (process.env.NODE_ENV === 'development') {
     return (
       <div 
-        className={`ad-container ${className}`} 
+        className={cn('ad-container', className)} 
         style={{ 
-          height: `${height}px`, 
+          height: `${adSize.height}px`, 
           border: '1px dashed #ccc',
           display: 'flex',
           alignItems: 'center',
@@ -165,31 +199,29 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
     );
   }
 
+  // Render the ad
   return (
-    <div className={`ad-container ${className}`} ref={adRef}>
+    <div className={cn('ad-container relative overflow-hidden', className)}>
       {adError ? (
-        <div 
-          style={{ 
-            height: `${height}px`, 
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#f9f9f9',
-            border: '1px solid #eee'
+        <div className="text-center text-gray-400 text-sm py-4">{adError}</div>
+      ) : (
+        <div
+          ref={adRef}
+          className="ad-slot"
+          style={{
+            display: 'block',
+            minHeight: adSize.height,
+            minWidth: adSize.width,
+            width: '100%',
+            maxWidth: '100%',
+            overflow: 'hidden',
           }}
-        >
-          <p className="text-sm text-gray-400">Advertisement</p>
-        </div>
-      ) : adWidth > 0 ? (
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block', width: '100%', height: `${height}px`, maxWidth: '100%' }}
           data-ad-client="ca-pub-7164870963379403"
           data-ad-slot={slot}
-          data-ad-format={format === 'auto' ? 'auto' : 'rectangle'}
+          data-ad-format={format}
           data-full-width-responsive="true"
         />
-      ) : null}
+      )}
     </div>
   );
 }
