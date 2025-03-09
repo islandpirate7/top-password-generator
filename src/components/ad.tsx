@@ -7,6 +7,7 @@ interface AdProps {
   slot: string;
   format?: 'auto' | 'rectangle' | 'vertical' | 'horizontal';
   className?: string;
+  uniqueId?: string;
 }
 
 declare global {
@@ -23,7 +24,12 @@ function cn(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdProps) {
+export function Ad({ 
+  slot = DEFAULT_SLOT, 
+  format = 'auto', 
+  className = '',
+  uniqueId = `ad-${Math.random().toString(36).substring(2, 9)}` 
+}: AdProps) {
   const adRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -138,9 +144,22 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
         return;
       }
 
+      // Check if this specific ad element already has an ad
+      const adElement = adRef.current?.querySelector('.adsbygoogle');
+      if (adElement && (adElement as any).__adInitialized) {
+        console.log('Ad already initialized, skipping');
+        setIsInitialized(true);
+        return;
+      }
+
       // Push the ad configuration
       (window as any).adsbygoogle = (window as any).adsbygoogle || [];
       (window as any).adsbygoogle.push({});
+      
+      // Mark this ad as initialized to prevent multiple initializations
+      if (adElement) {
+        (adElement as any).__adInitialized = true;
+      }
       
       console.log('AdSense ad initialized successfully');
       setIsInitialized(true);
@@ -216,11 +235,22 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
             maxWidth: '100%',
             overflow: 'hidden',
           }}
-          data-ad-client="ca-pub-7164870963379403"
-          data-ad-slot={slot}
-          data-ad-format={format}
-          data-full-width-responsive="true"
-        />
+        >
+          <ins
+            className="adsbygoogle"
+            style={{
+              display: 'block',
+              minHeight: adSize.height,
+              minWidth: adSize.width,
+              width: '100%',
+            }}
+            data-ad-client="ca-pub-7164870963379403"
+            data-ad-slot={slot}
+            data-ad-format={format}
+            data-full-width-responsive="true"
+            id={uniqueId}
+          />
+        </div>
       )}
     </div>
   );
@@ -228,13 +258,13 @@ export function Ad({ slot = DEFAULT_SLOT, format = 'auto', className = '' }: AdP
 
 // Use a single ad component with consistent slot ID
 export function SidebarAd() {
-  return <Ad slot={DEFAULT_SLOT} format="vertical" className="hidden md:block" />;
+  return <Ad slot={DEFAULT_SLOT} format="vertical" className="hidden md:block" uniqueId="sidebar-ad" />;
 }
 
 export function BottomBannerAd() {
-  return <Ad slot={DEFAULT_SLOT} format="horizontal" className="mt-8 mb-4" />;
+  return <Ad slot={DEFAULT_SLOT} format="horizontal" className="mt-8 mb-4" uniqueId="bottom-ad" />;
 }
 
 export function InContentAd() {
-  return <Ad slot={DEFAULT_SLOT} format="auto" className="my-6" />;
+  return <Ad slot={DEFAULT_SLOT} format="auto" className="my-6" uniqueId="content-ad" />;
 }
