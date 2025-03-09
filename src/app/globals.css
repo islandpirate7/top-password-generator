@@ -231,12 +231,24 @@ h1.font-montserrat {
   border-radius: var(--radius);
 }
 
-/* Fix for pattern section labels */
+/* Fix for pattern section headers */
 .pattern-section-label {
-  background-color: transparent;
-  color: hsl(var(--foreground));
+  background-color: transparent !important;
+  color: hsl(var(--foreground)) !important;
   padding: 0.5rem;
   font-weight: 500;
+}
+
+/* Fix for section headers in pattern section */
+[role="tabpanel"] [id^="radix-"] {
+  background-color: transparent !important;
+}
+
+/* Fix for pattern section buttons */
+.pattern-section-button {
+  background-color: hsl(var(--primary));
+  color: white;
+  width: 100%;
 }
 
 /* Fix for slider visibility */

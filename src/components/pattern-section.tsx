@@ -189,7 +189,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   
                   <Button 
                     onClick={generatePassword} 
-                    className="w-full text-left"
+                    className="pattern-section-button"
                   >
                     Generate Password
                   </Button>
