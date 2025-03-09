@@ -356,7 +356,13 @@ input::placeholder, textarea::placeholder, select::placeholder {
   color: hsl(var(--foreground)) !important;
 }
 
+/* Fix for selected value in dropdown */
 [data-radix-select-value] {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Fix for the span inside the select trigger button */
+[role="combobox"] > span {
   color: hsl(var(--foreground)) !important;
 }
 
