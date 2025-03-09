@@ -356,6 +356,10 @@ input::placeholder, textarea::placeholder, select::placeholder {
   color: hsl(var(--foreground)) !important;
 }
 
+[data-radix-select-value] {
+  color: hsl(var(--foreground)) !important;
+}
+
 .select-item {
   color: hsl(var(--foreground));
 }
