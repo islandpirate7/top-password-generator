@@ -237,8 +237,9 @@ export function PasswordGenerator() {
                   min={4}
                   max={64}
                   step={1}
-                  value={length}
-                  onChange={(e) => setLength(parseInt(e.target.value))}
+                  value={[length]}
+                  onValueChange={(value) => setLength(value[0])}
+                  className="w-full mobile-slider-container"
                 />
               </div>
               
@@ -304,8 +305,9 @@ export function PasswordGenerator() {
                   min={2}
                   max={8}
                   step={1}
-                  value={length}
-                  onChange={(e) => setLength(parseInt(e.target.value))}
+                  value={[length]}
+                  onValueChange={(value) => setLength(value[0])}
+                  className="w-full mobile-slider-container"
                 />
               </div>
               
@@ -371,8 +373,9 @@ export function PasswordGenerator() {
                   min={4}
                   max={12}
                   step={1}
-                  value={length}
-                  onChange={(e) => setLength(parseInt(e.target.value))}
+                  value={[length]}
+                  onValueChange={(value) => setLength(value[0])}
+                  className="w-full mobile-slider-container"
                 />
               </div>
               
@@ -384,11 +387,11 @@ export function PasswordGenerator() {
         </TabsContent>
         
         <TabsContent value="mnemonic" className="mt-4 w-full content-container">
-          <MnemonicSection setPassword={setPassword} />
+          <MnemonicSection onPasswordGenerated={setPassword} />
         </TabsContent>
         
         <TabsContent value="pattern" className="mt-4 w-full content-container">
-          <PatternSection setPassword={setPassword} />
+          <PatternSection onPasswordGenerated={setPassword} />
         </TabsContent>
         
         <TabsContent value="qrcode" className="mt-4 w-full content-container">
@@ -497,7 +500,7 @@ export function PasswordGenerator() {
         </div>
       )}
       
-      <InContentAd className="mt-8" />
+      <InContentAd />
     </div>
   )
 }
