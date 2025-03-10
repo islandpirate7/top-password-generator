@@ -1,10 +1,10 @@
 // Mnemonic password generator
 // Creates memorable sentences where the first letter of each word forms the password
 
-import { adjectives, nouns, verbs } from './word-lists';
+import { getWordListsByLocale } from './word-lists/index';
 
-// Templates for mnemonic sentences
-const templates = [
+// Templates for mnemonic sentences in English
+const enTemplates = [
   'The [adj] [noun] [verb] the [adj] [noun].',
   'My [adj] [noun] [verb] with a [adj] [noun].',
   'Your [noun] [verb] when the [adj] [noun] [verb].',
@@ -16,18 +16,59 @@ const templates = [
   'If you [verb] the [adj] [noun], it will [verb].'
 ];
 
-// Adverbs to use in templates
-const adverbs = [
+// Templates for mnemonic sentences in Spanish
+const esTemplates = [
+  'El [noun] [adj] [verb] el [noun] [adj].',
+  'Mi [noun] [adj] [verb] con un [noun] [adj].',
+  'Tu [noun] [verb] cuando el [noun] [adj] [verb].',
+  'Cada [noun] [adj] [verb] antes de [verb].',
+  'A veces el [noun] [adj] [verb] mientras [verb].',
+  'Nunca dejes que tu [noun] [adj] [verb] el [noun].',
+  'Siempre [verb] tu [noun] [adj] con [noun] [adj].',
+  'Cuando el [noun] [verb], el [noun] [adj] [verb].',
+  'Si [verb] el [noun] [adj], [verb].'
+];
+
+// Templates by locale
+const templatesByLocale: Record<string, string[]> = {
+  en: enTemplates,
+  es: esTemplates
+};
+
+// Adverbs to use in templates - English
+const enAdverbs = [
   'quickly', 'slowly', 'carefully', 'happily', 'sadly', 'loudly', 'quietly',
   'suddenly', 'eventually', 'finally', 'rarely', 'often', 'always', 'never',
   'eagerly', 'reluctantly', 'patiently', 'anxiously', 'calmly', 'frantically'
 ];
 
+// Adverbs to use in templates - Spanish
+const esAdverbs = [
+  'rápidamente', 'lentamente', 'cuidadosamente', 'felizmente', 'tristemente', 'ruidosamente', 'silenciosamente',
+  'repentinamente', 'eventualmente', 'finalmente', 'raramente', 'frecuentemente', 'siempre', 'nunca',
+  'ansiosamente', 'reluctantemente', 'pacientemente', 'ansiosamente', 'tranquilamente', 'frenéticamente'
+];
+
+// Adverbs by locale
+const adverbsByLocale: Record<string, string[]> = {
+  en: enAdverbs,
+  es: esAdverbs
+};
+
 // Common letters that have many words starting with them
-const commonLetters = 'abcdefghijklmnoprstw';
+const commonLettersByLocale: Record<string, string> = {
+  en: 'abcdefghijklmnoprstw',
+  es: 'abcdefghijlmnoprstv'
+};
 
 // Generate a mnemonic sentence for a given password
-export function generateMnemonicForPassword(password: string): string {
+export function generateMnemonicForPassword(password: string, locale: string = 'en'): string {
+  // Get the appropriate word lists and templates for the locale
+  const { adjectives, nouns, verbs } = getWordListsByLocale(locale);
+  const templates = templatesByLocale[locale] || templatesByLocale.en;
+  const adverbs = adverbsByLocale[locale] || adverbsByLocale.en;
+  const commonLetters = commonLettersByLocale[locale] || commonLettersByLocale.en;
+
   // Extract the unique characters from the password, preferring common letters
   let chars = password.split('');
   
@@ -52,7 +93,7 @@ export function generateMnemonicForPassword(password: string): string {
     const char = chars[charIndex % chars.length];
     charIndex++;
     const word = findWordStartingWith(char, adjectives);
-    return word || 'simple'; // Fallback to common adjectives
+    return word || (locale === 'es' ? 'simple' : 'simple'); // Fallback to common adjectives
   });
   
   sentence = sentence.replace(/\[Adj\]/g, () => {
@@ -62,28 +103,28 @@ export function generateMnemonicForPassword(password: string): string {
     if (word) {
       return word.charAt(0).toUpperCase() + word.slice(1);
     }
-    return 'Simple'; // Fallback to common adjectives
+    return locale === 'es' ? 'Simple' : 'Simple'; // Fallback to common adjectives
   });
   
   sentence = sentence.replace(/\[noun\]/g, () => {
     const char = chars[charIndex % chars.length];
     charIndex++;
     const word = findWordStartingWith(char, nouns);
-    return word || 'thing'; // Fallback to common nouns
+    return word || (locale === 'es' ? 'cosa' : 'thing'); // Fallback to common nouns
   });
   
   sentence = sentence.replace(/\[verb\]/g, () => {
     const char = chars[charIndex % chars.length];
     charIndex++;
     const word = findWordStartingWith(char, verbs);
-    return word || 'takes'; // Fallback to common verbs
+    return word || (locale === 'es' ? 'toma' : 'takes'); // Fallback to common verbs
   });
   
   sentence = sentence.replace(/\[adv\]/g, () => {
     const char = chars[charIndex % chars.length];
     charIndex++;
     const word = findWordStartingWith(char, adverbs);
-    return word || 'simply'; // Fallback to common adverbs
+    return word || (locale === 'es' ? 'simplemente' : 'simply'); // Fallback to common adverbs
   });
   
   return sentence;
@@ -133,13 +174,19 @@ export function generateRandomMnemonicPassword(options: {
   includeNumbers?: boolean;
   includeSymbols?: boolean;
   uppercase?: boolean;
+  locale?: string;
 } = {}): { password: string; mnemonic: string } {
   const {
     wordCount = 4,
     includeNumbers = false,
     includeSymbols = false,
-    uppercase = false
+    uppercase = false,
+    locale = 'en'
   } = options;
+  
+  // Get the appropriate word lists and templates for the locale
+  const { adjectives, nouns, verbs } = getWordListsByLocale(locale);
+  const templates = templatesByLocale[locale] || templatesByLocale.en;
   
   // Generate a password with the first letter of each word
   let password = '';
@@ -153,7 +200,7 @@ export function generateRandomMnemonicPassword(options: {
   
   if (templateWordCount !== wordCount) {
     // Create a custom template with the right number of words
-    template = 'The';
+    template = locale === 'es' ? 'El' : 'The';
     
     for (let i = 0; i < wordCount; i++) {
       const wordType = ['[adj]', '[noun]', '[verb]'][i % 3];

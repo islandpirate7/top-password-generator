@@ -17,10 +17,13 @@ import { Label } from './ui/label'
 import { QRCodeSection } from './qr-code-section'
 import { MnemonicSection } from './mnemonic-section'
 import { PatternSection } from './pattern-section'
+import { useTranslations, useLocale } from 'next-intl'
 
 type PasswordType = 'random' | 'memorable' | 'pin'
 
 export function PasswordGenerator() {
+  const t = useTranslations()
+  const locale = useLocale()
   const [passwordType, setPasswordType] = useState<PasswordType>('random')
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(12)
@@ -83,7 +86,7 @@ export function PasswordGenerator() {
     if (passwordType === 'random') {
       newPassword = generatePassword(length, options)
     } else if (passwordType === 'memorable') {
-      newPassword = generateMemorablePassword(length, options)
+      newPassword = generateMemorablePassword(length, options, locale)
     } else if (passwordType === 'pin') {
       newPassword = generatePin(length)
     }
@@ -91,14 +94,13 @@ export function PasswordGenerator() {
     setPassword(newPassword)
   }
 
-  const copyToClipboard = () => {
-    if (!password) return
-
+  const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(password)
     setCopied(true)
+    
     toast({
-      title: 'Copied to clipboard',
-      description: 'Password has been copied to your clipboard',
+      title: t('copied'),
+      description: t('copiedDescription'),
     })
 
     setTimeout(() => {
@@ -114,7 +116,7 @@ export function PasswordGenerator() {
         newPassword = generatePassword(length, options)
         break
       case 'memorable':
-        newPassword = generateMemorablePassword(length, options)
+        newPassword = generateMemorablePassword(length, options, locale)
         break
       case 'pin':
         newPassword = generatePin(length)
@@ -202,20 +204,20 @@ export function PasswordGenerator() {
             </div>
           </div>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold font-montserrat text-black dark:text-white text-center">Top Password Generator</h1>
+        <h1 className="text-3xl md:text-4xl font-bold font-montserrat text-black dark:text-white text-center">{t('appTitle')}</h1>
       </div>
       
       <Tabs defaultValue="random" onValueChange={handleTabChange} className="w-full">
         <div className="w-full tabs-container">
           <TabsList className="grid w-full grid-cols-3 mb-4">
-            <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Random</TabsTrigger>
-            <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Memorable</TabsTrigger>
+            <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('random')}</TabsTrigger>
+            <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('memorable')}</TabsTrigger>
             <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Mnemonic</TabsTrigger>
           </TabsList>
           
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Pattern</TabsTrigger>
-            <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">PIN</TabsTrigger>
+            <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('pin')}</TabsTrigger>
             <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">QR Code</TabsTrigger>
           </TabsList>
         </div>
@@ -223,8 +225,8 @@ export function PasswordGenerator() {
         <TabsContent value="random" className="mt-4 w-full content-container">
           <Card className="w-full">
             <CardHeader className="border-b border-gray-100">
-              <CardTitle className="text-primary">Random Password</CardTitle>
-              <CardDescription className="text-left">Generate a secure random password with custom options</CardDescription>
+              <CardTitle className="text-primary">{t('randomPassword')}</CardTitle>
+              <CardDescription className="text-left">{t('randomPasswordDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -282,7 +284,7 @@ export function PasswordGenerator() {
               </div>
               
               <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
-                Generate Password
+                {t('generate')}
               </Button>
             </CardContent>
           </Card>
@@ -291,8 +293,8 @@ export function PasswordGenerator() {
         <TabsContent value="memorable" className="mt-4 w-full content-container">
           <Card className="w-full">
             <CardHeader className="border-b border-gray-100">
-              <CardTitle className="text-primary">Memorable Password</CardTitle>
-              <CardDescription className="text-left">Generate an easy-to-remember password using common words</CardDescription>
+              <CardTitle className="text-primary">{t('memorablePassword')}</CardTitle>
+              <CardDescription className="text-left">{t('memorablePasswordDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -350,7 +352,7 @@ export function PasswordGenerator() {
               </div>
               
               <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
-                Generate Memorable Password
+                {t('generate')}
               </Button>
             </CardContent>
           </Card>
@@ -359,8 +361,8 @@ export function PasswordGenerator() {
         <TabsContent value="pin" className="mt-4 w-full content-container">
           <Card className="w-full">
             <CardHeader className="border-b border-gray-100">
-              <CardTitle className="text-primary">PIN Generator</CardTitle>
-              <CardDescription className="text-left">Generate a secure PIN code</CardDescription>
+              <CardTitle className="text-primary">{t('pinGenerator')}</CardTitle>
+              <CardDescription className="text-left">{t('pinGeneratorDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -380,7 +382,7 @@ export function PasswordGenerator() {
               </div>
               
               <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
-                Generate PIN
+                {t('generate')}
               </Button>
             </CardContent>
           </Card>
@@ -411,21 +413,17 @@ export function PasswordGenerator() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => {
-                    navigator.clipboard.writeText(password);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                  }}
+                  onClick={handleCopyToClipboard}
                 >
                   {copied ? (
                     <>
                       <Check className="h-4 w-4 mr-2" />
-                      Copied
+                      {t('copied')}
                     </>
                   ) : (
                     <>
                       <Copy className="h-4 w-4 mr-2" />
-                      Copy
+                      {t('copy')}
                     </>
                   )}
                 </Button>
@@ -456,26 +454,22 @@ export function PasswordGenerator() {
               onClick={handleGenerate}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
-              Regenerate
+              {t('regenerate')}
             </Button>
             
             <Button
               variant="outline"
-              onClick={() => {
-                navigator.clipboard.writeText(password);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
-              }}
+              onClick={handleCopyToClipboard}
             >
               {copied ? (
                 <>
                   <Check className="h-4 w-4 mr-2" />
-                  Copied
+                  {t('copied')}
                 </>
               ) : (
                 <>
                   <Copy className="h-4 w-4 mr-2" />
-                  Copy
+                  {t('copy')}
                 </>
               )}
             </Button>
@@ -488,7 +482,7 @@ export function PasswordGenerator() {
               onClick={checkBreach}
               disabled={isCheckingBreach || !password}
             >
-              {isCheckingBreach ? 'Checking...' : 'Check if Password is Breached'}
+              {isCheckingBreach ? 'Checking...' : t('checkBreach')}
             </Button>
             
             {breachResult && (

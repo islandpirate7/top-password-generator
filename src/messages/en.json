@@ -1,4 +1,5 @@
 {
+  "appTitle": "Top Password Generator",
   "title": "Password Generator",
   "description": "Create strong and secure passwords to keep your account safe online.",
   "random": "Random",
@@ -15,5 +16,28 @@
     "numbers": "Numbers",
     "symbols": "Special Characters"
   },
-  "generate": "Generate Password"
+  "generate": "Generate Password",
+  "regenerate": "Regenerate",
+  "checkBreach": "Check if Password is Breached",
+  "randomPassword": "Random Password",
+  "randomPasswordDescription": "Generate a secure random password with custom options",
+  "memorablePassword": "Memorable Password",
+  "memorablePasswordDescription": "Generate an easy-to-remember password using common words",
+  "pinGenerator": "PIN Generator",
+  "pinGeneratorDescription": "Generate a secure PIN code",
+  "languageSwitcher": "Language",
+  "english": "English",
+  "spanish": "Spanish",
+  "mnemonicTitle": "Mnemonic Password Generator",
+  "mnemonicDescription": "Create memorable passwords with mnemonic sentences to help you remember them",
+  "wordCount": "Word Count",
+  "words": "words",
+  "uppercase": "Uppercase",
+  "includeNumbers": "Include Numbers",
+  "includeSymbols": "Include Symbols",
+  "password": "Password",
+  "enterOrGeneratePassword": "Enter or generate a password",
+  "mnemonicPhrase": "Mnemonic Phrase",
+  "enterOrGenerateMnemonic": "Enter or generate a mnemonic phrase",
+  "generateMnemonic": "Generate Mnemonic Password"
 }

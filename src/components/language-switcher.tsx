@@ -1,35 +1,60 @@
 'use client'
 
-import { useState } from 'react'
-import { Button } from './ui/button'
-
-const languages = [
-  { code: 'en', name: 'English' },
-  { code: 'es', name: 'Español' }
-]
+import { useLocale, useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { GlobeIcon } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export function LanguageSwitcher() {
-  const [currentLanguage, setCurrentLanguage] = useState('en')
+  const t = useTranslations()
+  const locale = useLocale()
+  const router = useRouter()
 
-  const switchLanguage = (locale: string) => {
-    setCurrentLanguage(locale)
-    // In a real app, we would change the language here
-    // For now, we'll just update the state
-    console.log(`Language switched to ${locale}`)
+  const languages = [
+    { code: 'en', name: t('english') },
+    { code: 'es', name: t('spanish') },
+  ]
+
+  const switchLanguage = (newLocale: string) => {
+    const path = window.location.pathname
+    const segments = path.split('/')
+    
+    // Handle the case where we're at the root or the locale is already in the path
+    if (segments.length > 1 && (segments[1] === 'en' || segments[1] === 'es')) {
+      segments[1] = newLocale
+    } else {
+      segments.splice(1, 0, newLocale)
+    }
+    
+    const newPath = segments.join('/')
+    router.push(newPath)
   }
 
   return (
-    <div className="flex gap-2">
-      {languages.map((lang) => (
-        <Button
-          key={lang.code}
-          variant={currentLanguage === lang.code ? "default" : "outline"}
-          size="sm"
-          onClick={() => switchLanguage(lang.code)}
-        >
-          {lang.name}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="flex items-center gap-2">
+          <GlobeIcon className="h-4 w-4" />
+          {t('languageSwitcher')}
         </Button>
-      ))}
-    </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {languages.map((lang) => (
+          <DropdownMenuItem
+            key={lang.code}
+            onClick={() => switchLanguage(lang.code)}
+            className={locale === lang.code ? 'bg-muted' : ''}
+          >
+            {lang.name}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

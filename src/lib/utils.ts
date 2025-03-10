@@ -32,7 +32,7 @@ export function generatePassword(length: number, options: {
   return password
 }
 
-import { adjectives, nouns, verbs } from './word-lists'
+import { getWordListsByLocale } from './word-lists/index'
 
 export function generateMemorablePassword(
   wordCount: number,
@@ -41,8 +41,12 @@ export function generateMemorablePassword(
     lowercase: boolean;
     numbers: boolean;
     symbols: boolean;
-  }
+  },
+  locale: string = 'en'
 ): string {
+  // Get word lists for the specified locale
+  const { adjectives, nouns, verbs } = getWordListsByLocale(locale);
+  
   // Create a pattern of word types for more natural combinations
   const pattern = [];
   for (let i = 0; i < wordCount; i++) {

@@ -9,12 +9,15 @@ import { Textarea } from './ui/textarea';
 import { generateRandomMnemonicPassword, generateMnemonicForPassword, generatePasswordFromMnemonic } from '@/lib/mnemonic-generator';
 import { evaluatePasswordStrength } from '@/lib/utils';
 import { CopyIcon, RefreshCw } from 'lucide-react';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface MnemonicSectionProps {
   onPasswordGenerated: (password: string) => void;
 }
 
 export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
+  const t = useTranslations();
+  const locale = useLocale();
   const [length, setLength] = useState(8);
   const [options, setOptions] = useState({
     uppercase: false,
@@ -31,7 +34,8 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
       wordCount: length,
       uppercase: options.uppercase,
       includeNumbers: options.includeNumbers,
-      includeSymbols: options.includeSymbols
+      includeSymbols: options.includeSymbols,
+      locale: locale
     });
     setPassword(result.password);
     setMnemonic(result.mnemonic);
@@ -49,135 +53,119 @@ export function MnemonicSection({ onPasswordGenerated }: MnemonicSectionProps) {
     return evaluatePasswordStrength(pwd);
   };
   
-  const strength = getPasswordStrength(password);
+  // Generate a mnemonic for an existing password
+  const generateMnemonicFromPassword = (pwd: string) => {
+    if (!pwd) return;
+    const mnemonicText = generateMnemonicForPassword(pwd, locale);
+    setMnemonic(mnemonicText);
+  };
+  
+  // Generate a password from a mnemonic phrase
+  const extractPasswordFromMnemonic = (phrase: string) => {
+    if (!phrase) return;
+    const extractedPassword = generatePasswordFromMnemonic(phrase, {
+      uppercase: options.uppercase,
+      includeNumbers: options.includeNumbers,
+      includeSymbols: options.includeSymbols
+    });
+    setPassword(extractedPassword);
+    onPasswordGenerated(extractedPassword);
+  };
   
   return (
     <Card className="w-full">
-      <CardHeader className="border-b border-gray-100">
-        <CardTitle className="text-primary">Mnemonic Password Generator</CardTitle>
-        <CardDescription>
-          Create memorable passwords with mnemonic sentences to help you remember them
-        </CardDescription>
+      <CardHeader>
+        <CardTitle>{t('mnemonicTitle')}</CardTitle>
+        <CardDescription>{t('mnemonicDescription')}</CardDescription>
       </CardHeader>
-      
-      <CardContent className="space-y-4 pt-4">
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <Label htmlFor="password-length">Password Length</Label>
-              <span className="text-sm text-gray-500">{length} characters</span>
-            </div>
-            <Slider
-              id="password-length"
-              min={4}
-              max={16}
-              step={1}
-              value={[length]}
-              onValueChange={(value) => setLength(value[0])}
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label>{t('wordCount')}</Label>
+          <Slider 
+            value={[length]} 
+            min={3} 
+            max={12} 
+            step={1} 
+            onValueChange={(value) => setLength(value[0])} 
+          />
+          <div className="text-xs text-muted-foreground text-right">{length} {t('words')}</div>
+        </div>
+        
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="uppercase">{t('uppercase')}</Label>
+            <Switch 
+              id="uppercase" 
+              checked={options.uppercase} 
+              onCheckedChange={(checked) => setOptions({...options, uppercase: checked})} 
             />
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-            <div className="switch-container">
-              <Switch
-                id="uppercase"
-                checked={options.uppercase}
-                onCheckedChange={(checked) => setOptions({ ...options, uppercase: checked })}
-              />
-              <Label htmlFor="uppercase">Uppercase</Label>
-            </div>
-            
-            <div className="switch-container">
-              <Switch
-                id="include-numbers"
-                checked={options.includeNumbers}
-                onCheckedChange={(checked) => setOptions({ ...options, includeNumbers: checked })}
-              />
-              <Label htmlFor="include-numbers">Include Numbers</Label>
-            </div>
-            
-            <div className="switch-container">
-              <Switch
-                id="include-symbols"
-                checked={options.includeSymbols}
-                onCheckedChange={(checked) => setOptions({ ...options, includeSymbols: checked })}
-              />
-              <Label htmlFor="include-symbols">Include Symbols</Label>
-            </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="includeNumbers">{t('includeNumbers')}</Label>
+            <Switch 
+              id="includeNumbers" 
+              checked={options.includeNumbers} 
+              onCheckedChange={(checked) => setOptions({...options, includeNumbers: checked})} 
+            />
           </div>
           
-          <Button 
-            onClick={generateMnemonic} 
-            className="w-full bg-primary hover:bg-primary/90"
-          >
-            Generate Mnemonic Password
-          </Button>
-          
-          {password && (
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="generated-password">Generated Password</Label>
-                <div className="relative">
-                  <Input
-                    id="generated-password"
-                    value={password}
-                    readOnly
-                    className="pr-10 font-mono"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full"
-                    onClick={() => copyPassword(password)}
-                  >
-                    <CopyIcon className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              
-              <div>
-                <Label htmlFor="mnemonic-sentence">Mnemonic Sentence</Label>
-                <Textarea
-                  id="mnemonic-sentence"
-                  value={mnemonic}
-                  readOnly
-                  className="min-h-[80px] font-medium"
-                />
-                <p className="text-sm text-gray-500 mt-1">
-                  Use this sentence to help you remember your password
-                </p>
-              </div>
-              
-              <div className="flex space-x-2">
-                <Button 
-                  onClick={generateMnemonic} 
-                  className="flex-1"
-                >
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Regenerate
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => copyPassword(mnemonic)}
-                >
-                  <CopyIcon className="h-4 w-4 mr-2" />
-                  Copy Mnemonic
-                </Button>
-              </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="includeSymbols">{t('includeSymbols')}</Label>
+            <Switch 
+              id="includeSymbols" 
+              checked={options.includeSymbols} 
+              onCheckedChange={(checked) => setOptions({...options, includeSymbols: checked})} 
+            />
+          </div>
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="password">{t('password')}</Label>
+          <div className="flex space-x-2">
+            <Input 
+              id="password" 
+              value={password} 
+              onChange={(e) => {
+                setPassword(e.target.value);
+                onPasswordGenerated(e.target.value);
+              }}
+              placeholder={t('enterOrGeneratePassword')}
+            />
+            <Button variant="outline" size="icon" onClick={() => copyPassword(password)}>
+              <CopyIcon className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" onClick={() => generateMnemonicFromPassword(password)}>
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="mnemonic">{t('mnemonicPhrase')}</Label>
+          <div className="flex space-x-2">
+            <Textarea 
+              id="mnemonic" 
+              value={mnemonic} 
+              onChange={(e) => setMnemonic(e.target.value)}
+              placeholder={t('enterOrGenerateMnemonic')}
+              className="min-h-[80px]"
+            />
+            <div className="flex flex-col space-y-2">
+              <Button variant="outline" size="icon" onClick={() => copyPassword(mnemonic)}>
+                <CopyIcon className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="icon" onClick={() => extractPasswordFromMnemonic(mnemonic)}>
+                <RefreshCw className="h-4 w-4" />
+              </Button>
             </div>
-          )}
+          </div>
         </div>
       </CardContent>
-      
-      <CardFooter className="text-sm text-gray-500 flex flex-col items-start">
-        <p>
-          Mnemonic passwords help you remember complex passwords by associating them with a memorable sentence.
-        </p>
-        <p className="mt-2">
-          Example: "The Quick Brown Fox Jumps Over The Lazy Dog" → "TQBFJOtLD"
-        </p>
+      <CardFooter>
+        <Button onClick={generateMnemonic} className="w-full">
+          {t('generateMnemonic')}
+        </Button>
       </CardFooter>
     </Card>
   );
