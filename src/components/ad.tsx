@@ -16,13 +16,13 @@ declare global {
   }
 }
 
-// Use your real AdSense ad unit IDs - Replace these with your actual ad units from AdSense
+// Use your real AdSense ad unit IDs from your AdSense account
 const AD_SLOTS = {
   // Format should be actual ad unit IDs from AdSense, not your publisher ID
   // These are placeholder IDs - replace with your actual ad unit IDs
-  sidebar: "1234567890",    // Vertical ad for sidebar
-  bottom: "2345678901",     // Horizontal ad for bottom banner
-  content: "3456789012"     // Auto-sized ad for in-content
+  sidebar: "7211032331",    // Vertical ad for sidebar (tpg_sidebar)
+  bottom: "7784881434",     // Horizontal ad for bottom banner (tpg_bottom)
+  content: "7327654235"     // Auto-sized ad for in-content (tpg_content)
 };
 
 // Default slot if none specified
