@@ -17,12 +17,14 @@ import {
 } from '@/lib/pattern-generator';
 import { evaluatePasswordStrength } from '@/lib/utils';
 import { CopyIcon, PlusIcon, Trash2Icon, RefreshCw } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface PatternSectionProps {
   onPasswordGenerated: (password: string) => void;
 }
 
 export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
+  const t = useTranslations();
   const [patterns, setPatterns] = useState<PatternTemplate[]>([]);
   const [selectedPatternId, setSelectedPatternId] = useState<string>('');
   const [password, setPassword] = useState('');
@@ -145,25 +147,22 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
   return (
     <Card className="w-full">
       <CardHeader className="border-b border-gray-100">
-        <CardTitle className="text-primary">Pattern Password Generator</CardTitle>
+        <CardTitle className="text-primary">{t('patternTitle')}</CardTitle>
         <CardDescription>
-          Create passwords using specific patterns for different websites and services
+          {t('patternDescription')}
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4 pt-4">
-        <Tabs value={activeTab} onValueChange={(value) => {
-          setActiveTab(value);
-          setPassword(''); // Clear password when changing tabs
-        }}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="manage">Create Pattern</TabsTrigger>
-            <TabsTrigger value="create">Use Pattern</TabsTrigger>
+      <CardContent className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="manage">{t('manage')}</TabsTrigger>
+            <TabsTrigger value="create">{t('create')}</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="manage" className="space-y-4 pt-4">
+          <TabsContent value="manage" className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="new-pattern-name" className="pattern-section-label">Pattern Name</Label>
+              <Label htmlFor="new-pattern-name" className="pattern-section-label">{t('patternName')}</Label>
               <Input
                 id="new-pattern-name"
                 value={newPatternName}
@@ -173,7 +172,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
             </div>
             
             <div className="space-y-2">
-              <Label className="pattern-section-label">Pattern Elements</Label>
+              <Label className="pattern-section-label">{t('patternElements')}</Label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {newPatternElements.map((element, index) => (
                   <div 
@@ -191,54 +190,34 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                 )}
               </div>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('L')}
-                  className={getElementColor('L')}
-                >
-                  Lowercase (a)
-                </Button>
-                <Button
-                  variant="outline"
+              <div className="flex items-center space-x-2 mb-4">
+                <Button 
+                  variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('U')}
-                  className={getElementColor('U')}
                 >
-                  Uppercase (A)
+                  {t('uppercase')} (A-Z)
                 </Button>
-                <Button
-                  variant="outline"
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => addPatternElement('L')}
+                >
+                  {t('lowercase')} (a-z)
+                </Button>
+                <Button 
+                  variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('D')}
-                  className={getElementColor('D')}
                 >
-                  Digit (0)
+                  {t('numbers')} (0-9)
                 </Button>
-                <Button
-                  variant="outline"
+                <Button 
+                  variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('S')}
-                  className={getElementColor('S')}
                 >
-                  Symbol (#)
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('A')}
-                  className={getElementColor('A')}
-                >
-                  Any Letter
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addPatternElement('X')}
-                  className={getElementColor('X')}
-                >
-                  Any Character
+                  {t('symbols')} (!@#)
                 </Button>
               </div>
               
@@ -250,14 +229,24 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   disabled={newPatternElements.length === 0}
                   className="w-full mb-2 text-gray-800 border-gray-300"
                 >
-                  Remove Last
+                  {t('removeLast')}
                 </Button>
-                <Button
+              </div>
+              <div className="flex justify-end space-x-2 mt-4">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setNewPatternName('');
+                    setNewPatternElements([]);
+                  }}
+                >
+                  {t('clear')}
+                </Button>
+                <Button 
                   onClick={saveNewPattern}
                   disabled={!newPatternName || newPatternElements.length === 0}
-                  className="w-full bg-primary hover:bg-primary/90"
                 >
-                  Save Pattern
+                  {t('addPattern')}
                 </Button>
               </div>
             </div>
@@ -268,17 +257,20 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
               className="w-full flex items-center justify-center bg-primary hover:bg-primary/90"
             >
               <PlusIcon className="h-4 w-4 mr-2" />
-              Save and Use Pattern
+              {t('saveAndUsePattern')}
             </Button>
           </TabsContent>
           
-          <TabsContent value="create" className="space-y-4 pt-4">
+          <TabsContent value="create" className="space-y-4">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="pattern-select" className="pattern-section-label">Select Pattern</Label>
-                <Select value={selectedPatternId} onValueChange={setSelectedPatternId}>
+                <Label htmlFor="pattern-select">{t('selectPattern')}</Label>
+                <Select 
+                  value={selectedPatternId} 
+                  onValueChange={setSelectedPatternId}
+                >
                   <SelectTrigger id="pattern-select">
-                    <SelectValue placeholder="Choose a pattern" />
+                    <SelectValue placeholder={t('selectPattern')} />
                   </SelectTrigger>
                   <SelectContent>
                     {patterns.map(pattern => (
@@ -293,7 +285,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
               {selectedPattern && (
                 <div className="space-y-4">
                   <div>
-                    <Label className="pattern-section-label">Pattern Preview</Label>
+                    <Label className="pattern-section-label">{t('patternPreview')}</Label>
                     <div className="flex flex-wrap gap-2 mt-2 p-3 border rounded-md bg-gray-50 justify-start">
                       {selectedPattern.pattern.map((element, index) => (
                         <div 
@@ -310,7 +302,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                     onClick={generatePassword} 
                     className="pattern-section-button"
                   >
-                    Generate Password
+                    {t('generatePassword')}
                   </Button>
                 </div>
               )}
@@ -319,7 +311,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
             {password && (
               <div className="space-y-4 mt-4 pt-4 border-t">
                 <div>
-                  <Label htmlFor="generated-pattern-password">Generated Password</Label>
+                  <Label htmlFor="generated-pattern-password">{t('generatedPassword')}</Label>
                   <div className="flex space-x-2">
                     <div className="relative flex-grow">
                       <Input
@@ -343,7 +335,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                       ) : (
                         <>
                           <CopyIcon className="h-4 w-4 mr-2 text-black" />
-                          Copy
+                          {t('copy')}
                         </>
                       )}
                     </Button>
@@ -356,7 +348,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                     className="flex-1"
                   >
                     <RefreshCw className="h-4 w-4 mr-2" />
-                    Regenerate
+                    {t('regenerate')}
                   </Button>
                 </div>
               </div>

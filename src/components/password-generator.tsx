@@ -212,13 +212,13 @@ export function PasswordGenerator() {
           <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('random')}</TabsTrigger>
             <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('memorable')}</TabsTrigger>
-            <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Mnemonic</TabsTrigger>
+            <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('mnemonic')}</TabsTrigger>
           </TabsList>
           
           <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">Pattern</TabsTrigger>
+            <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('pattern')}</TabsTrigger>
             <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('pin')}</TabsTrigger>
-            <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">QR Code</TabsTrigger>
+            <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('qrcode')}</TabsTrigger>
           </TabsList>
         </div>
         
@@ -231,8 +231,8 @@ export function PasswordGenerator() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label htmlFor="password-length">Password Length</Label>
-                  <span className="text-sm text-gray-500">{length} characters</span>
+                  <Label htmlFor="password-length">{t('passwordLength')}</Label>
+                  <span className="text-sm text-gray-500">{length} {t('characters')}</span>
                 </div>
                 <Slider
                   id="password-length"
@@ -252,7 +252,7 @@ export function PasswordGenerator() {
                     checked={options.uppercase}
                     onCheckedChange={(checked) => setOptions({ ...options, uppercase: checked })}
                   />
-                  <Label htmlFor="uppercase">Include Uppercase</Label>
+                  <Label htmlFor="uppercase">{t('includeUppercase')}</Label>
                 </div>
                 
                 <div className="switch-container">
@@ -261,7 +261,7 @@ export function PasswordGenerator() {
                     checked={options.lowercase}
                     onCheckedChange={(checked) => setOptions({ ...options, lowercase: checked })}
                   />
-                  <Label htmlFor="lowercase">Include Lowercase</Label>
+                  <Label htmlFor="lowercase">{t('includeLowercase')}</Label>
                 </div>
                 
                 <div className="switch-container">
@@ -270,7 +270,7 @@ export function PasswordGenerator() {
                     checked={options.numbers}
                     onCheckedChange={(checked) => setOptions({ ...options, numbers: checked })}
                   />
-                  <Label htmlFor="numbers">Include Numbers</Label>
+                  <Label htmlFor="numbers">{t('includeNumbers')}</Label>
                 </div>
                 
                 <div className="switch-container">
@@ -279,7 +279,7 @@ export function PasswordGenerator() {
                     checked={options.symbols}
                     onCheckedChange={(checked) => setOptions({ ...options, symbols: checked })}
                   />
-                  <Label htmlFor="symbols">Include Symbols</Label>
+                  <Label htmlFor="symbols">{t('includeSymbols')}</Label>
                 </div>
               </div>
               
@@ -299,8 +299,8 @@ export function PasswordGenerator() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label htmlFor="memorable-length">Number of Words</Label>
-                  <span className="text-sm text-gray-500">{length} words</span>
+                  <Label htmlFor="memorable-length">{t('numberOfWords')}</Label>
+                  <span className="text-sm text-gray-500">{length} {t('words')}</span>
                 </div>
                 <Slider
                   id="memorable-length"
@@ -320,7 +320,7 @@ export function PasswordGenerator() {
                     checked={options.uppercase}
                     onCheckedChange={(checked) => setOptions({ ...options, uppercase: checked })}
                   />
-                  <Label htmlFor="memorable-uppercase">Include Uppercase</Label>
+                  <Label htmlFor="memorable-uppercase">{t('includeUppercase')}</Label>
                 </div>
                 
                 <div className="switch-container">
@@ -329,7 +329,7 @@ export function PasswordGenerator() {
                     checked={options.lowercase}
                     onCheckedChange={(checked) => setOptions({ ...options, lowercase: checked })}
                   />
-                  <Label htmlFor="memorable-lowercase">Include Lowercase</Label>
+                  <Label htmlFor="memorable-lowercase">{t('includeLowercase')}</Label>
                 </div>
                 
                 <div className="switch-container">
@@ -338,7 +338,7 @@ export function PasswordGenerator() {
                     checked={options.numbers}
                     onCheckedChange={(checked) => setOptions({ ...options, numbers: checked })}
                   />
-                  <Label htmlFor="memorable-numbers">Include Numbers</Label>
+                  <Label htmlFor="memorable-numbers">{t('includeNumbers')}</Label>
                 </div>
                 
                 <div className="switch-container">
@@ -347,7 +347,7 @@ export function PasswordGenerator() {
                     checked={options.symbols}
                     onCheckedChange={(checked) => setOptions({ ...options, symbols: checked })}
                   />
-                  <Label htmlFor="memorable-symbols">Include Symbols</Label>
+                  <Label htmlFor="memorable-symbols">{t('includeSymbols')}</Label>
                 </div>
               </div>
               
@@ -367,8 +367,8 @@ export function PasswordGenerator() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label htmlFor="pin-length">PIN Length</Label>
-                  <span className="text-sm text-gray-500">{length} digits</span>
+                  <Label htmlFor="pin-length">{t('pinLength')}</Label>
+                  <span className="text-sm text-gray-500">{length} {t('digits')}</span>
                 </div>
                 <Slider
                   id="pin-length"
@@ -404,7 +404,27 @@ export function PasswordGenerator() {
       {password && (
         <div className="mt-6 space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="generated-password">Generated Password</Label>
+            <div className="flex justify-between">
+              <Label htmlFor="generated-password">{t('generatedPassword')}</Label>
+              {password && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-500">
+                    {t('passwordStrength')}: 
+                    <span className={`ml-1 font-medium ${
+                      passwordStrength?.strength === 'weak' ? 'text-red-500' : 
+                      passwordStrength?.strength === 'medium' ? 'text-yellow-500' : 
+                      passwordStrength?.strength === 'strong' ? 'text-green-500' : 
+                      'text-blue-500'
+                    }`}>
+                      {passwordStrength?.strength === 'weak' ? t('strengthWeak') : 
+                       passwordStrength?.strength === 'medium' ? t('strengthMedium') : 
+                       passwordStrength?.strength === 'strong' ? t('strengthStrong') : 
+                       t('strengthVeryStrong')}
+                    </span>
+                  </span>
+                </div>
+              )}
+            </div>
             <div className="password-display-container">
               <div className="password-text">
                 <code id="generated-password" className="text-sm font-mono break-all block p-2 border rounded-md bg-gray-50">{password}</code>
@@ -435,7 +455,7 @@ export function PasswordGenerator() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium">Strength: {passwordStrength.strength}</div>
+                  <div className="font-medium">{t('passwordStrength')}: {passwordStrength.strength}</div>
                   <div className="text-sm text-gray-500">{passwordStrength.feedback}</div>
                 </div>
               </div>

@@ -58,7 +58,7 @@ function LocaleLayoutContent({
     <div className="flex min-h-screen flex-col">
       <header className="border-b bg-white">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="font-bold text-xl">{t('appTitle')}</div>
+          <div className="font-bold text-xl">Top Password Generator</div>
           <LanguageSwitcher />
         </div>
       </header>
