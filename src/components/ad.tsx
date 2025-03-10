@@ -16,8 +16,15 @@ declare global {
   }
 }
 
-// Use a placeholder slot ID - IMPORTANT: Replace with real ad unit IDs from your AdSense account
-const DEFAULT_SLOT = "1234567890";
+// Use your real AdSense ad unit IDs - Replace these with your actual ad units from AdSense
+const AD_SLOTS = {
+  sidebar: "7164870963379403", // Vertical ad for sidebar
+  bottom: "7164870963379403",  // Horizontal ad for bottom banner
+  content: "7164870963379403"  // Auto-sized ad for in-content
+};
+
+// Default slot if none specified
+const DEFAULT_SLOT = AD_SLOTS.content;
 
 // Helper function to combine class names
 function cn(...classes: string[]) {
@@ -258,13 +265,13 @@ export function Ad({
 
 // Use a single ad component with consistent slot ID
 export function SidebarAd() {
-  return <Ad slot={DEFAULT_SLOT} format="vertical" className="hidden md:block" uniqueId="sidebar-ad" />;
+  return <Ad slot={AD_SLOTS.sidebar} format="vertical" className="hidden md:block" uniqueId="sidebar-ad" />;
 }
 
 export function BottomBannerAd() {
-  return <Ad slot={DEFAULT_SLOT} format="horizontal" className="mt-8 mb-4" uniqueId="bottom-ad" />;
+  return <Ad slot={AD_SLOTS.bottom} format="horizontal" className="mt-8 mb-4" uniqueId="bottom-ad" />;
 }
 
 export function InContentAd() {
-  return <Ad slot={DEFAULT_SLOT} format="auto" className="my-6" uniqueId="content-ad" />;
+  return <Ad slot={AD_SLOTS.content} format="auto" className="my-6" uniqueId="content-ad" />;
 }
