@@ -2,6 +2,7 @@ import { NextIntlClientProvider, useTranslations } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { LanguageSwitcher } from '@/components/language-switcher'
 import { Toaster } from "@/components/ui/toaster"
+import { setRequestLocale } from 'next-intl/server'
 
 // Define the locales we support
 export const locales = ['en', 'es']
@@ -28,6 +29,9 @@ export default async function LocaleLayout({
 }) {
   // Validate that the locale is supported
   if (!locales.includes(locale)) notFound()
+  
+  // Enable static rendering
+  setRequestLocale(locale)
 
   const messages = await getMessages(locale)
 

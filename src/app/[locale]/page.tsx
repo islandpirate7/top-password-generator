@@ -1,6 +1,18 @@
 import { PasswordGenerator } from '@/components/password-generator'
 import { SidebarAd, BottomBannerAd } from '@/components/ad'
 import { useTranslations } from 'next-intl'
+import type { Metadata, Viewport } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Top Password Generator',
+  description: 'Create strong and secure passwords to keep your account safe online.',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
 
 export default function Home() {
   const t = useTranslations()
