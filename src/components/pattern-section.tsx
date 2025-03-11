@@ -167,7 +167,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                 id="new-pattern-name"
                 value={newPatternName}
                 onChange={(e) => setNewPatternName(e.target.value)}
-                placeholder="e.g., My Bank Password"
+                placeholder={t('patternNamePlaceholder')}
               />
             </div>
             
@@ -351,7 +351,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                       {copied ? (
                         <>
                           <span className="text-green-500 flex items-center">
-                            Copied!
+                            {t('copied')}
                           </span>
                         </>
                       ) : (
@@ -382,14 +382,14 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
       <CardFooter className="text-sm text-gray-500">
         <div className="space-y-2">
           <p>
-            Pattern Legend: 
-            <span className={`ml-1 px-1 rounded ${getElementColor('L')}`}>a</span> = lowercase, 
-            <span className={`ml-1 px-1 rounded ${getElementColor('U')}`}>A</span> = uppercase, 
-            <span className={`ml-1 px-1 rounded ${getElementColor('D')}`}>0</span> = digit, 
-            <span className={`ml-1 px-1 rounded ${getElementColor('S')}`}>#</span> = symbol
+            {t('patternLegend')}: 
+            <span className={`ml-1 px-1 rounded ${getElementColor('L')}`}>a</span> = {t('lowercase')}, 
+            <span className={`ml-1 px-1 rounded ${getElementColor('U')}`}>A</span> = {t('uppercase')}, 
+            <span className={`ml-1 px-1 rounded ${getElementColor('D')}`}>0</span> = {t('numbers')}, 
+            <span className={`ml-1 px-1 rounded ${getElementColor('S')}`}>#</span> = {t('symbols')}
           </p>
           <p>
-            Create patterns that match specific website requirements or your personal preferences.
+            {t('patternLegendDescription')}
           </p>
         </div>
       </CardFooter>

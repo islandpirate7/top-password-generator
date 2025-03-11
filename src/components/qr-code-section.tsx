@@ -8,12 +8,14 @@ import { Slider } from './ui/slider';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { generateQRCodeData, QRCodeOptions } from '@/lib/qr-code-generator';
+import { useTranslations } from 'next-intl';
 
 interface QRCodeSectionProps {
   password: string;
 }
 
 export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps) {
+  const t = useTranslations();
   const [password, setPassword] = useState(initialPassword);
   const [options, setOptions] = useState<QRCodeOptions>({
     size: 200,
@@ -60,42 +62,42 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
   
   // Format expiration time
   const formatExpirationTime = () => {
-    if (!expiresAt) return 'No expiration';
+    if (!expiresAt) return t('noExpiration');
     
     const now = new Date();
     const diffMs = expiresAt.getTime() - now.getTime();
     const diffMins = Math.round(diffMs / 60000);
     
-    if (diffMins <= 0) return 'Expired';
-    if (diffMins < 60) return `Expires in ${diffMins} minute(s)`;
+    if (diffMins <= 0) return t('expired');
+    if (diffMins < 60) return `${t('expires')} ${diffMins} ${t('minutes')}`;
     
     const hours = Math.floor(diffMins / 60);
     const mins = diffMins % 60;
-    return `Expires in ${hours} hour(s) and ${mins} minute(s)`;
+    return `${t('expires')} ${hours} ${hours === 1 ? t('hour') : t('hours')} ${t('and')} ${mins} ${t('minutes')}`;
   };
   
   return (
     <Card className="w-full">
       <CardHeader className="border-b border-gray-100">
-        <CardTitle className="text-primary">QR Code Generator</CardTitle>
+        <CardTitle className="text-primary">{t('qrCodeGenerator')}</CardTitle>
         <CardDescription>
-          Create a QR code for your password that can be scanned by another device
+          {t('qrCodeDescription')}
         </CardDescription>
       </CardHeader>
       
       <CardContent className="space-y-4 pt-6">
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="qr-password">Password</Label>
+            <Label htmlFor="qr-password">{t('password')}</Label>
             <Input
               id="qr-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter or paste a password"
+              placeholder={t('enterOrGeneratePassword')}
               type="text"
             />
             <p className="text-sm text-gray-500">
-              Enter the password you want to encode in the QR code
+              {t('enterPasswordForQR')}
             </p>
           </div>
         </div>
@@ -104,7 +106,7 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex justify-between">
-                <Label htmlFor="qr-size">QR Code Size</Label>
+                <Label htmlFor="qr-size">{t('qrCodeSize')}</Label>
                 <span className="text-sm text-gray-500">{options.size}px</span>
               </div>
               <Slider
@@ -119,19 +121,19 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="qr-level">Error Correction</Label>
+              <Label htmlFor="qr-level">{t('errorCorrection')}</Label>
               <Select
                 value={options.level}
                 onValueChange={(value) => setOptions({ ...options, level: value as 'L' | 'M' | 'Q' | 'H' })}
               >
                 <SelectTrigger id="qr-level">
-                  <SelectValue placeholder="Select level" />
+                  <SelectValue placeholder={t('errorCorrection')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="L">Low (7%)</SelectItem>
-                  <SelectItem value="M">Medium (15%)</SelectItem>
-                  <SelectItem value="Q">Quartile (25%)</SelectItem>
-                  <SelectItem value="H">High (30%)</SelectItem>
+                  <SelectItem value="L">{t('low')} (7%)</SelectItem>
+                  <SelectItem value="M">{t('medium')} (15%)</SelectItem>
+                  <SelectItem value="Q">{t('quartile')} (25%)</SelectItem>
+                  <SelectItem value="H">{t('high')} (30%)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -142,30 +144,30 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 checked={options.encrypted}
                 onCheckedChange={(checked) => setOptions({ ...options, encrypted: checked })}
               />
-              <Label htmlFor="encrypted">Encrypt QR Code</Label>
+              <Label htmlFor="encrypted">{t('encryptQRCode')}</Label>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="expiration">Expiration Time (minutes)</Label>
+              <Label htmlFor="expiration">{t('expirationTime')}</Label>
               <Select
                 value={options.expiresIn?.toString() || "0"}
                 onValueChange={(value) => setOptions({ ...options, expiresIn: parseInt(value) })}
               >
                 <SelectTrigger id="expiration">
-                  <SelectValue placeholder="Select expiration" />
+                  <SelectValue placeholder={t('expirationTime')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="0">No expiration</SelectItem>
-                  <SelectItem value="5">5 minutes</SelectItem>
-                  <SelectItem value="15">15 minutes</SelectItem>
-                  <SelectItem value="30">30 minutes</SelectItem>
-                  <SelectItem value="60">1 hour</SelectItem>
-                  <SelectItem value="120">2 hours</SelectItem>
-                  <SelectItem value="1440">24 hours</SelectItem>
+                  <SelectItem value="0">{t('noExpiration')}</SelectItem>
+                  <SelectItem value="5">5 {t('minutes')}</SelectItem>
+                  <SelectItem value="15">15 {t('minutes')}</SelectItem>
+                  <SelectItem value="30">30 {t('minutes')}</SelectItem>
+                  <SelectItem value="60">1 {t('hour')}</SelectItem>
+                  <SelectItem value="120">2 {t('hours')}</SelectItem>
+                  <SelectItem value="1440">24 {t('hours')}</SelectItem>
                 </SelectContent>
               </Select>
               <div className="text-sm text-gray-500">
-                After this time, the QR code will no longer work
+                {t('expirationNote')}
               </div>
             </div>
             
@@ -175,7 +177,7 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 disabled={!password}
                 className="flex-1 bg-primary hover:bg-primary/90"
               >
-                Generate QR Code
+                {t('generateQRCode')}
               </Button>
               
               <Button
@@ -184,7 +186,7 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 variant="outline"
                 className="flex-1 text-primary border-primary hover:bg-primary/10"
               >
-                Download QR Code
+                {t('downloadQRCode')}
               </Button>
             </div>
           </div>
@@ -210,7 +212,7 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
                 
                 <div className="flex space-x-2 justify-center w-full">
                   <Button onClick={downloadQRCode} className="flex-1 text-center">
-                    Download QR Code
+                    {t('downloadQRCode')}
                   </Button>
                 </div>
               </div>
@@ -221,12 +223,10 @@ export function QRCodeSection({ password: initialPassword }: QRCodeSectionProps)
       
       <CardFooter className="text-sm text-gray-500 flex flex-col items-start">
         <p>
-          <strong>Encryption:</strong> When enabled, the QR code content is encrypted with AES encryption. 
-          The decryption key is included in the QR code itself, making it safe for temporary sharing.
+          <strong>{t('encryption')}:</strong> {t('encryptionDescription')}
         </p>
         <p className="mt-1">
-          <strong>Expiration:</strong> When set, the QR code will stop working after the specified time period.
-          This adds an extra layer of security for sensitive passwords.
+          <strong>{t('expiration')}:</strong> {t('expirationDescription')}
         </p>
       </CardFooter>
     </Card>
