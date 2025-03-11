@@ -48,12 +48,12 @@ export function Navigation() {
               href={homePath}
               className="flex items-center"
             >
-              <div className="h-10 w-10 relative">
+              <div className="h-9 w-9 relative flex items-center justify-center">
                 <Image 
                   src="/new-logo.svg" 
                   alt="Password Generator Logo" 
-                  width={36} 
-                  height={36} 
+                  width={32} 
+                  height={32} 
                   className="object-contain"
                   priority
                 />
@@ -65,20 +65,20 @@ export function Navigation() {
               href={homePath}
               className={`text-gray-700 hover:text-blue-600 ${pathname === '/' || pathname === '/es' ? 'font-medium text-blue-600' : ''}`}
             >
-              {locale === 'es' ? 'Generador' : 'Generator'}
+              {t('generator')}
             </Link>
             <Link 
               href={tipsPath}
               className={`text-gray-700 hover:text-blue-600 ${pathname.includes('/password-tips') ? 'font-medium text-blue-600' : ''}`}
             >
-              {locale === 'es' ? 'Consejos' : 'Tips'}
+              {t('tips')}
             </Link>
             <div className="border-l border-gray-300 mx-2"></div>
             <button 
               onClick={handleLanguageChange}
               className="text-gray-700 hover:text-blue-600"
             >
-              {locale === 'es' ? 'English' : 'Español'}
+              {locale === 'es' ? t('english') : t('spanish')}
             </button>
           </div>
         </div>

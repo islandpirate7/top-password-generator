@@ -16,6 +16,12 @@
     "numbers": "Números",
     "symbols": "Caracteres Especiales"
   },
+  "Navigation": {
+    "generator": "Generador",
+    "tips": "Consejos",
+    "english": "Inglés",
+    "spanish": "Español"
+  },
   "generate": "Generar Contraseña",
   "regenerate": "Regenerar",
   "checkBreach": "Comprobar si la Contraseña está Comprometida",

@@ -16,6 +16,12 @@
     "numbers": "Numbers",
     "symbols": "Special Characters"
   },
+  "Navigation": {
+    "generator": "Generator",
+    "tips": "Tips",
+    "english": "English",
+    "spanish": "Español"
+  },
   "generate": "Generate Password",
   "regenerate": "Regenerate",
   "checkBreach": "Check if Password is Breached",
