@@ -2,6 +2,7 @@ import { NextIntlClientProvider, useTranslations } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { LanguageSwitcher } from '@/components/language-switcher'
 import { Toaster } from "@/components/ui/toaster"
+import { Navigation } from '@/components/navigation'
 import { setRequestLocale } from 'next-intl/server'
 
 // Define the locales we support
@@ -55,33 +56,32 @@ function LocaleLayoutContent({
   const t = useTranslations()
   
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="min-h-screen flex flex-col">
       <header className="border-b bg-white">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="font-bold text-xl"></div>
-          <LanguageSwitcher />
-        </div>
+        <Navigation />
       </header>
       
-      {children}
+      <main className="flex-grow">
+        {children}
+      </main>
       
       <footer className="mt-auto border-t py-8 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-              <a href="/legal/privacy-policy" className="hover:text-primary transition-colors">
+              <a href={`${locale === 'en' ? '' : '/es'}/legal/privacy-policy`} className="hover:text-primary transition-colors">
                 {t('footer.privacyPolicy')}
               </a>
               <span className="text-gray-400">•</span>
-              <a href="/legal/terms-of-service" className="hover:text-primary transition-colors">
+              <a href={`${locale === 'en' ? '' : '/es'}/legal/terms-of-service`} className="hover:text-primary transition-colors">
                 {t('footer.termsOfService')}
               </a>
               <span className="text-gray-400">•</span>
-              <a href="/legal/disclaimer" className="hover:text-primary transition-colors">
+              <a href={`${locale === 'en' ? '' : '/es'}/legal/disclaimer`} className="hover:text-primary transition-colors">
                 {t('footer.disclaimer')}
               </a>
               <span className="text-gray-400">•</span>
-              <a href="/legal/cookie-policy" className="hover:text-primary transition-colors">
+              <a href={`${locale === 'en' ? '' : '/es'}/legal/cookie-policy`} className="hover:text-primary transition-colors">
                 {t('footer.cookiePolicy')}
               </a>
             </div>

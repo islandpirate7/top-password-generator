@@ -3,37 +3,35 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "Top Password Generator - Create Strong & Secure Passwords",
-  description: "Generate strong, secure, and unique passwords instantly. Choose from random passwords, memorable phrases, or PIN numbers. Free online password generator tool.",
+  title: "Password Generator - Create Strong & Secure Random Passwords",
+  description: "Generate strong, secure, and random passwords instantly. Free online password generator tool with options for random strings, PINs, and memorable phrases.",
   viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
-  keywords: "password generator, strong password, secure password, random password, PIN generator, memorable password, mnemonic password, password security, secure password generator, password tool",
+  keywords: "password generator, random password, strong password, secure password, password creator, online password generator, free password generator, PIN generator, password tool",
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.svg', type: 'image/svg+xml' }
     ],
-    apple: '/icons/apple-touch-icon.png',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://toppasswordgenerator.com/',
-    siteName: 'Top Password Generator',
-    title: 'Top Password Generator - Create Strong & Secure Passwords',
-    description: 'Generate strong, secure, and unique passwords instantly. Free online password generator with multiple options including memorable mnemonic phrases in English.',
+    siteName: 'Password Generator',
+    title: 'Password Generator - Create Strong & Secure Random Passwords',
+    description: 'Generate strong, secure, and random passwords instantly. Free online password generator tool with multiple options.',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Top Password Generator - Create Strong & Secure Passwords',
+        alt: 'Password Generator - Create Strong & Secure Random Passwords',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Top Password Generator - Create Strong & Secure Passwords',
-    description: 'Generate strong, secure, and unique passwords instantly. Free online password generator with multiple options including memorable mnemonic phrases in English.',
+    title: 'Password Generator - Create Strong & Secure Random Passwords',
+    description: 'Generate strong, secure, and random passwords instantly. Free online password generator tool with multiple options.',
     images: ['/images/twitter-image.jpg'],
     creator: '@toppasswordgen',
   },
@@ -46,11 +44,64 @@ export const metadata: Metadata = {
   },
 };
 
+const structuredData = {
+  application: {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Password Generator',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD'
+    }
+  },
+  faq: {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What makes a strong password?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'A strong password should be at least 12 characters long and include a mix of uppercase letters, lowercase letters, numbers, and special characters. Avoid using personal information or common words.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'How does a random password generator work?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Random password generators create secure passwords by using algorithms to randomly select characters from different sets (letters, numbers, symbols). This ensures the passwords are unpredictable and difficult to crack.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Are password generators safe to use?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, reputable password generators like ours are safe to use. Our generator creates passwords directly in your browser without storing them on any server, ensuring your passwords remain private and secure.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'How often should I change my passwords?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Security experts now recommend changing passwords only when there\'s a reason to believe they\'ve been compromised, rather than on a fixed schedule. Using unique, strong passwords for each account is more important than frequent changes.'
+        }
+      }
+    ]
+  }
+};
+
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en" className="light">
       <head>
@@ -65,31 +116,19 @@ export default function RootLayout({
         <link rel="alternate icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         
-        {/* Structured Data for Rich Results */}
-        <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              "name": "Top Password Generator",
-              "url": "https://toppasswordgenerator.com",
-              "description": "Generate strong, secure, and unique passwords instantly. Choose from random passwords, memorable phrases, or PIN numbers.",
-              "applicationCategory": "UtilityApplication",
-              "operatingSystem": "Web",
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-              },
-              "inLanguage": ["en", "es"]
-            }
-          `}
-        </script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.application) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.faq) }}
+        />
       </head>
       <body className="body-font">
         {children}
         <Toaster />
       </body>
     </html>
-  );
+  )
 }

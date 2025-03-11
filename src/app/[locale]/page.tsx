@@ -9,11 +9,11 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   
   const title = locale === 'es' 
     ? 'Generador de Contraseñas - Crea Contraseñas Seguras y Fuertes'
-    : 'Top Password Generator - Create Strong & Secure Passwords'
+    : 'Password Generator - Create Strong & Secure Random Passwords'
     
   const description = locale === 'es'
-    ? 'Genera contraseñas seguras, fuertes y únicas al instante. Elige entre contraseñas aleatorias, frases memorables en español o números PIN. Herramienta gratuita.'
-    : 'Generate strong, secure, and unique passwords instantly. Choose from random passwords, memorable phrases, or PIN numbers. Free online password generator tool.'
+    ? 'Genera contraseñas seguras, fuertes y únicas al instante. Herramienta gratuita de generación de contraseñas aleatorias, PIN y frases memorables.'
+    : 'Generate strong, secure, and random passwords instantly. Free online password generator tool with options for random strings, PINs, and memorable phrases.'
     
   const keywords = locale === 'es'
     ? 'generador de contraseñas, contraseña segura, contraseña fuerte, contraseña aleatoria, generador de PIN, contraseña memorable, frase mnemotécnica, seguridad de contraseñas'
