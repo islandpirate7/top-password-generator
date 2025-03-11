@@ -20,23 +20,23 @@ export function Navigation() {
   
   // Handle language change
   const handleLanguageChange = () => {
-    const targetLocale = locale === 'es' ? 'en' : 'es'
-    
-    // Get the path without the locale prefix
-    let pathWithoutLocale = pathname
+    // Simply switch between root paths for English and Spanish
+    // This avoids complex path manipulation that could lead to errors
     if (locale === 'es') {
-      pathWithoutLocale = pathname.replace(/^\/es/, '')
+      // Currently in Spanish, switch to English
+      if (pathname.includes('/password-tips')) {
+        router.push('/password-tips')
+      } else {
+        router.push('/')
+      }
+    } else {
+      // Currently in English, switch to Spanish
+      if (pathname.includes('/password-tips')) {
+        router.push('/es/password-tips')
+      } else {
+        router.push('/es')
+      }
     }
-    
-    // If we're at the root, handle specially
-    if (pathWithoutLocale === '' || pathWithoutLocale === '/') {
-      router.push(targetLocale === 'es' ? '/es' : '/')
-      return
-    }
-    
-    // Otherwise, construct the new path with the target locale
-    const newPath = targetLocale === 'es' ? `/es${pathWithoutLocale}` : pathWithoutLocale
-    router.push(newPath)
   }
   
   return (
@@ -48,16 +48,19 @@ export function Navigation() {
               href={homePath}
               className="flex items-center"
             >
-              <div className="w-12 h-12 relative">
+              <div className="w-12 h-12 relative flex items-center justify-center">
                 <Image 
                   src="/new-logo.svg" 
                   alt="Password Generator Logo" 
-                  width={48} 
-                  height={48} 
+                  width={40} 
+                  height={40} 
                   className="object-contain"
                   priority
                 />
               </div>
+              <span className="ml-2 text-lg font-semibold text-gray-800">
+                {locale === 'es' ? 'Generador de Contraseñas' : 'Password Generator'}
+              </span>
             </Link>
           </div>
           <div className="flex space-x-6">
