@@ -2,10 +2,58 @@ import { PasswordGenerator } from '@/components/password-generator'
 import { SidebarAd, BottomBannerAd } from '@/components/ad'
 import { useTranslations } from 'next-intl'
 import type { Metadata, Viewport } from 'next'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata: Metadata = {
-  title: 'Top Password Generator',
-  description: 'Create strong and secure passwords to keep your account safe online.',
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+  
+  const title = locale === 'es' 
+    ? 'Generador de Contraseñas - Crea Contraseñas Seguras y Fuertes'
+    : 'Top Password Generator - Create Strong & Secure Passwords'
+    
+  const description = locale === 'es'
+    ? 'Genera contraseñas seguras, fuertes y únicas al instante. Elige entre contraseñas aleatorias, frases memorables en español o números PIN. Herramienta gratuita.'
+    : 'Generate strong, secure, and unique passwords instantly. Choose from random passwords, memorable phrases, or PIN numbers. Free online password generator tool.'
+    
+  const keywords = locale === 'es'
+    ? 'generador de contraseñas, contraseña segura, contraseña fuerte, contraseña aleatoria, generador de PIN, contraseña memorable, frase mnemotécnica, seguridad de contraseñas'
+    : 'password generator, strong password, secure password, random password, PIN generator, memorable password, mnemonic password, password security, secure password generator'
+  
+  return {
+    title,
+    description,
+    keywords,
+    openGraph: {
+      type: 'website',
+      locale: locale === 'es' ? 'es_ES' : 'en_US',
+      url: locale === 'es' ? 'https://toppasswordgenerator.com/es' : 'https://toppasswordgenerator.com/',
+      siteName: locale === 'es' ? 'Generador de Contraseñas' : 'Top Password Generator',
+      title,
+      description,
+      images: [
+        {
+          url: locale === 'es' ? '/images/og-image-es.jpg' : '/images/og-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [locale === 'es' ? '/images/twitter-image-es.jpg' : '/images/twitter-image.jpg'],
+      creator: '@toppasswordgen',
+    },
+    alternates: {
+      canonical: locale === 'es' ? 'https://toppasswordgenerator.com/es' : 'https://toppasswordgenerator.com',
+      languages: {
+        'en': 'https://toppasswordgenerator.com',
+        'es': 'https://toppasswordgenerator.com/es',
+      },
+    },
+  }
 }
 
 export const viewport: Viewport = {
