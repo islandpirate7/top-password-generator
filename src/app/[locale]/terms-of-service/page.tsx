@@ -1,7 +1,15 @@
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
-export default function TermsOfService() {
-  const t = useTranslations();
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale, namespace: 'footer' });
+  
+  return {
+    title: t('termsOfService')
+  };
+}
+
+export default async function TermsOfService({ params: { locale } }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale });
   
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
