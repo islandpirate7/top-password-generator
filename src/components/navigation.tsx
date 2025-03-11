@@ -48,19 +48,16 @@ export function Navigation() {
               href={homePath}
               className="flex items-center"
             >
-              <div className="w-12 h-12 relative flex items-center justify-center">
+              <div className="h-10 w-10 relative">
                 <Image 
                   src="/new-logo.svg" 
                   alt="Password Generator Logo" 
-                  width={40} 
-                  height={40} 
+                  width={36} 
+                  height={36} 
                   className="object-contain"
                   priority
                 />
               </div>
-              <span className="ml-2 text-lg font-semibold text-gray-800">
-                {locale === 'es' ? 'Generador de Contraseñas' : 'Password Generator'}
-              </span>
             </Link>
           </div>
           <div className="flex space-x-6">

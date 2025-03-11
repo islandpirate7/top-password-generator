@@ -1,6 +1,5 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { ClientWrapper } from '@/components/client-wrapper'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   const title = locale === 'es' 
@@ -34,10 +33,6 @@ export default function PasswordTipsPage({ params }: { params: { locale: string 
       <h1 className="text-3xl font-bold mb-6">
         {isSpanish ? 'Consejos y Mejores Prácticas de Seguridad para Contraseñas' : 'Password Security Tips & Best Practices'}
       </h1>
-      
-      <div className="mb-10">
-        <ClientWrapper />
-      </div>
       
       <div className="prose prose-lg max-w-none">
         <h2 className="text-2xl font-semibold mb-4">
@@ -82,11 +77,6 @@ export default function PasswordTipsPage({ params }: { params: { locale: string 
             {isSpanish 
               ? 'Cambia las contraseñas inmediatamente si sospechas que una cuenta ha sido comprometida'
               : 'Change passwords immediately if you suspect an account has been compromised'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Utiliza técnicas mnemotécnicas para crear contraseñas memorables pero seguras'
-              : 'Use mnemonic techniques to create memorable but secure passwords'}
           </li>
         </ul>
         
