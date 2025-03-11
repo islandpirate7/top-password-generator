@@ -16,6 +16,11 @@ export function Navigation() {
   const homePath = locale === 'es' ? '/es' : '/'
   const tipsPath = locale === 'es' ? '/es/password-tips' : '/password-tips'
   
+  // Hardcoded translations as fallback
+  const title = locale === 'es' ? 'Generador de Contraseñas' : 'Password Generator'
+  const generator = locale === 'es' ? 'Generador' : 'Generator'
+  const tips = locale === 'es' ? 'Consejos de Contraseñas' : 'Password Tips'
+  
   return (
     <nav className="bg-white shadow-sm">
       <div className="container mx-auto px-4 py-3">
@@ -25,7 +30,7 @@ export function Navigation() {
               href={homePath}
               className="text-xl font-bold text-blue-600 hover:text-blue-800"
             >
-              {t('title')}
+              {title}
             </Link>
           </div>
           <div className="flex space-x-6">
@@ -33,13 +38,13 @@ export function Navigation() {
               href={homePath}
               className={`text-gray-700 hover:text-blue-600 ${pathname === '/' || pathname === '/es' ? 'font-medium text-blue-600' : ''}`}
             >
-              {t('generator')}
+              {generator}
             </Link>
             <Link 
               href={tipsPath}
               className={`text-gray-700 hover:text-blue-600 ${pathname.includes('/password-tips') ? 'font-medium text-blue-600' : ''}`}
             >
-              {t('tips')}
+              {tips}
             </Link>
             <div className="border-l border-gray-300 mx-2"></div>
             <Link 
