@@ -48,13 +48,13 @@ export function Navigation() {
               href={homePath}
               className="flex items-center"
             >
-              <div className="h-9 w-9 relative flex items-center justify-center">
+              <div className="h-12 w-12 relative flex items-center justify-center">
                 <Image 
                   src="/new-logo.svg" 
                   alt="Password Generator Logo" 
-                  width={32} 
-                  height={32} 
-                  className="object-contain"
+                  width={48} 
+                  height={48} 
+                  className="object-contain p-1"
                   priority
                 />
               </div>

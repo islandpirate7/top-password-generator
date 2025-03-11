@@ -1,39 +1,24 @@
-import type { Metadata } from 'next'
+"use client"
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  const title = locale === 'es' 
-    ? 'Consejos para Contraseñas Seguras - Mejores Prácticas de Seguridad'
-    : 'Password Security Tips - Best Practices for Secure Passwords'
-    
-  const description = locale === 'es'
-    ? 'Aprende cómo crear y gestionar contraseñas seguras. Consejos profesionales para proteger tus cuentas online y evitar hackeos.'
-    : 'Learn how to create and manage secure passwords. Expert tips to protect your online accounts and prevent hacking.'
-  
-  return {
-    title,
-    description,
-    keywords: locale === 'es' 
-      ? 'consejos de contraseñas, contraseñas seguras, seguridad de contraseñas, proteger cuentas, evitar hackeos'
-      : 'password tips, secure passwords, password security, protect accounts, prevent hacking',
-    openGraph: {
-      title,
-      description,
-      type: 'article',
-      locale: locale === 'es' ? 'es_ES' : 'en_US',
-    },
-  }
+import React from 'react'
+import { PasswordStrengthChecker } from './password-strength-checker'
+
+interface PasswordTipsContentProps {
+  locale: string
 }
 
-export default function PasswordTipsPage({ params }: { params: { locale: string } }) {
-  const isSpanish = params.locale === 'es'
-  
-  const homePath = isSpanish ? '/es' : '/'
+export function PasswordTipsContent({ locale }: PasswordTipsContentProps) {
+  const isSpanish = locale === 'es'
   
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6">
         {isSpanish ? 'Consejos y Mejores Prácticas de Seguridad para Contraseñas' : 'Password Security Tips & Best Practices'}
       </h1>
+      
+      <div className="mb-10">
+        <PasswordStrengthChecker />
+      </div>
       
       <div className="prose prose-lg max-w-none">
         <h2 className="text-2xl font-semibold mb-4">
@@ -78,6 +63,11 @@ export default function PasswordTipsPage({ params }: { params: { locale: string 
             {isSpanish 
               ? 'Cambia las contraseñas inmediatamente si sospechas que una cuenta ha sido comprometida'
               : 'Change passwords immediately if you suspect an account has been compromised'}
+          </li>
+          <li>
+            {isSpanish 
+              ? 'Utiliza técnicas mnemotécnicas para crear contraseñas memorables pero seguras'
+              : 'Use mnemonic techniques to create memorable but secure passwords'}
           </li>
         </ul>
         
@@ -169,7 +159,7 @@ export default function PasswordTipsPage({ params }: { params: { locale: string 
               ? '¿Listo para crear contraseñas más fuertes? Nuestro generador de contraseñas gratuito crea contraseñas aleatorias y seguras al instante. También cuenta con una opción única de contraseña mnemotécnica para crear contraseñas memorables pero seguras tanto en inglés como en español.'
               : 'Ready to create stronger passwords? Our free password generator creates random, secure passwords instantly. It also features a unique mnemonic password option to create memorable but secure passwords in both English and Spanish.'}
           </p>
-          <a href={homePath} className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          <a href={isSpanish ? '/es' : '/'} className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
             {isSpanish ? 'Generar una Contraseña Ahora' : 'Generate a Password Now'}
           </a>
         </div>
