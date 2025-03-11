@@ -1,11 +1,11 @@
-'use client';
-
-import LegalPageWrapper from '@/components/legal-page-wrapper';
-
 export default function CookiePolicy() {
   return (
-    <LegalPageWrapper titleKey="footer.cookiePolicy">
-      <>
+    <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <h1 className="text-3xl font-bold mb-8 text-primary">
+        Cookie Policy
+      </h1>
+      
+      <div className="prose prose-lg max-w-none">
         <h2>What Are Cookies</h2>
         <p>
           Cookies are small text files that are stored on your computer or mobile device when you visit a website. 
@@ -54,7 +54,7 @@ export default function CookiePolicy() {
         <p className="text-sm text-gray-500 mt-8">
           Last updated: March 10, 2025
         </p>
-      </>
-    </LegalPageWrapper>
+      </div>
+    </div>
   );
 }
