@@ -20,19 +20,15 @@ export function Navigation() {
   
   // Handle language change
   const handleLanguageChange = () => {
-    const newLocale = locale === 'es' ? 'en' : 'es'
-    let newPath = pathname
-    
     if (locale === 'es') {
-      // Remove /es from the beginning of the path
-      newPath = pathname.replace(/^\/es/, '')
-      if (newPath === '') newPath = '/'
+      // From Spanish to English
+      const newPath = pathname.replace(/^\/es/, '')
+      router.push(newPath || '/')
     } else {
-      // Add /es to the beginning of the path
-      newPath = `/es${pathname === '/' ? '' : pathname}`
+      // From English to Spanish
+      const newPath = `/es${pathname === '/' ? '' : pathname}`
+      router.push(newPath)
     }
-    
-    router.push(newPath)
   }
   
   return (
@@ -44,14 +40,15 @@ export function Navigation() {
               href={homePath}
               className="flex items-center"
             >
-              <div className="w-8 h-8 mr-2 relative">
-                <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <path d="M50,0 L100,50 L50,100 L0,50 Z" fill="#3B82F6" />
-                  <circle cx="50" cy="50" r="25" fill="white" />
-                  <circle cx="50" cy="50" r="15" fill="#3B82F6" />
-                </svg>
+              <div className="w-10 h-10 relative">
+                <Image 
+                  src="/logo.png" 
+                  alt="Password Generator Logo" 
+                  width={40} 
+                  height={40} 
+                  className="object-contain"
+                />
               </div>
-              <span className="text-xl font-bold text-gray-800">Top Password Generator</span>
             </Link>
           </div>
           <div className="flex space-x-6">

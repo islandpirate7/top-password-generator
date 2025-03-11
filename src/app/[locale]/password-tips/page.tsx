@@ -1,6 +1,12 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { PasswordStrengthChecker } from '@/components/password-strength-checker'
+import dynamic from 'next/dynamic'
+
+// Dynamically import the PasswordStrengthChecker component with no SSR
+const PasswordStrengthChecker = dynamic(
+  () => import('@/components/password-strength-checker').then(mod => ({ default: mod.PasswordStrengthChecker })),
+  { ssr: false }
+)
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   const title = locale === 'es' 
