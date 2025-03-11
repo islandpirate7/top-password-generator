@@ -1,17 +1,11 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import LegalPageWrapper from '@/components/legal-page-wrapper';
 
 export default function PrivacyPolicy() {
-  const t = useTranslations();
-  
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-8 text-primary">
-        {t('footer.privacyPolicy')}
-      </h1>
-      
-      <div className="prose prose-lg max-w-none">
+    <LegalPageWrapper titleKey="footer.privacyPolicy">
+      <>
         <h2>Introduction</h2>
         <p>
           This Privacy Policy explains how Top Password Generator ("we", "us", or "our") collects, uses, and protects 
@@ -61,7 +55,7 @@ export default function PrivacyPolicy() {
         <p className="text-sm text-gray-500 mt-8">
           Last updated: March 10, 2025
         </p>
-      </div>
-    </div>
+      </>
+    </LegalPageWrapper>
   );
 }

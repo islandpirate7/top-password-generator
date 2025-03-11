@@ -5,7 +5,7 @@ import React from 'react';
 
 interface LegalPageWrapperProps {
   titleKey: string;
-  children: (t: (key: string) => string) => React.ReactNode;
+  children: React.ReactNode;
 }
 
 export default function LegalPageWrapper({ titleKey, children }: LegalPageWrapperProps) {
@@ -18,7 +18,7 @@ export default function LegalPageWrapper({ titleKey, children }: LegalPageWrappe
       </h1>
       
       <div className="prose prose-lg max-w-none">
-        {children(t)}
+        {children}
       </div>
     </div>
   );
