@@ -68,5 +68,9 @@
   "generatePassword": "Generar Contraseña",
   "removeLast": "Eliminar Último",
   "numbers": "Números",
-  "symbols": "Símbolos"
+  "symbols": "Símbolos",
+  "anyLetter": "Cualquier Letra",
+  "anyCharacter": "Cualquier Carácter",
+  "lowercase": "Minúsculas",
+  "noElementsAdded": "No hay elementos añadidos aún"
 }

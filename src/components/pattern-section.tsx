@@ -185,16 +185,17 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                 
                 {newPatternElements.length === 0 && (
                   <div className="text-sm text-gray-500 italic">
-                    No elements added yet
+                    {t('noElementsAdded')}
                   </div>
                 )}
               </div>
               
-              <div className="flex items-center space-x-2 mb-4">
+              <div className="flex flex-wrap gap-2 mb-4">
                 <Button 
                   variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('U')}
+                  className={getElementColor('U')}
                 >
                   {t('uppercase')} (A-Z)
                 </Button>
@@ -202,6 +203,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('L')}
+                  className={getElementColor('L')}
                 >
                   {t('lowercase')} (a-z)
                 </Button>
@@ -209,6 +211,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('D')}
+                  className={getElementColor('D')}
                 >
                   {t('numbers')} (0-9)
                 </Button>
@@ -216,8 +219,25 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('S')}
+                  className={getElementColor('S')}
                 >
                   {t('symbols')} (!@#)
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => addPatternElement('A')}
+                  className={getElementColor('A')}
+                >
+                  {t('anyLetter')}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => addPatternElement('X')}
+                  className={getElementColor('X')}
+                >
+                  {t('anyCharacter')}
                 </Button>
               </div>
               
@@ -239,12 +259,14 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                     setNewPatternName('');
                     setNewPatternElements([]);
                   }}
+                  className="text-gray-800 border-gray-300"
                 >
                   {t('clear')}
                 </Button>
                 <Button 
                   onClick={saveNewPattern}
                   disabled={!newPatternName || newPatternElements.length === 0}
+                  className="bg-primary hover:bg-primary/90"
                 >
                   {t('addPattern')}
                 </Button>
@@ -300,7 +322,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   
                   <Button 
                     onClick={generatePassword} 
-                    className="pattern-section-button"
+                    className="w-full bg-primary hover:bg-primary/90"
                   >
                     {t('generatePassword')}
                   </Button>
