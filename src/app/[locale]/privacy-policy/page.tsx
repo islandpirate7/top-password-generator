@@ -1,14 +1,17 @@
-import { Metadata } from 'next';
-import LegalContent from '@/components/legal-content';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy - Top Password Generator',
-};
+import { useTranslations } from 'next-intl';
 
 export default function PrivacyPolicy() {
+  const t = useTranslations();
+  
   return (
-    <LegalContent titleKey="footer.privacyPolicy">
-      <>
+    <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <h1 className="text-3xl font-bold mb-8 text-primary">
+        {t('footer.privacyPolicy')}
+      </h1>
+      
+      <div className="prose prose-lg max-w-none">
         <h2>Introduction</h2>
         <p>
           This Privacy Policy explains how Top Password Generator ("we", "us", or "our") collects, uses, and protects 
@@ -58,7 +61,7 @@ export default function PrivacyPolicy() {
         <p className="text-sm text-gray-500 mt-8">
           Last updated: March 10, 2025
         </p>
-      </>
-    </LegalContent>
+      </div>
+    </div>
   );
 }

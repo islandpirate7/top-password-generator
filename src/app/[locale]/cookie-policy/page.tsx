@@ -1,14 +1,17 @@
-import { Metadata } from 'next';
-import LegalContent from '@/components/legal-content';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Cookie Policy - Top Password Generator',
-};
+import { useTranslations } from 'next-intl';
 
 export default function CookiePolicy() {
+  const t = useTranslations();
+  
   return (
-    <LegalContent titleKey="footer.cookiePolicy">
-      <>
+    <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <h1 className="text-3xl font-bold mb-8 text-primary">
+        {t('footer.cookiePolicy')}
+      </h1>
+      
+      <div className="prose prose-lg max-w-none">
         <h2>What Are Cookies</h2>
         <p>
           Cookies are small text files that are stored on your computer or mobile device when you visit a website. 
@@ -57,7 +60,7 @@ export default function CookiePolicy() {
         <p className="text-sm text-gray-500 mt-8">
           Last updated: March 10, 2025
         </p>
-      </>
-    </LegalContent>
+      </div>
+    </div>
   );
 }

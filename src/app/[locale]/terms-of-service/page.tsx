@@ -1,14 +1,17 @@
-import { Metadata } from 'next';
-import LegalContent from '@/components/legal-content';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Terms of Service - Top Password Generator',
-};
+import { useTranslations } from 'next-intl';
 
 export default function TermsOfService() {
+  const t = useTranslations();
+  
   return (
-    <LegalContent titleKey="footer.termsOfService">
-      <>
+    <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <h1 className="text-3xl font-bold mb-8 text-primary">
+        {t('footer.termsOfService')}
+      </h1>
+      
+      <div className="prose prose-lg max-w-none">
         <h2>Acceptance of Terms</h2>
         <p>
           By accessing or using Top Password Generator, you agree to be bound by these Terms of Service. 
@@ -59,7 +62,7 @@ export default function TermsOfService() {
         <p className="text-sm text-gray-500 mt-8">
           Last updated: March 10, 2025
         </p>
-      </>
-    </LegalContent>
+      </div>
+    </div>
   );
 }
