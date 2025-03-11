@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import ClientPasswordStrengthChecker from '@/components/client-password-strength-checker'
+import { ClientWrapper } from '@/components/client-wrapper'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
   const title = locale === 'es' 
@@ -36,7 +36,7 @@ export default function PasswordTipsPage({ params }: { params: { locale: string 
       </h1>
       
       <div className="mb-10">
-        <ClientPasswordStrengthChecker />
+        <ClientWrapper />
       </div>
       
       <div className="prose prose-lg max-w-none">
@@ -178,7 +178,7 @@ export default function PasswordTipsPage({ params }: { params: { locale: string 
               ? '¿Listo para crear contraseñas más fuertes? Nuestro generador de contraseñas gratuito crea contraseñas aleatorias y seguras al instante. También cuenta con una opción única de contraseña mnemotécnica para crear contraseñas memorables pero seguras tanto en inglés como en español.'
               : 'Ready to create stronger passwords? Our free password generator creates random, secure passwords instantly. It also features a unique mnemonic password option to create memorable but secure passwords in both English and Spanish.'}
           </p>
-          <a href={params.locale === 'es' ? '/es' : '/'} className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          <a href={isSpanish ? '/es' : '/'} className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
             {isSpanish ? 'Generar una Contraseña Ahora' : 'Generate a Password Now'}
           </a>
         </div>

@@ -20,15 +20,23 @@ export function Navigation() {
   
   // Handle language change
   const handleLanguageChange = () => {
+    const targetLocale = locale === 'es' ? 'en' : 'es'
+    
+    // Get the path without the locale prefix
+    let pathWithoutLocale = pathname
     if (locale === 'es') {
-      // From Spanish to English
-      const newPath = pathname.replace(/^\/es/, '')
-      router.push(newPath || '/')
-    } else {
-      // From English to Spanish
-      const newPath = `/es${pathname === '/' ? '' : pathname}`
-      router.push(newPath)
+      pathWithoutLocale = pathname.replace(/^\/es/, '')
     }
+    
+    // If we're at the root, handle specially
+    if (pathWithoutLocale === '' || pathWithoutLocale === '/') {
+      router.push(targetLocale === 'es' ? '/es' : '/')
+      return
+    }
+    
+    // Otherwise, construct the new path with the target locale
+    const newPath = targetLocale === 'es' ? `/es${pathWithoutLocale}` : pathWithoutLocale
+    router.push(newPath)
   }
   
   return (
@@ -40,13 +48,14 @@ export function Navigation() {
               href={homePath}
               className="flex items-center"
             >
-              <div className="w-10 h-10 relative">
+              <div className="w-12 h-12 relative">
                 <Image 
-                  src="/logo.png" 
+                  src="/new-logo.svg" 
                   alt="Password Generator Logo" 
-                  width={40} 
-                  height={40} 
+                  width={48} 
+                  height={48} 
                   className="object-contain"
+                  priority
                 />
               </div>
             </Link>

@@ -1,0 +1,34 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FB923C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Arch shape -->
+  <path d="M 10,50 A 40,40 0 0 1 90,50 L 90,90 L 10,90 Z" fill="none" stroke="#000" stroke-width="0" />
+  
+  <!-- Top left quarter -->
+  <path d="M 50,50 A 40,40 0 0 1 10,50 L 10,90 L 50,90 Z" fill="#3B82F6" />
+  
+  <!-- Top right quarter -->
+  <path d="M 50,50 A 40,40 0 0 0 90,50 L 90,90 L 50,90 Z" fill="#EC4899" />
+  
+  <!-- Bottom left quarter -->
+  <path d="M 10,50 L 50,50 L 50,90 L 10,90 Z" fill="#60A5FA" />
+  
+  <!-- Bottom right quarter -->
+  <path d="M 50,50 L 90,50 L 90,90 L 50,90 Z" fill="#F97316" />
+  
+  <!-- Center circle -->
+  <circle cx="50" cy="50" r="10" fill="white" />
+</svg>
