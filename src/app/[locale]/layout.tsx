@@ -67,8 +67,27 @@ function LocaleLayoutContent({
       
       <footer className="mt-auto border-t py-8 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center text-sm text-gray-600">
-            &copy; {new Date().getFullYear()} {t('appTitle')}. All rights reserved.
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+              <a href="/privacy-policy" className="hover:text-primary transition-colors">
+                {t('footer.privacyPolicy')}
+              </a>
+              <span className="text-gray-400">•</span>
+              <a href="/terms-of-service" className="hover:text-primary transition-colors">
+                {t('footer.termsOfService')}
+              </a>
+              <span className="text-gray-400">•</span>
+              <a href="/disclaimer" className="hover:text-primary transition-colors">
+                {t('footer.disclaimer')}
+              </a>
+              <span className="text-gray-400">•</span>
+              <a href="/cookie-policy" className="hover:text-primary transition-colors">
+                {t('footer.cookiePolicy')}
+              </a>
+            </div>
+            <div className="text-center text-sm text-gray-600">
+              &copy; {new Date().getFullYear()} {t('appTitle')}. {t('footer.allRightsReserved')}.
+            </div>
           </div>
         </div>
       </footer>

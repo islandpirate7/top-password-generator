@@ -101,5 +101,12 @@
   "expirationDescription": "Cuando se establece, el código QR dejará de funcionar después del período de tiempo especificado. Esto añade una capa adicional de seguridad para contraseñas sensibles.",
   "patternLegend": "Leyenda del Patrón",
   "patternLegendDescription": "Crea patrones que coincidan con requisitos específicos de sitios web o tus preferencias personales.",
-  "patternNamePlaceholder": "ej., Contraseña de Mi Banco"
+  "patternNamePlaceholder": "ej., Contraseña de Mi Banco",
+  "footer": {
+    "allRightsReserved": "Todos los derechos reservados",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos de Servicio",
+    "disclaimer": "Aviso Legal",
+    "cookiePolicy": "Política de Cookies"
+  }
 }

@@ -101,5 +101,12 @@
   "expirationDescription": "When set, the QR code will stop working after the specified time period. This adds an extra layer of security for sensitive passwords.",
   "patternLegend": "Pattern Legend",
   "patternLegendDescription": "Create patterns that match specific website requirements or your personal preferences.",
-  "patternNamePlaceholder": "e.g., My Bank Password"
+  "patternNamePlaceholder": "e.g., My Bank Password",
+  "footer": {
+    "allRightsReserved": "All rights reserved",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "disclaimer": "Disclaimer",
+    "cookiePolicy": "Cookie Policy"
+  }
 }
