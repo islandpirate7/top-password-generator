@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import './mobile-fixes.css'
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: "Password Generator - Create Strong & Secure Random Passwords",
@@ -19,46 +20,61 @@ export const metadata: Metadata = {
     url: 'https://toppasswordgenerator.com/',
     siteName: 'Password Generator',
     title: 'Password Generator - Create Strong & Secure Random Passwords',
-    description: 'Generate strong, secure, and random passwords instantly. Free online password generator tool with multiple options.',
+    description: 'Generate strong, secure, and random passwords instantly. Free online password generator tool with options for random strings, PINs, and memorable phrases.',
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Password Generator - Create Strong & Secure Random Passwords',
-      }
+        alt: 'Password Generator',
+      },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Password Generator - Create Strong & Secure Random Passwords',
-    description: 'Generate strong, secure, and random passwords instantly. Free online password generator tool with multiple options.',
-    images: ['/images/twitter-image.jpg'],
-    creator: '@toppasswordgen',
+    description: 'Generate strong, secure, and random passwords instantly. Free online password generator tool with options for random strings, PINs, and memorable phrases.',
+    images: ['/og-image.png'],
+    creator: '@passwordgen',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'google-site-verification-code',
   },
   alternates: {
-    canonical: 'https://toppasswordgenerator.com',
+    canonical: 'https://toppasswordgenerator.com/',
     languages: {
-      'en': 'https://toppasswordgenerator.com',
-      'es': 'https://toppasswordgenerator.com/es',
-      'fr': 'https://toppasswordgenerator.com/fr',
-      'de': 'https://toppasswordgenerator.com/de',
+      'en-US': 'https://toppasswordgenerator.com/',
+      'es-ES': 'https://toppasswordgenerator.com/es/',
     },
   },
 };
 
+// Structured data for rich results
 const structuredData = {
   application: {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'Password Generator',
+    url: 'https://toppasswordgenerator.com/',
+    description: 'Generate strong, secure, and random passwords instantly. Free online password generator tool with options for random strings, PINs, and memorable phrases.',
     applicationCategory: 'UtilityApplication',
-    operatingSystem: 'Web',
+    operatingSystem: 'All',
     offers: {
       '@type': 'Offer',
       price: '0',
-      priceCurrency: 'USD'
-    }
+      priceCurrency: 'USD',
+    },
   },
   faq: {
     '@context': 'https://schema.org',
@@ -66,38 +82,22 @@ const structuredData = {
     mainEntity: [
       {
         '@type': 'Question',
-        name: 'What makes a strong password?',
+        name: 'What makes a password strong?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'A strong password should be at least 12 characters long and include a mix of uppercase letters, lowercase letters, numbers, and special characters. Avoid using personal information or common words.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'How does a random password generator work?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Random password generators create secure passwords by using algorithms to randomly select characters from different sets (letters, numbers, symbols). This ensures the passwords are unpredictable and difficult to crack.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'Are password generators safe to use?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, reputable password generators like ours are safe to use. Our generator creates passwords directly in your browser without storing them on any server, ensuring your passwords remain private and secure.'
-        }
+          text: 'A strong password typically includes a mix of uppercase and lowercase letters, numbers, and special characters. It should be at least 12 characters long and avoid common words or personal information.',
+        },
       },
       {
         '@type': 'Question',
         name: 'How often should I change my passwords?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Security experts now recommend changing passwords only when there\'s a reason to believe they\'ve been compromised, rather than on a fixed schedule. Using unique, strong passwords for each account is more important than frequent changes.'
-        }
-      }
-    ]
-  }
+          text: 'Security experts now recommend changing passwords only when there's a reason to believe they've been compromised, rather than on a fixed schedule. However, using unique passwords for each account is essential.',
+        },
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -108,13 +108,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <head>
-        {/* Google AdSense Script */}
-        <script 
-          async 
+        {/* Using Next.js Script component for better control over loading */}
+        <Script
+          id="google-adsense-script"
+          strategy="afterInteractive"
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7164870963379403"
           crossOrigin="anonymous"
-          id="google-adsense-script"
-        ></script>
+          onError={(e) => {
+            console.error('AdSense script failed to load:', e);
+          }}
+        />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="alternate icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />

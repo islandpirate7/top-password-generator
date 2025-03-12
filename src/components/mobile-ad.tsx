@@ -26,24 +26,30 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
     }
 
     // Create an intersection observer to detect when the ad is in the viewport
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '200px' }
-    );
+    try {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setIsVisible(true);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '200px' }
+      );
 
-    if (adRef.current) {
-      observer.observe(adRef.current);
+      if (adRef.current) {
+        observer.observe(adRef.current);
+      }
+
+      return () => {
+        observer.disconnect();
+      };
+    } catch (error) {
+      console.error('Error setting up intersection observer:', error);
+      // Fallback to always visible
+      setIsVisible(true);
     }
-
-    return () => {
-      observer.disconnect();
-    };
   }, []);
 
   // Initialize AdSense when the ad is visible
@@ -55,17 +61,29 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
     // Add a delay to ensure other ads have time to load first
     const timer = setTimeout(() => {
       try {
-        if (typeof (window as any).adsbygoogle === 'undefined') {
+        // Safely check if adsbygoogle is defined
+        if (typeof window === 'undefined') {
+          console.error('Window is undefined');
+          setHasError(true);
+          return;
+        }
+        
+        const adsbygoogle = (window as any).adsbygoogle;
+        if (typeof adsbygoogle === 'undefined') {
           console.error('AdSense script not loaded properly');
           setHasError(true);
           return;
         }
 
-        // Push the ad configuration
-        (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-        (window as any).adsbygoogle.push({});
-        
-        setIsLoaded(true);
+        // Push the ad configuration with error handling
+        try {
+          (window as any).adsbygoogle = adsbygoogle || [];
+          (window as any).adsbygoogle.push({});
+          setIsLoaded(true);
+        } catch (pushError) {
+          console.error('Error pushing ad configuration:', pushError);
+          setHasError(true);
+        }
       } catch (error) {
         console.error('Error initializing mobile ad:', error);
         setHasError(true);
