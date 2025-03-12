@@ -450,7 +450,7 @@ export function PasswordGenerator() {
                 </Button>
               </div>
             </div>
-          
+          </div>
           {passwordStrength && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -467,7 +467,6 @@ export function PasswordGenerator() {
               </div>
             </div>
           )}
-          
           <div className="button-container">
             <Button
               variant="outline"
@@ -494,7 +493,6 @@ export function PasswordGenerator() {
               )}
             </Button>
           </div>
-          
           <div className="pt-2">
             <Button
               variant="secondary"
