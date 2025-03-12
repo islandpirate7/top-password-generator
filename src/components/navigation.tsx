@@ -16,7 +16,7 @@ export function Navigation() {
   
   // Create localized paths
   const homePath = locale === 'es' ? '/es' : '/'
-  const tipsPath = locale === 'es' ? '/es/password-tips' : '/password-tips'
+  const tipsPath = locale === 'es' ? '/es/password-tips' : '/en/password-tips'
   
   // Handle language change
   const handleLanguageChange = () => {
@@ -25,7 +25,7 @@ export function Navigation() {
     if (locale === 'es') {
       // Currently in Spanish, switch to English
       if (pathname.includes('/password-tips')) {
-        router.push('/password-tips')
+        router.push('/en/password-tips')
       } else {
         router.push('/')
       }

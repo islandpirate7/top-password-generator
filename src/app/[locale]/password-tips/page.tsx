@@ -27,7 +27,7 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 export default function PasswordTipsPage({ params }: { params: { locale: string } }) {
   const isSpanish = params.locale === 'es'
   
-  const homePath = isSpanish ? '/es' : '/'
+  const homePath = isSpanish ? '/es' : '/en'
   
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
