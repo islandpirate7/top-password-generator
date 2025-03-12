@@ -498,7 +498,7 @@ export function PasswordGenerator() {
           <div className="pt-2">
             <Button
               variant="secondary"
-              className="w-full bg-secondary hover:bg-secondary/90"
+              className="w-full bg-secondary hover:bg-secondary/90 breach-check-button text-white"
               onClick={checkBreach}
               disabled={isCheckingBreach || !password}
             >
