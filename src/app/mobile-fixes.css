@@ -73,4 +73,21 @@
   .text-sm.text-gray-500 {
     color: #4b5563 !important; /* text-gray-600 equivalent */
   }
+  
+  /* Fix button text color for primary buttons */
+  button[variant="default"], 
+  button.bg-primary,
+  .bg-primary,
+  button.bg-blue-600,
+  .bg-blue-600,
+  button.bg-orange-500,
+  .bg-orange-500 {
+    color: white !important;
+  }
+  
+  /* Fix selected menu item text color */
+  [role="tab"][data-state="active"],
+  [role="tab"][aria-selected="true"] {
+    color: white !important;
+  }
 }
