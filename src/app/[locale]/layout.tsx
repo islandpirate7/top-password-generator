@@ -4,6 +4,7 @@ import { LanguageSwitcher } from '@/components/language-switcher'
 import { Toaster } from "@/components/ui/toaster"
 import { Navigation } from '@/components/navigation'
 import { setRequestLocale } from 'next-intl/server'
+import { MultilingualStructuredData } from '@/components/multilingual-structured-data'
 
 // Define the locales we support
 export const locales = ['en', 'es', 'fr', 'de']
@@ -69,19 +70,19 @@ function LocaleLayoutContent({
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-              <a href={`${locale === 'en' ? '' : '/es'}/legal/privacy-policy`} className="hover:text-primary transition-colors">
+              <a href={`/${locale === 'en' ? '' : locale}/legal/privacy-policy`} className="hover:text-primary transition-colors">
                 {t('footer.privacyPolicy')}
               </a>
               <span className="text-gray-400">•</span>
-              <a href={`${locale === 'en' ? '' : '/es'}/legal/terms-of-service`} className="hover:text-primary transition-colors">
+              <a href={`/${locale === 'en' ? '' : locale}/legal/terms-of-service`} className="hover:text-primary transition-colors">
                 {t('footer.termsOfService')}
               </a>
               <span className="text-gray-400">•</span>
-              <a href={`${locale === 'en' ? '' : '/es'}/legal/disclaimer`} className="hover:text-primary transition-colors">
+              <a href={`/${locale === 'en' ? '' : locale}/legal/disclaimer`} className="hover:text-primary transition-colors">
                 {t('footer.disclaimer')}
               </a>
               <span className="text-gray-400">•</span>
-              <a href={`${locale === 'en' ? '' : '/es'}/legal/cookie-policy`} className="hover:text-primary transition-colors">
+              <a href={`/${locale === 'en' ? '' : locale}/legal/cookie-policy`} className="hover:text-primary transition-colors">
                 {t('footer.cookiePolicy')}
               </a>
             </div>
@@ -92,6 +93,7 @@ function LocaleLayoutContent({
         </div>
       </footer>
       <Toaster />
+      <MultilingualStructuredData />
     </div>
   )
 }

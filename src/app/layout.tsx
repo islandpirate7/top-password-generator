@@ -40,6 +40,8 @@ export const metadata: Metadata = {
     languages: {
       'en': 'https://toppasswordgenerator.com',
       'es': 'https://toppasswordgenerator.com/es',
+      'fr': 'https://toppasswordgenerator.com/fr',
+      'de': 'https://toppasswordgenerator.com/de',
     },
   },
 };
