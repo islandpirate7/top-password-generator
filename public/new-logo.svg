@@ -13,22 +13,19 @@
       <stop offset="100%" style="stop-color:#FB923C;stop-opacity:1" />
     </linearGradient>
   </defs>
-  
-  <!-- Arch shape -->
-  <path d="M 10,50 A 40,40 0 0 1 90,50 L 90,90 L 10,90 Z" fill="none" stroke="#000" stroke-width="0" />
-  
+
   <!-- Top left quarter -->
-  <path d="M 50,50 A 40,40 0 0 1 10,50 L 10,90 L 50,90 Z" fill="#3B82F6" />
-  
+  <path d="M 50,10 A 40,40 0 0 0 10,50 L 50,50 Z" fill="#3B82F6" />
+
   <!-- Top right quarter -->
-  <path d="M 50,50 A 40,40 0 0 0 90,50 L 90,90 L 50,90 Z" fill="#EC4899" />
-  
+  <path d="M 50,10 A 40,40 0 0 1 90,50 L 50,50 Z" fill="#EC4899" />
+
   <!-- Bottom left quarter -->
   <path d="M 10,50 L 50,50 L 50,90 L 10,90 Z" fill="#60A5FA" />
-  
+
   <!-- Bottom right quarter -->
   <path d="M 50,50 L 90,50 L 90,90 L 50,90 Z" fill="#F97316" />
-  
+
   <!-- Center circle -->
   <circle cx="50" cy="50" r="10" fill="white" />
 </svg>
