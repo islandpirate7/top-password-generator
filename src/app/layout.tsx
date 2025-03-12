@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import './mobile-fixes.css'
-import Script from 'next/script';
+import AdSenseScript from "@/components/adsense-script";
 
 export const metadata: Metadata = {
   title: "Password Generator - Create Strong & Secure Random Passwords",
@@ -108,14 +108,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <head>
-        {/* Using Next.js Script component for better control over loading */}
-        <Script
-          id="google-adsense-script"
-          strategy="afterInteractive"
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7164870963379403"
-          crossOrigin="anonymous"
-        />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="alternate icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -130,6 +122,8 @@ export default function RootLayout({
         />
       </head>
       <body className="body-font">
+        {/* AdSense Script is now a client component */}
+        <AdSenseScript />
         {children}
         <Toaster />
       </body>

@@ -6,7 +6,8 @@ import { AD_SIZES } from '@/lib/constants';
 // Use your real AdSense ad unit IDs from your AdSense account
 const AD_SLOTS = {
   // These are your actual ad unit IDs from AdSense
-  content: "7327654235"  // Auto-sized ad for in-content (tpg_content)
+  content: "7327654235",  // Auto-sized ad for in-content (tpg_content)
+  mobile: "7784881434"    // Mobile-specific ad unit
 };
 
 interface MobileAdProps {
@@ -18,6 +19,7 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [adContainerWidth, setAdContainerWidth] = useState(0);
 
   // Only run in production and on client side
   useEffect(() => {
@@ -32,6 +34,12 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               setIsVisible(true);
+              
+              // Measure the container width when it becomes visible
+              if (adRef.current) {
+                const width = adRef.current.clientWidth;
+                setAdContainerWidth(width);
+              }
             }
           });
         },
@@ -40,10 +48,25 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
 
       if (adRef.current) {
         observer.observe(adRef.current);
+        
+        // Initial measurement
+        const width = adRef.current.clientWidth;
+        setAdContainerWidth(width);
       }
+
+      // Also add a resize listener to update width if window size changes
+      const handleResize = () => {
+        if (adRef.current) {
+          const width = adRef.current.clientWidth;
+          setAdContainerWidth(width);
+        }
+      };
+      
+      window.addEventListener('resize', handleResize);
 
       return () => {
         observer.disconnect();
+        window.removeEventListener('resize', handleResize);
       };
     } catch (error) {
       console.error('Error setting up intersection observer:', error);
@@ -52,9 +75,9 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
     }
   }, []);
 
-  // Initialize AdSense when the ad is visible
+  // Initialize AdSense when the ad is visible and has width
   useEffect(() => {
-    if (!isVisible || isLoaded || process.env.NODE_ENV !== 'production') {
+    if (!isVisible || isLoaded || process.env.NODE_ENV !== 'production' || adContainerWidth <= 0) {
       return;
     }
 
@@ -75,6 +98,9 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
           return;
         }
 
+        // Log the container width for debugging
+        console.log(`Initializing AdSense ad with format: auto slot: ${AD_SLOTS.mobile} width: ${adContainerWidth}px`);
+
         // Push the ad configuration with error handling
         try {
           (window as any).adsbygoogle = adsbygoogle || [];
@@ -91,7 +117,7 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
     }, 2000); // 2 second delay to ensure other ads load first
 
     return () => clearTimeout(timer);
-  }, [isVisible, isLoaded]);
+  }, [isVisible, isLoaded, adContainerWidth]);
 
   // Don't render in development mode
   if (process.env.NODE_ENV === 'development') {
@@ -113,7 +139,7 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
   }
 
   return (
-    <div className={`ad-container relative overflow-hidden ${className}`}>
+    <div className={`ad-container relative overflow-hidden ${className}`} style={{ width: '100%' }}>
       {hasError ? (
         <div className="text-center text-gray-400 text-sm py-4">Advertisement not available</div>
       ) : (
@@ -136,7 +162,7 @@ export function MobileBottomAd({ className = '' }: MobileAdProps) {
               width: '100%',
             }}
             data-ad-client="ca-pub-7164870963379403"
-            data-ad-slot={AD_SLOTS.content}
+            data-ad-slot={AD_SLOTS.mobile}
             data-ad-format="auto"
             data-full-width-responsive="true"
             id="mobile-bottom-ad"
