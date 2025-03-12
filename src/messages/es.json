@@ -19,7 +19,7 @@
   "Navigation": {
     "generator": "Generador",
     "tips": "Consejos",
-    "english": "Inglés",
+    "english": "English",
     "spanish": "Español"
   },
   "generate": "Generar Contraseña",
@@ -32,7 +32,7 @@
   "pinGenerator": "Generador de PIN",
   "pinGeneratorDescription": "Genera un código PIN seguro",
   "languageSwitcher": "Idioma",
-  "english": "Inglés",
+  "english": "English",
   "spanish": "Español",
   "mnemonicTitle": "Generador de Contraseñas Mnemónicas",
   "mnemonicDescription": "Crea contraseñas memorables con frases mnemónicas para ayudarte a recordarlas",
