@@ -18,8 +18,7 @@ declare global {
 
 // Use your real AdSense ad unit IDs from your AdSense account
 const AD_SLOTS = {
-  // Format should be actual ad unit IDs from AdSense, not your publisher ID
-  // These are placeholder IDs - replace with your actual ad unit IDs
+  // These are your actual ad unit IDs from AdSense
   sidebar: "7211032331",    // Vertical ad for sidebar (tpg_sidebar)
   bottom: "7784881434",     // Horizontal ad for bottom banner (tpg_bottom)
   content: "7327654235"     // Auto-sized ad for in-content (tpg_content)
@@ -33,11 +32,11 @@ function cn(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function Ad({ 
-  slot = DEFAULT_SLOT, 
-  format = 'auto', 
+export function Ad({
+  slot = DEFAULT_SLOT,
+  format = 'auto',
   className = '',
-  uniqueId = `ad-${Math.random().toString(36).substring(2, 9)}` 
+  uniqueId = `ad-${Math.random().toString(36).substring(2, 9)}`
 }: AdProps) {
   const adRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -72,7 +71,7 @@ export function Ad({
 
     // Check if the AdSense script is available
     const checkScriptLoaded = () => {
-      if (typeof window !== 'undefined' && 
+      if (typeof window !== 'undefined' &&
           (window as any).adsbygoogle !== undefined) {
         console.log('AdSense script loaded successfully');
         setScriptLoaded(true);
@@ -211,10 +210,10 @@ export function Ad({
   // Don't render anything if we're in development mode or if there's an error
   if (process.env.NODE_ENV === 'development') {
     return (
-      <div 
-        className={cn('ad-container', className)} 
-        style={{ 
-          height: `${adSize.height}px`, 
+      <div
+        className={cn('ad-container', className)}
+        style={{
+          height: `${adSize.height}px`,
           border: '1px dashed #ccc',
           display: 'flex',
           alignItems: 'center',
@@ -231,7 +230,7 @@ export function Ad({
   return (
     <div className={cn('ad-container relative overflow-hidden', className)}>
       {adError ? (
-        <div className="text-center text-gray-400 text-sm py-4">{adError}</div>
+        <div className="ad-error text-center text-gray-400 text-sm py-4">{adError}</div>
       ) : (
         <div
           ref={adRef}
@@ -271,9 +270,19 @@ export function SidebarAd() {
 }
 
 export function BottomBannerAd() {
-  return <Ad slot={AD_SLOTS.bottom} format="horizontal" className="mt-8 mb-4" uniqueId="bottom-ad" />;
+  // Use responsive format on mobile for better display
+  return (
+    <div className="w-full">
+      <div className="hidden sm:block">
+        <Ad slot={AD_SLOTS.bottom} format="horizontal" className="mt-8 mb-4" uniqueId="bottom-ad-desktop" />
+      </div>
+      <div className="sm:hidden">
+        <Ad slot={AD_SLOTS.bottom} format="auto" className="mt-8 mb-4" uniqueId="bottom-ad-mobile" />
+      </div>
+    </div>
+  );
 }
 
 export function InContentAd() {
-  return <Ad slot={AD_SLOTS.content} format="auto" className="my-6" uniqueId="content-ad" />;
+  return <Ad slot={AD_SLOTS.content} format="auto" className="my-6 w-full max-w-full overflow-hidden" uniqueId="content-ad" />;
 }
