@@ -75,3 +75,22 @@ export const verbs = [
   // Emotions
   'love', 'like', 'adore', 'hate', 'dislike', 'enjoy', 'please', 'delight', 'amuse', 'entertain', 'bore', 'annoy', 'irritate', 'anger', 'enrage', 'calm', 'soothe', 'comfort', 'satisfy', 'disappoint', 'surprise', 'shock', 'scare', 'frighten', 'terrify', 'worry', 'stress', 'relax', 'excite', 'thrill',
 ];
+
+// Common English adverbs
+export const adverbs = [
+  // Manner
+  'quickly', 'slowly', 'carefully', 'carelessly', 'happily', 'sadly', 'angrily', 'calmly', 'loudly', 'quietly', 
+  'eagerly', 'reluctantly', 'gracefully', 'awkwardly', 'beautifully', 'poorly', 'perfectly', 'terribly', 'wonderfully', 'badly',
+  
+  // Time
+  'now', 'then', 'today', 'tomorrow', 'yesterday', 'soon', 'later', 'early', 'late', 'already',
+  'still', 'yet', 'always', 'never', 'often', 'rarely', 'seldom', 'sometimes', 'frequently', 'occasionally',
+  
+  // Place
+  'here', 'there', 'everywhere', 'nowhere', 'anywhere', 'somewhere', 'above', 'below', 'inside', 'outside',
+  'upstairs', 'downstairs', 'forward', 'backward', 'nearby', 'far', 'away', 'around', 'through', 'across',
+  
+  // Degree
+  'very', 'quite', 'rather', 'fairly', 'almost', 'nearly', 'completely', 'entirely', 'partly', 'totally',
+  'absolutely', 'extremely', 'slightly', 'somewhat', 'too', 'enough', 'barely', 'hardly', 'scarcely', 'just'
+];

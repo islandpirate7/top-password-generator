@@ -29,5 +29,20 @@ export const verbs = [
   'folgen', 'fragen', 'freuen', 'fühlen', 'geben', 'gefallen', 'gehen', 'gehören', 'gewinnen', 'glauben',
   'haben', 'halten', 'hängen', 'hassen', 'heiraten', 'heißen', 'helfen', 'hoffen', 'hören', 'kaufen',
   'kennen', 'klingen', 'kochen', 'kommen', 'können', 'kosten', 'lachen', 'lassen', 'laufen', 'leben',
-  'legen', 'lehren', 'leiden', 'leihen', 'lernen', 'lesen', 'lieben', 'liegen', 'machen', 'meinen'
+  'legen', 'lehren', 'lernen', 'lesen', 'lieben', 'liegen', 'loben', 'machen', 'meinen', 'mögen',
+  'müssen', 'nehmen', 'nennen', 'öffnen', 'ordnen', 'packen', 'passen', 'passieren', 'pflegen', 'putzen',
+  'rauchen', 'rechnen', 'reden', 'regnen', 'reisen', 'rennen', 'reparieren', 'rufen', 'sagen', 'schaffen',
+  'schauen', 'scheinen', 'schicken', 'schlafen', 'schließen', 'schmecken', 'schreiben', 'schwimmen', 'sehen', 'sein',
+  'senden', 'setzen', 'singen', 'sitzen', 'sollen', 'spielen', 'sprechen', 'springen', 'stehen', 'stellen',
+  'sterben', 'studieren', 'suchen', 'tanzen', 'telefonieren', 'tragen', 'treffen', 'treiben', 'trinken', 'tun',
+  'üben', 'übersetzen', 'vergessen', 'verkaufen', 'verlieren', 'verstehen', 'versuchen', 'warten', 'waschen', 'wechseln',
+  'werden', 'werfen', 'wissen', 'wohnen', 'wollen', 'wünschen', 'zahlen', 'zeigen', 'ziehen', 'zuhören'
+];
+
+export const adverbs = [
+  'abends', 'allein', 'auch', 'besonders', 'bitte', 'da', 'dann', 'dort', 'draußen', 'drinnen',
+  'eigentlich', 'einfach', 'endlich', 'erst', 'fast', 'ganz', 'genau', 'gern', 'gestern', 'gut',
+  'heute', 'hier', 'immer', 'jetzt', 'leider', 'manchmal', 'mehr', 'morgen', 'natürlich', 'nicht',
+  'noch', 'nun', 'nur', 'oft', 'plötzlich', 'schon', 'sehr', 'sofort', 'später', 'viel',
+  'vielleicht', 'warum', 'wirklich', 'zusammen'
 ];

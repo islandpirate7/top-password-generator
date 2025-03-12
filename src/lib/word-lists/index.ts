@@ -7,6 +7,7 @@ export type WordLists = {
   adjectives: string[];
   nouns: string[];
   verbs: string[];
+  adverbs: string[];
 };
 
 export const wordLists: Record<string, WordLists> = {

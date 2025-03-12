@@ -29,3 +29,12 @@ export const verbs = [
   'retourner', 'revenir', 'rire', 'savoir', 'sentir', 'sortir', 'suivre', 'tenir', 'tomber', 'tourner',
   'travailler', 'trouver', 'utiliser', 'vendre', 'venir', 'vivre', 'voir', 'vouloir', 'voyager', 'voler'
 ];
+
+export const adverbs = [
+  'actuellement', 'alors', 'assez', 'aujourd\'hui', 'aussi', 'aussitôt', 'autant', 'beaucoup', 'bien', 'bientôt',
+  'certainement', 'certes', 'clairement', 'comment', 'davantage', 'dedans', 'dehors', 'demain', 'déjà', 'doucement',
+  'également', 'encore', 'enfin', 'ensemble', 'ensuite', 'environ', 'exactement', 'facilement', 'fort', 'heureusement',
+  'hier', 'ici', 'immédiatement', 'jamais', 'lentement', 'longtemps', 'maintenant', 'malheureusement', 'mieux', 'moins',
+  'parfois', 'partout', 'peut-être', 'plutôt', 'presque', 'probablement', 'rapidement', 'rarement', 'seulement', 'simplement',
+  'soudain', 'souvent', 'surtout', 'tard', 'tellement', 'tôt', 'toujours', 'très', 'trop', 'vraiment'
+];

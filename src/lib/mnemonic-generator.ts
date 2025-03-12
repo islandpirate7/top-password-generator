@@ -29,10 +29,38 @@ const esTemplates = [
   'Si [verb] el [noun] [adj], [verb].'
 ];
 
+// Templates for mnemonic sentences in French
+const frTemplates = [
+  'Le [noun] [adj] [verb] le [noun] [adj].',
+  'Mon [noun] [adj] [verb] avec un [noun] [adj].',
+  'Ton [noun] [verb] quand le [noun] [adj] [verb].',
+  'Chaque [noun] [adj] [verb] avant de [verb].',
+  'Parfois le [noun] [adj] [verb] pendant que [verb].',
+  'Ne laisse jamais ton [noun] [adj] [verb] le [noun].',
+  'Toujours [verb] ton [noun] [adj] avec [noun] [adj].',
+  'Quand le [noun] [verb], le [noun] [adj] [verb].',
+  'Si tu [verb] le [noun] [adj], il va [verb].'
+];
+
+// Templates for mnemonic sentences in German
+const deTemplates = [
+  'Der [adj] [noun] [verb] den [adj] [noun].',
+  'Mein [adj] [noun] [verb] mit einem [adj] [noun].',
+  'Dein [noun] [verb] wenn der [adj] [noun] [verb].',
+  'Jeder [adj] [noun] [verb] bevor [noun] [verb].',
+  'Manchmal [verb] der [adj] [noun] während [noun] [verb].',
+  'Lass niemals deinen [adj] [noun] den [noun] [verb].',
+  'Immer [verb] deinen [adj] [noun] mit [adj] [noun].',
+  'Wenn [noun] [verb], dann [verb] der [adj] [noun].',
+  'Falls du den [adj] [noun] [verb], wird er [verb].'
+];
+
 // Templates by locale
 const templatesByLocale: Record<string, string[]> = {
   en: enTemplates,
-  es: esTemplates
+  es: esTemplates,
+  fr: frTemplates,
+  de: deTemplates
 };
 
 // Adverbs to use in templates - English
@@ -49,85 +77,84 @@ const esAdverbs = [
   'ansiosamente', 'reluctantemente', 'pacientemente', 'ansiosamente', 'tranquilamente', 'frenéticamente'
 ];
 
+// Adverbs to use in templates - French
+const frAdverbs = [
+  'rapidement', 'lentement', 'soigneusement', 'heureusement', 'tristement', 'bruyamment', 'silencieusement',
+  'soudainement', 'éventuellement', 'finalement', 'rarement', 'souvent', 'toujours', 'jamais',
+  'avec empressement', 'à contrecœur', 'patiemment', 'anxieusement', 'calmement', 'frénétiquement'
+];
+
+// Adverbs to use in templates - German
+const deAdverbs = [
+  'schnell', 'langsam', 'sorgfältig', 'glücklich', 'traurig', 'laut', 'leise',
+  'plötzlich', 'schließlich', 'endlich', 'selten', 'oft', 'immer', 'niemals',
+  'eifrig', 'widerwillig', 'geduldig', 'ängstlich', 'ruhig', 'hektisch'
+];
+
 // Adverbs by locale
 const adverbsByLocale: Record<string, string[]> = {
   en: enAdverbs,
-  es: esAdverbs
+  es: esAdverbs,
+  fr: frAdverbs,
+  de: deAdverbs
 };
 
 // Common letters that have many words starting with them
 const commonLettersByLocale: Record<string, string> = {
   en: 'abcdefghijklmnoprstw',
-  es: 'abcdefghijlmnoprstv'
+  es: 'abcdefghijlmnoprstv',
+  fr: 'abcdefghijlmnopqrstvwxyz',
+  de: 'abcdefghijklmnopqrstuvwxyz'
 };
 
 // Generate a mnemonic sentence for a given password
 export function generateMnemonicForPassword(password: string, locale: string = 'en'): string {
-  // Get the appropriate word lists and templates for the locale
-  const { adjectives, nouns, verbs } = getWordListsByLocale(locale);
+  const { adjectives, nouns, verbs, adverbs } = getWordListsByLocale(locale);
   const templates = templatesByLocale[locale] || templatesByLocale.en;
-  const adverbs = adverbsByLocale[locale] || adverbsByLocale.en;
+  const adverbsList = adverbsByLocale[locale] || adverbsByLocale.en;
   const commonLetters = commonLettersByLocale[locale] || commonLettersByLocale.en;
-
-  // Extract the unique characters from the password, preferring common letters
-  let chars = password.split('');
   
-  // Filter out uncommon letters and replace them with common ones
-  chars = chars.map(char => {
-    if (!commonLetters.includes(char.toLowerCase())) {
-      // Replace uncommon letters with common ones
-      return commonLetters.charAt(Math.floor(Math.random() * commonLetters.length));
-    }
-    return char;
-  });
-  
-  // Select a random template
+  // Choose a random template
   const template = templates[Math.floor(Math.random() * templates.length)];
   
-  // Build the sentence
-  let sentence = template;
-  let charIndex = 0;
+  // Create a mnemonic phrase where the first letter of each word matches the password
+  let mnemonic = template;
+  let passwordIndex = 0;
   
-  // Replace placeholders with words that start with the password characters
-  sentence = sentence.replace(/\[adj\]/g, () => {
-    const char = chars[charIndex % chars.length];
-    charIndex++;
-    const word = findWordStartingWith(char, adjectives);
-    return word || (locale === 'es' ? 'simple' : 'simple'); // Fallback to common adjectives
-  });
-  
-  sentence = sentence.replace(/\[Adj\]/g, () => {
-    const char = chars[charIndex % chars.length];
-    charIndex++;
-    const word = findWordStartingWith(char, adjectives);
-    if (word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
+  // Replace placeholders with words that start with the corresponding password character
+  while (mnemonic.includes('[') && passwordIndex < password.length) {
+    const placeholderStart = mnemonic.indexOf('[');
+    const placeholderEnd = mnemonic.indexOf(']');
+    const placeholder = mnemonic.substring(placeholderStart + 1, placeholderEnd);
+    
+    let wordList: string[];
+    switch (placeholder) {
+      case 'adj':
+        wordList = adjectives;
+        break;
+      case 'noun':
+        wordList = nouns;
+        break;
+      case 'verb':
+        wordList = verbs;
+        break;
+      case 'adv':
+        wordList = adverbsList;
+        break;
+      default:
+        wordList = [];
     }
-    return locale === 'es' ? 'Simple' : 'Simple'; // Fallback to common adjectives
-  });
+    
+    // Find a word that starts with the current password character
+    const char = password[passwordIndex].toLowerCase();
+    const word = findWordStartingWith(char, wordList) || char;
+    
+    // Replace the placeholder with the word
+    mnemonic = mnemonic.substring(0, placeholderStart) + word + mnemonic.substring(placeholderEnd + 1);
+    passwordIndex++;
+  }
   
-  sentence = sentence.replace(/\[noun\]/g, () => {
-    const char = chars[charIndex % chars.length];
-    charIndex++;
-    const word = findWordStartingWith(char, nouns);
-    return word || (locale === 'es' ? 'cosa' : 'thing'); // Fallback to common nouns
-  });
-  
-  sentence = sentence.replace(/\[verb\]/g, () => {
-    const char = chars[charIndex % chars.length];
-    charIndex++;
-    const word = findWordStartingWith(char, verbs);
-    return word || (locale === 'es' ? 'toma' : 'takes'); // Fallback to common verbs
-  });
-  
-  sentence = sentence.replace(/\[adv\]/g, () => {
-    const char = chars[charIndex % chars.length];
-    charIndex++;
-    const word = findWordStartingWith(char, adverbs);
-    return word || (locale === 'es' ? 'simplemente' : 'simply'); // Fallback to common adverbs
-  });
-  
-  return sentence;
+  return mnemonic;
 }
 
 // Generate a password from a mnemonic phrase
@@ -136,33 +163,46 @@ export function generatePasswordFromMnemonic(phrase: string, options: {
   includeSymbols?: boolean;
   uppercase?: boolean;
 } = {}): string {
-  // Split the phrase into words and filter out empty strings and punctuation
-  const words = phrase.split(/\s+/).filter(word => word.match(/[a-zA-Z]/));
+  const { includeNumbers = false, includeSymbols = false, uppercase = false } = options;
   
-  // Extract the first letter of each word
+  // Split the phrase into words
+  const words = phrase.split(/\s+/);
+  
+  // Get the first letter of each word
   let password = words.map(word => word.charAt(0)).join('');
   
   // Apply options
-  if (options.uppercase) {
+  if (uppercase) {
     password = password.toUpperCase();
-  } else {
-    // Default is lowercase
-    password = password.toLowerCase();
   }
   
-  // Add numbers if requested (but don't add too many)
-  if (options.includeNumbers) {
-    // Add up to 2 numbers based on word lengths
-    const numbers = words.slice(0, 2).map(word => word.length % 10).join('');
-    password += numbers;
+  if (includeNumbers) {
+    // Replace some letters with similar-looking numbers
+    password = password.replace(/[iIlLoOeEaAsS]/g, (match) => {
+      switch (match.toLowerCase()) {
+        case 'i': case 'l': return '1';
+        case 'o': return '0';
+        case 'e': return '3';
+        case 'a': return '4';
+        case 's': return '5';
+        default: return match;
+      }
+    });
   }
   
-  // Add symbols if requested (but don't add too many)
-  if (options.includeSymbols) {
-    // Add 1 symbol
-    const symbols = ['!', '@', '#', '$', '%', '&', '*'];
-    const selectedSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-    password += selectedSymbol;
+  if (includeSymbols) {
+    // Replace some letters with similar-looking symbols
+    password = password.replace(/[aAeEiIoOsSzZ]/g, (match) => {
+      switch (match.toLowerCase()) {
+        case 'a': return '@';
+        case 'e': return '€';
+        case 'i': return '!';
+        case 'o': return '*';
+        case 's': return '$';
+        case 'z': return '%';
+        default: return match;
+      }
+    });
   }
   
   return password;
@@ -177,101 +217,66 @@ export function generateRandomMnemonicPassword(options: {
   locale?: string;
 } = {}): { password: string; mnemonic: string } {
   const {
-    wordCount = 4,
+    wordCount = 8,
     includeNumbers = false,
     includeSymbols = false,
     uppercase = false,
     locale = 'en'
   } = options;
   
-  // Get the appropriate word lists and templates for the locale
-  const { adjectives, nouns, verbs } = getWordListsByLocale(locale);
+  const { adjectives, nouns, verbs, adverbs } = getWordListsByLocale(locale);
   const templates = templatesByLocale[locale] || templatesByLocale.en;
+  const adverbsList = adverbsByLocale[locale] || adverbsByLocale.en;
   
-  // Generate a password with the first letter of each word
-  let password = '';
-  let mnemonic = '';
+  // Choose random words for the mnemonic
+  const words: string[] = [];
+  const wordTypes = ['adj', 'noun', 'verb', 'adv'];
   
-  // Select a random template or create a custom one based on word count
-  let template = templates[Math.floor(Math.random() * templates.length)];
-  
-  // If word count is different from what the template would provide, create a custom template
-  const templateWordCount = (template.match(/\[adj\]|\[noun\]|\[verb\]/g) || []).length;
-  
-  if (templateWordCount !== wordCount) {
-    // Create a custom template with the right number of words
-    template = locale === 'es' ? 'El' : 'The';
+  for (let i = 0; i < wordCount; i++) {
+    const wordType = wordTypes[i % wordTypes.length];
+    let wordList: string[];
     
-    for (let i = 0; i < wordCount; i++) {
-      const wordType = ['[adj]', '[noun]', '[verb]'][i % 3];
-      template += ` ${wordType}`;
+    switch (wordType) {
+      case 'adj':
+        wordList = adjectives;
+        break;
+      case 'noun':
+        wordList = nouns;
+        break;
+      case 'verb':
+        wordList = verbs;
+        break;
+      case 'adv':
+        wordList = adverbsList;
+        break;
+      default:
+        wordList = [];
     }
     
-    template += '.';
+    const word = wordList[Math.floor(Math.random() * wordList.length)];
+    words.push(word);
   }
   
-  // Build the sentence
-  let sentence = template;
+  // Create a mnemonic phrase
+  const mnemonic = words.join(' ');
   
-  // Replace placeholders with random words
-  sentence = sentence.replace(/\[adj\]/g, () => {
-    const word = adjectives[Math.floor(Math.random() * adjectives.length)];
-    password += word.charAt(0);
-    return word;
+  // Generate password from the mnemonic
+  const password = generatePasswordFromMnemonic(mnemonic, {
+    includeNumbers,
+    includeSymbols,
+    uppercase
   });
-  
-  sentence = sentence.replace(/\[noun\]/g, () => {
-    const word = nouns[Math.floor(Math.random() * nouns.length)];
-    password += word.charAt(0);
-    return word;
-  });
-  
-  sentence = sentence.replace(/\[verb\]/g, () => {
-    const word = verbs[Math.floor(Math.random() * verbs.length)];
-    password += word.charAt(0);
-    return word;
-  });
-  
-  mnemonic = sentence;
-  
-  // Apply options to the password
-  if (uppercase) {
-    password = password.toUpperCase();
-  }
-  
-  if (includeNumbers) {
-    // Replace some letters with similar-looking numbers
-    password = password.replace(/[iol]/gi, (match) => {
-      const replacements: Record<string, string> = { i: '1', o: '0', l: '7', I: '1', O: '0', L: '7' };
-      return replacements[match] || match;
-    });
-  }
-  
-  if (includeSymbols) {
-    // Replace some letters with similar-looking symbols
-    password = password.replace(/[aes]/gi, (match) => {
-      const replacements: Record<string, string> = { a: '@', e: '3', s: '$', A: '@', E: '3', S: '$' };
-      return replacements[match] || match;
-    });
-  }
   
   return { password, mnemonic };
 }
 
 // Helper function to find a word starting with a specific character
 function findWordStartingWith(char: string, wordList: string[]): string | null {
-  // Filter words that start with the given character
-  const matchingWords = wordList.filter(word => 
-    word.toLowerCase().startsWith(char.toLowerCase()) && 
-    word.length >= 3 && word.length <= 8 // Avoid very short or very long words
-  );
+  const matchingWords = wordList.filter(word => word.toLowerCase().startsWith(char.toLowerCase()));
   
-  if (matchingWords.length === 0) return null;
+  if (matchingWords.length === 0) {
+    return null;
+  }
   
-  // Sort by length (prefer shorter words) and pick one randomly from the first 10
-  const sortedWords = matchingWords
-    .sort((a, b) => a.length - b.length)
-    .slice(0, 10);
-  
-  return sortedWords[Math.floor(Math.random() * sortedWords.length)];
+  return matchingWords[Math.floor(Math.random() * matchingWords.length)];
 }

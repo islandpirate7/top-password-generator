@@ -1,179 +1,272 @@
 import type { Metadata } from 'next'
+import { useTranslations } from 'next-intl'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  const title = locale === 'es' 
-    ? 'Consejos para Contraseñas Seguras - Mejores Prácticas de Seguridad'
-    : 'Password Security Tips - Best Practices for Secure Passwords'
-    
-  const description = locale === 'es'
-    ? 'Aprende cómo crear y gestionar contraseñas seguras. Consejos profesionales para proteger tus cuentas online y evitar hackeos.'
-    : 'Learn how to create and manage secure passwords. Expert tips to protect your online accounts and prevent hacking.'
+  let title, description, keywords, ogLocale;
+  
+  switch(locale) {
+    case 'es':
+      title = 'Consejos para Contraseñas Seguras - Mejores Prácticas de Seguridad';
+      description = 'Aprende cómo crear y gestionar contraseñas seguras. Consejos profesionales para proteger tus cuentas online y evitar hackeos.';
+      keywords = 'consejos de contraseñas, contraseñas seguras, seguridad de contraseñas, proteger cuentas, evitar hackeos';
+      ogLocale = 'es_ES';
+      break;
+    case 'fr':
+      title = 'Conseils de Sécurité pour les Mots de Passe - Meilleures Pratiques';
+      description = 'Apprenez à créer et à gérer des mots de passe sécurisés. Conseils d\'experts pour protéger vos comptes en ligne et prévenir le piratage.';
+      keywords = 'conseils de mot de passe, mots de passe sécurisés, sécurité des mots de passe, protéger les comptes, prévenir le piratage';
+      ogLocale = 'fr_FR';
+      break;
+    case 'de':
+      title = 'Passwort-Sicherheitstipps - Beste Praktiken für sichere Passwörter';
+      description = 'Lernen Sie, wie Sie sichere Passwörter erstellen und verwalten. Expertentipps zum Schutz Ihrer Online-Konten und zur Verhinderung von Hacking.';
+      keywords = 'Passwort-Tipps, sichere Passwörter, Passwort-Sicherheit, Konten schützen, Hacking verhindern';
+      ogLocale = 'de_DE';
+      break;
+    default: // English
+      title = 'Password Security Tips - Best Practices for Secure Passwords';
+      description = 'Learn how to create and manage secure passwords. Expert tips to protect your online accounts and prevent hacking.';
+      keywords = 'password tips, secure passwords, password security, protect accounts, prevent hacking';
+      ogLocale = 'en_US';
+  }
   
   return {
     title,
     description,
-    keywords: locale === 'es' 
-      ? 'consejos de contraseñas, contraseñas seguras, seguridad de contraseñas, proteger cuentas, evitar hackeos'
-      : 'password tips, secure passwords, password security, protect accounts, prevent hacking',
+    keywords,
     openGraph: {
       title,
       description,
       type: 'article',
-      locale: locale === 'es' ? 'es_ES' : 'en_US',
+      locale: ogLocale,
     },
   }
 }
 
 export default function PasswordTipsPage({ params }: { params: { locale: string } }) {
-  const isSpanish = params.locale === 'es'
+  const t = useTranslations('PasswordTips');
+  const locale = params.locale;
   
-  const homePath = isSpanish ? '/es' : '/en'
+  const getContent = () => {
+    switch(locale) {
+      case 'es':
+        return (
+          <>
+            <h1 className="text-3xl font-bold mb-6">
+              Consejos y Mejores Prácticas de Seguridad para Contraseñas
+            </h1>
+            
+            <div className="prose prose-lg max-w-none">
+              <h2 className="text-2xl font-semibold mb-4">
+                Por Qué Son Importantes las Contraseñas Fuertes
+              </h2>
+              <p className="mb-4">
+                Las contraseñas fuertes son tu primera línea de defensa contra el acceso no autorizado a tus cuentas. Con las filtraciones de datos cada vez más comunes, tener contraseñas seguras y únicas para cada una de tus cuentas es más importante que nunca.
+              </p>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Mejores Prácticas para Contraseñas
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Utiliza una contraseña única para cada cuenta</li>
+                <li>Crea contraseñas de al menos 12 caracteres</li>
+                <li>Combina letras mayúsculas, minúsculas, números y símbolos</li>
+                <li>Evita usar información personal identificable</li>
+                <li>No reutilices contraseñas en múltiples sitios</li>
+                <li>Cambia tus contraseñas regularmente, al menos cada 3-6 meses</li>
+                <li>Utiliza un gestor de contraseñas para almacenar tus credenciales de forma segura</li>
+              </ul>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Señales de que Tu Contraseña ha Sido Comprometida
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Actividad de inicio de sesión sospechosa en tus cuentas</li>
+                <li>Correos electrónicos sobre inicios de sesión desde dispositivos o ubicaciones desconocidas</li>
+                <li>Cambios en la configuración de tu cuenta que no realizaste</li>
+                <li>Tu correo electrónico aparece en una notificación de filtración de datos</li>
+              </ul>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Uso de Nuestro Generador de Contraseñas
+              </h2>
+              <p className="mb-4">
+                Nuestro generador de contraseñas puede ayudarte a crear contraseñas fuertes y memorables. Aquí te mostramos cómo usarlo de manera efectiva:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Para contraseñas aleatorias, utiliza al menos 16 caracteres con todas las opciones habilitadas</li>
+                <li>Para contraseñas memorables, elige al menos 4 palabras para una seguridad adecuada</li>
+                <li>Utiliza la función de frase mnemotécnica para ayudarte a recordar contraseñas complejas</li>
+                <li>Siempre verifica la fortaleza de la contraseña antes de usarla</li>
+              </ul>
+            </div>
+          </>
+        );
+      case 'fr':
+        return (
+          <>
+            <h1 className="text-3xl font-bold mb-6">
+              Conseils de Sécurité et Meilleures Pratiques pour les Mots de Passe
+            </h1>
+            
+            <div className="prose prose-lg max-w-none">
+              <h2 className="text-2xl font-semibold mb-4">
+                Pourquoi les Mots de Passe Forts Sont Importants
+              </h2>
+              <p className="mb-4">
+                Les mots de passe forts constituent votre première ligne de défense contre les accès non autorisés à vos comptes. Avec les violations de données de plus en plus courantes, avoir des mots de passe sécurisés et uniques pour chacun de vos comptes est plus important que jamais.
+              </p>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Meilleures Pratiques pour les Mots de Passe
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Utilisez un mot de passe unique pour chaque compte</li>
+                <li>Créez des mots de passe d'au moins 12 caractères</li>
+                <li>Combinez des lettres majuscules, minuscules, des chiffres et des symboles</li>
+                <li>Évitez d'utiliser des informations personnelles identifiables</li>
+                <li>Ne réutilisez pas les mots de passe sur plusieurs sites</li>
+                <li>Changez vos mots de passe régulièrement, au moins tous les 3-6 mois</li>
+                <li>Utilisez un gestionnaire de mots de passe pour stocker vos identifiants en toute sécurité</li>
+              </ul>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Signes que Votre Mot de Passe a Été Compromis
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Activité de connexion suspecte à vos comptes</li>
+                <li>Emails concernant des connexions depuis des appareils ou des emplacements inconnus</li>
+                <li>Modifications de vos paramètres de compte que vous n'avez pas effectuées</li>
+                <li>Votre email apparaît dans une notification de violation de données</li>
+              </ul>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Utilisation de Notre Générateur de Mots de Passe
+              </h2>
+              <p className="mb-4">
+                Notre générateur de mots de passe peut vous aider à créer des mots de passe forts et mémorables. Voici comment l'utiliser efficacement:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Pour les mots de passe aléatoires, utilisez au moins 16 caractères avec toutes les options activées</li>
+                <li>Pour les mots de passe mémorables, choisissez au moins 4 mots pour une sécurité adéquate</li>
+                <li>Utilisez la fonction de phrase mnémonique pour vous aider à mémoriser des mots de passe complexes</li>
+                <li>Vérifiez toujours la force du mot de passe avant de l'utiliser</li>
+              </ul>
+            </div>
+          </>
+        );
+      case 'de':
+        return (
+          <>
+            <h1 className="text-3xl font-bold mb-6">
+              Passwort-Sicherheitstipps & Beste Praktiken
+            </h1>
+            
+            <div className="prose prose-lg max-w-none">
+              <h2 className="text-2xl font-semibold mb-4">
+                Warum starke Passwörter wichtig sind
+              </h2>
+              <p className="mb-4">
+                Starke Passwörter sind Ihre erste Verteidigungslinie gegen unbefugten Zugriff auf Ihre Konten. Da Datenschutzverletzungen immer häufiger vorkommen, ist es wichtiger denn je, sichere, einzigartige Passwörter für jedes Ihrer Konten zu haben.
+              </p>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Beste Praktiken für Passwörter
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Verwenden Sie für jedes Konto ein einzigartiges Passwort</li>
+                <li>Erstellen Sie Passwörter mit mindestens 12 Zeichen</li>
+                <li>Kombinieren Sie Groß- und Kleinbuchstaben, Zahlen und Symbole</li>
+                <li>Vermeiden Sie die Verwendung identifizierbarer persönlicher Informationen</li>
+                <li>Verwenden Sie Passwörter nicht für mehrere Websites wieder</li>
+                <li>Ändern Sie Ihre Passwörter regelmäßig, mindestens alle 3-6 Monate</li>
+                <li>Verwenden Sie einen Passwort-Manager, um Ihre Anmeldedaten sicher zu speichern</li>
+              </ul>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Anzeichen dafür, dass Ihr Passwort kompromittiert wurde
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Verdächtige Anmeldeaktivitäten bei Ihren Konten</li>
+                <li>E-Mails über Anmeldungen von unbekannten Geräten oder Standorten</li>
+                <li>Änderungen an Ihren Kontoeinstellungen, die Sie nicht vorgenommen haben</li>
+                <li>Ihre E-Mail erscheint in einer Benachrichtigung über eine Datenschutzverletzung</li>
+              </ul>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Verwendung unseres Passwort-Generators
+              </h2>
+              <p className="mb-4">
+                Unser Passwort-Generator kann Ihnen helfen, starke und einprägsame Passwörter zu erstellen. So verwenden Sie ihn effektiv:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Verwenden Sie für zufällige Passwörter mindestens 16 Zeichen mit allen aktivierten Optionen</li>
+                <li>Wählen Sie für einprägsame Passwörter mindestens 4 Wörter für angemessene Sicherheit</li>
+                <li>Verwenden Sie die mnemonische Phrasenfunktion, um sich komplexe Passwörter zu merken</li>
+                <li>Überprüfen Sie immer die Stärke des Passworts, bevor Sie es verwenden</li>
+              </ul>
+            </div>
+          </>
+        );
+      default: // English
+        return (
+          <>
+            <h1 className="text-3xl font-bold mb-6">
+              Password Security Tips & Best Practices
+            </h1>
+            
+            <div className="prose prose-lg max-w-none">
+              <h2 className="text-2xl font-semibold mb-4">
+                Why Strong Passwords Matter
+              </h2>
+              <p className="mb-4">
+                Strong passwords are your first line of defense against unauthorized access to your accounts. With data breaches becoming increasingly common, having secure, unique passwords for each of your accounts is more important than ever.
+              </p>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Password Best Practices
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Use a unique password for each account</li>
+                <li>Create passwords that are at least 12 characters long</li>
+                <li>Combine uppercase letters, lowercase letters, numbers, and symbols</li>
+                <li>Avoid using identifiable personal information</li>
+                <li>Don't reuse passwords across multiple sites</li>
+                <li>Change your passwords regularly, at least every 3-6 months</li>
+                <li>Use a password manager to store your credentials securely</li>
+              </ul>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Signs Your Password Has Been Compromised
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>Suspicious login activity on your accounts</li>
+                <li>Emails about logins from unknown devices or locations</li>
+                <li>Changes to your account settings that you didn't make</li>
+                <li>Your email appears in a data breach notification</li>
+              </ul>
+              
+              <h2 className="text-2xl font-semibold mb-4 mt-8">
+                Using Our Password Generator
+              </h2>
+              <p className="mb-4">
+                Our password generator can help you create strong and memorable passwords. Here's how to use it effectively:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mb-6">
+                <li>For random passwords, use at least 16 characters with all options enabled</li>
+                <li>For memorable passwords, choose at least 4 words for adequate security</li>
+                <li>Use the mnemonic phrase feature to help you remember complex passwords</li>
+                <li>Always check the password strength before using it</li>
+              </ul>
+            </div>
+          </>
+        );
+    }
+  };
   
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6">
-        {isSpanish ? 'Consejos y Mejores Prácticas de Seguridad para Contraseñas' : 'Password Security Tips & Best Practices'}
-      </h1>
-      
-      <div className="prose prose-lg max-w-none">
-        <h2 className="text-2xl font-semibold mb-4">
-          {isSpanish ? 'Por Qué Son Importantes las Contraseñas Fuertes' : 'Why Strong Passwords Matter'}
-        </h2>
-        <p className="mb-4">
-          {isSpanish 
-            ? 'Las contraseñas fuertes son tu primera línea de defensa contra el acceso no autorizado a tus cuentas. Con las filtraciones de datos cada vez más comunes, tener contraseñas seguras y únicas para cada una de tus cuentas es más importante que nunca.'
-            : 'Strong passwords are your first line of defense against unauthorized access to your accounts. With data breaches becoming increasingly common, having secure, unique passwords for each of your accounts is more important than ever.'}
-        </p>
-        
-        <h2 className="text-2xl font-semibold mb-4 mt-8">
-          {isSpanish ? 'Mejores Prácticas para Contraseñas' : 'Password Best Practices'}
-        </h2>
-        <ul className="list-disc pl-6 space-y-2 mb-6">
-          <li>
-            {isSpanish 
-              ? 'Usa un mínimo de 12 caracteres, con una mezcla de mayúsculas, minúsculas, números y símbolos'
-              : 'Use a minimum of 12 characters, with a mix of uppercase, lowercase, numbers, and symbols'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Evita usar información personal como nombres, fechas de nacimiento o palabras comunes'
-              : 'Avoid using personal information like names, birthdays, or common words'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Crea contraseñas únicas para cada cuenta para evitar que una sola filtración comprometa múltiples cuentas'
-              : 'Create unique passwords for each account to prevent a single breach from compromising multiple accounts'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Considera usar un gestor de contraseñas para almacenar y generar contraseñas complejas de forma segura'
-              : 'Consider using a password manager to securely store and generate complex passwords'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Activa la autenticación de dos factores (2FA) siempre que sea posible para una capa adicional de seguridad'
-              : 'Enable two-factor authentication (2FA) whenever possible for an extra layer of security'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Cambia las contraseñas inmediatamente si sospechas que una cuenta ha sido comprometida'
-              : 'Change passwords immediately if you suspect an account has been compromised'}
-          </li>
-        </ul>
-        
-        <h2 className="text-2xl font-semibold mb-4 mt-8">
-          {isSpanish ? 'Uso de Técnicas Mnemotécnicas' : 'Using Mnemonic Techniques'}
-        </h2>
-        <p className="mb-4">
-          {isSpanish 
-            ? 'Las contraseñas mnemotécnicas son más fáciles de recordar sin dejar de ser seguras. Nuestro generador de contraseñas puede crear contraseñas mnemotécnicas tanto en inglés como en español, utilizando listas de palabras y reglas gramaticales específicas de cada idioma.'
-            : 'Mnemonic passwords are easier to remember while still being secure. Our password generator can create mnemonic passwords in both English and Spanish, using language-specific word lists and grammar rules.'}
-        </p>
-        <div className="bg-gray-100 p-4 rounded-lg mb-6">
-          <h3 className="font-medium mb-2">
-            {isSpanish ? 'Ejemplo de una Contraseña Mnemotécnica' : 'Example of a Mnemonic Password'}
-          </h3>
-          <p className="italic">
-            {isSpanish 
-              ? 'En lugar de "C0ntr@señ4", prueba "Los5ElefantesVerdesBailaronFelizmente!" - Es más larga, más compleja, pero también más fácil de recordar porque crea una imagen mental.'
-              : 'Instead of "P@ssw0rd123", try "The5GreenElephantsDancedHappily!" - It\'s longer, more complex, but also easier to remember because it creates a mental image.'}
-          </p>
-        </div>
-        
-        <h2 className="text-2xl font-semibold mb-4 mt-8">
-          {isSpanish ? 'Errores Comunes de Contraseñas a Evitar' : 'Common Password Mistakes to Avoid'}
-        </h2>
-        <ul className="list-disc pl-6 space-y-2 mb-6">
-          <li>
-            {isSpanish 
-              ? 'Usar la misma contraseña en múltiples sitios'
-              : 'Using the same password across multiple sites'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Crear contraseñas demasiado cortas o simples'
-              : 'Creating passwords that are too short or simple'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Usar información personal obvia (nombres de mascotas, fechas de nacimiento, etc.)'
-              : 'Using obvious personal information (pet names, birthdays, etc.)'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'Anotar contraseñas en papel o en notas digitales no seguras'
-              : 'Writing passwords down on paper or in unsecured digital notes'}
-          </li>
-          <li>
-            {isSpanish 
-              ? 'No cambiar las contraseñas después de una filtración de datos conocida'
-              : 'Not changing passwords after a known data breach'}
-          </li>
-        </ul>
-        
-        <h2 className="text-2xl font-semibold mb-4 mt-8">
-          {isSpanish ? 'El Papel de los Gestores de Contraseñas' : 'The Role of Password Managers'}
-        </h2>
-        <p className="mb-4">
-          {isSpanish 
-            ? 'Los gestores de contraseñas son aplicaciones seguras que almacenan y administran tus contraseñas. Pueden generar contraseñas fuertes y únicas para cada sitio que uses, y solo necesitas recordar una contraseña maestra para acceder a todas ellas.'
-            : 'Password managers are secure applications that store and manage your passwords. They can generate strong, unique passwords for each site you use, and you only need to remember one master password to access them all.'}
-        </p>
-        
-        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-          <p className="font-medium">
-            {isSpanish ? 'Consejo Profesional:' : 'Pro Tip:'}
-          </p>
-          <p>
-            {isSpanish 
-              ? 'Nuestro generador de contraseñas crea contraseñas fuertes que puedes usar con tu gestor de contraseñas. La opción mnemotécnica es perfecta para crear una contraseña maestra fuerte que realmente puedas recordar.'
-              : 'Our password generator creates strong passwords that you can use with your password manager. The mnemonic option is perfect for creating a strong master password that you can actually remember.'}
-          </p>
-        </div>
-        
-        <h2 className="text-2xl font-semibold mb-4 mt-8">
-          {isSpanish ? 'Conclusión' : 'Conclusion'}
-        </h2>
-        <p className="mb-4">
-          {isSpanish 
-            ? 'Tomar en serio la seguridad de las contraseñas es esencial en el mundo digital actual. Siguiendo estas mejores prácticas y utilizando herramientas como nuestro generador de contraseñas, puedes reducir significativamente el riesgo de comprometer tus cuentas y sufrir robo de identidad.'
-            : 'Taking password security seriously is essential in today\'s digital world. By following these best practices and using tools like our password generator, you can significantly reduce your risk of account compromise and identity theft.'}
-        </p>
-        
-        <div className="mt-8 p-4 border border-gray-200 rounded-lg">
-          <h3 className="text-xl font-semibold mb-2">
-            {isSpanish ? 'Prueba Nuestro Generador de Contraseñas' : 'Try Our Password Generator'}
-          </h3>
-          <p className="mb-4">
-            {isSpanish 
-              ? '¿Listo para crear contraseñas más fuertes? Nuestro generador de contraseñas gratuito crea contraseñas aleatorias y seguras al instante. También cuenta con una opción única de contraseña mnemotécnica para crear contraseñas memorables pero seguras tanto en inglés como en español.'
-              : 'Ready to create stronger passwords? Our free password generator creates random, secure passwords instantly. It also features a unique mnemonic password option to create memorable but secure passwords in both English and Spanish.'}
-          </p>
-          <a href={homePath} className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-            {isSpanish ? 'Generar una Contraseña Ahora' : 'Generate a Password Now'}
-          </a>
-        </div>
-      </div>
+      {getContent()}
     </div>
-  )
+  );
 }

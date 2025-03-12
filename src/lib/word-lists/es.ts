@@ -75,3 +75,22 @@ export const verbs = [
   // Emotions
   'amar', 'gustar', 'adorar', 'odiar', 'desagradar', 'disfrutar', 'agradar', 'deleitar', 'divertir', 'entretener', 'aburrir', 'molestar', 'irritar', 'enfadar', 'enfurecer', 'calmar', 'calmar', 'consolar', 'satisfacer', 'decepcionar', 'sorprender', 'chocar', 'asustar', 'asustar', 'aterrorizar', 'preocupar', 'estresar', 'relajar', 'emocionar', 'emocionar',
 ];
+
+// Common Spanish adverbs
+export const adverbs = [
+  // Manner
+  'rápidamente', 'lentamente', 'cuidadosamente', 'descuidadamente', 'felizmente', 'tristemente', 'enfadadamente', 'tranquilamente', 'ruidosamente', 'silenciosamente',
+  'ansiosamente', 'reluctantemente', 'elegantemente', 'torpemente', 'bellamente', 'pobremente', 'perfectamente', 'terriblemente', 'maravillosamente', 'malamente',
+  
+  // Time
+  'ahora', 'entonces', 'hoy', 'mañana', 'ayer', 'pronto', 'después', 'temprano', 'tarde', 'ya',
+  'todavía', 'aún', 'siempre', 'nunca', 'frecuentemente', 'raramente', 'raramente', 'a veces', 'frecuentemente', 'ocasionalmente',
+  
+  // Place
+  'aquí', 'allí', 'en todas partes', 'en ninguna parte', 'en cualquier lugar', 'en algún lugar', 'arriba', 'abajo', 'dentro', 'fuera',
+  'arriba', 'abajo', 'adelante', 'atrás', 'cerca', 'lejos', 'lejos', 'alrededor', 'a través', 'a través',
+  
+  // Degree
+  'muy', 'bastante', 'más bien', 'bastante', 'casi', 'casi', 'completamente', 'enteramente', 'parcialmente', 'totalmente',
+  'absolutamente', 'extremadamente', 'ligeramente', 'algo', 'demasiado', 'suficiente', 'apenas', 'apenas', 'escasamente', 'justo'
+];
