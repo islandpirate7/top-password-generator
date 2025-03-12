@@ -21,6 +21,11 @@
     background-color: #d1d5db !important;
   }
   
+  /* Make switch thumb white */
+  [data-state=checked] span, [data-state=unchecked] span {
+    background-color: white !important;
+  }
+  
   /* Improve icon visibility */
   svg.opacity-50 {
     opacity: 0.8 !important;
@@ -58,5 +63,14 @@
   .form-control {
     max-width: 100% !important;
     overflow: hidden !important;
+  }
+  
+  /* Fix Password Strength label color */
+  .font-medium {
+    color: #1f2937 !important; /* text-gray-800 equivalent */
+  }
+  
+  .text-sm.text-gray-500 {
+    color: #4b5563 !important; /* text-gray-600 equivalent */
   }
 }
