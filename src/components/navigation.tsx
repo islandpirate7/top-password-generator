@@ -54,10 +54,10 @@ export function Navigation() {
   // Get the current language name for display
   const getCurrentLanguageName = () => {
     switch(locale) {
-      case 'es': return t('spanish')
-      case 'fr': return t('french')
-      case 'de': return t('german')
-      default: return t('english')
+      case 'es': return 'Español'
+      case 'fr': return 'Français'
+      case 'de': return 'Deutsch'
+      default: return 'English'
     }
   }
   
@@ -113,25 +113,25 @@ export function Navigation() {
                     onClick={() => handleLanguageChange('en')}
                     className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${locale === 'en' ? 'bg-gray-100' : ''}`}
                   >
-                    {t('english')}
+                    English
                   </button>
                   <button
                     onClick={() => handleLanguageChange('es')}
                     className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${locale === 'es' ? 'bg-gray-100' : ''}`}
                   >
-                    {t('spanish')}
+                    Español
                   </button>
                   <button
                     onClick={() => handleLanguageChange('fr')}
                     className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${locale === 'fr' ? 'bg-gray-100' : ''}`}
                   >
-                    {t('french')}
+                    Français
                   </button>
                   <button
                     onClick={() => handleLanguageChange('de')}
                     className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${locale === 'de' ? 'bg-gray-100' : ''}`}
                   >
-                    {t('german')}
+                    Deutsch
                   </button>
                 </div>
               )}
