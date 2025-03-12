@@ -41,20 +41,20 @@ export function Navigation() {
   
   return (
     <nav className="bg-white shadow-sm">
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-4 overflow-visible">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link 
               href={homePath}
               className="flex items-center"
             >
-              <div className="h-12 w-12 relative flex items-center justify-center">
+              <div className="h-14 w-14 relative flex items-center justify-center">
                 <Image 
                   src="/new-logo.svg" 
                   alt="Password Generator Logo" 
-                  width={48} 
-                  height={48} 
-                  className="object-contain p-1"
+                  width={36} 
+                  height={36} 
+                  className="object-contain"
                   priority
                 />
               </div>
