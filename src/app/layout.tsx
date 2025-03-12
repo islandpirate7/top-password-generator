@@ -115,9 +115,6 @@ export default function RootLayout({
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7164870963379403"
           crossOrigin="anonymous"
-          onError={(e) => {
-            console.error('AdSense script failed to load:', e);
-          }}
         />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="alternate icon" href="/favicon.ico" />
