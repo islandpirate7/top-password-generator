@@ -1,0 +1,99 @@
+import { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+import PasswordGenerator from '@/components/password-generator'
+import { SidebarAd, BottomBannerAd } from '@/components/ad'
+import { MobileBottomAd } from '@/components/mobile-ad'
+
+type Props = {
+  params: { locale: string }
+}
+
+export async function generateMetadata({ params: { locale } }: Props): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+
+  return {
+    title: t('title'),
+    description: t('description'),
+    keywords: t('keywords'),
+    authors: [
+      {
+        name: 'Island Pirate',
+        url: 'https://github.com/islandpirate7',
+      },
+    ],
+    creator: 'Island Pirate',
+    publisher: 'Island Pirate',
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+      url: 'https://top-password-generator.vercel.app',
+      siteName: t('title'),
+      images: [
+        {
+          url: '/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: t('title'),
+        },
+      ],
+      locale,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('title'),
+      description: t('description'),
+      images: ['/og-image.png'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    verification: {
+      google: 'google-site-verification-code',
+    },
+    alternates: {
+      canonical: 'https://top-password-generator.vercel.app',
+      languages: {
+        en: 'https://top-password-generator.vercel.app/en',
+        es: 'https://top-password-generator.vercel.app/es',
+      },
+    },
+  }
+}
+
+export default async function Home({ params: { locale } }: Props) {
+  const t = await getTranslations({ locale, namespace: 'HomePage' })
+
+  return (
+    <div className="min-h-screen bg-white">
+      <main className="container mx-auto px-4 py-8">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          <div className="flex-1">
+            <PasswordGenerator />
+          </div>
+          <aside className="w-full lg:w-auto">
+            <SidebarAd />
+          </aside>
+        </div>
+        
+        {/* Desktop bottom ad */}
+        <div className="mt-12 hidden sm:block">
+          <BottomBannerAd />
+        </div>
+        
+        {/* Mobile-specific bottom ad with separate component and delayed loading */}
+        <div className="mt-12 sm:hidden">
+          <MobileBottomAd className="mt-8 mb-4" />
+        </div>
+      </main>
+    </div>
+  )
+}
