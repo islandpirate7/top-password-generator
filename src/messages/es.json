@@ -20,7 +20,9 @@
     "generator": "Generador",
     "tips": "Consejos",
     "english": "English",
-    "spanish": "Español"
+    "spanish": "Español",
+    "french": "Francés",
+    "german": "Alemán"
   },
   "generate": "Generar Contraseña",
   "regenerate": "Regenerar",
@@ -32,8 +34,10 @@
   "pinGenerator": "Generador de PIN",
   "pinGeneratorDescription": "Genera un código PIN seguro",
   "languageSwitcher": "Idioma",
-  "english": "English",
+  "english": "Inglés",
   "spanish": "Español",
+  "french": "Francés",
+  "german": "Alemán",
   "mnemonicTitle": "Generador de Contraseñas Mnemónicas",
   "mnemonicDescription": "Crea contraseñas memorables con frases mnemónicas para ayudarte a recordarlas",
   "wordCount": "Cantidad de Palabras",

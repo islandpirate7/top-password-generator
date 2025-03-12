@@ -1,5 +1,7 @@
 import * as enWordLists from './en';
 import * as esWordLists from './es';
+import * as frWordLists from './fr';
+import * as deWordLists from './de';
 
 export type WordLists = {
   adjectives: string[];
@@ -10,6 +12,8 @@ export type WordLists = {
 export const wordLists: Record<string, WordLists> = {
   en: enWordLists,
   es: esWordLists,
+  fr: frWordLists,
+  de: deWordLists,
 };
 
 export function getWordListsByLocale(locale: string): WordLists {

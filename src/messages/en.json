@@ -20,7 +20,9 @@
     "generator": "Generator",
     "tips": "Tips",
     "english": "English",
-    "spanish": "Español"
+    "spanish": "Español",
+    "french": "Français",
+    "german": "Deutsch"
   },
   "generate": "Generate Password",
   "regenerate": "Regenerate",
@@ -34,6 +36,8 @@
   "languageSwitcher": "Language",
   "english": "English",
   "spanish": "Spanish",
+  "french": "French",
+  "german": "German",
   "mnemonicTitle": "Mnemonic Password Generator",
   "mnemonicDescription": "Create memorable passwords with mnemonic sentences to help you remember them",
   "wordCount": "Word Count",
