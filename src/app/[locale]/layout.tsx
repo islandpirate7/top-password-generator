@@ -6,7 +6,7 @@ import { Navigation } from '@/components/navigation'
 import { setRequestLocale } from 'next-intl/server'
 
 // Define the locales we support
-export const locales = ['en', 'es']
+export const locales = ['en', 'es', 'fr', 'de']
 
 // Get messages for a specific locale
 async function getMessages(locale: string) {
