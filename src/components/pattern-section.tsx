@@ -190,12 +190,12 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                 )}
               </div>
               
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex flex-wrap gap-2 p-4 bg-gray-100 rounded-md">
                 <Button 
                   variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('U')}
-                  className={getElementColor('U')}
+                  className={`${getElementColor('U')} border-gray-300 text-gray-800 hover:text-gray-900 hover:bg-gray-50`}
                 >
                   {t('uppercase')} (A-Z)
                 </Button>
@@ -203,7 +203,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('L')}
-                  className={getElementColor('L')}
+                  className={`${getElementColor('L')} border-gray-300 text-gray-800 hover:text-gray-900 hover:bg-gray-50`}
                 >
                   {t('lowercase')} (a-z)
                 </Button>
@@ -211,7 +211,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('D')}
-                  className={getElementColor('D')}
+                  className={`${getElementColor('D')} border-gray-300 text-gray-800 hover:text-gray-900 hover:bg-gray-50`}
                 >
                   {t('numbers')} (0-9)
                 </Button>
@@ -219,7 +219,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   variant="outline" 
                   size="sm"
                   onClick={() => addPatternElement('S')}
-                  className={getElementColor('S')}
+                  className={`${getElementColor('S')} border-gray-300 text-gray-800 hover:text-gray-900 hover:bg-gray-50`}
                 >
                   {t('symbols')} (!@#)
                 </Button>
@@ -227,7 +227,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => addPatternElement('A')}
-                  className={getElementColor('A')}
+                  className={`${getElementColor('A')} border-gray-300 text-gray-800 hover:text-gray-900 hover:bg-gray-50`}
                 >
                   {t('anyLetter')}
                 </Button>
@@ -235,7 +235,7 @@ export function PatternSection({ onPasswordGenerated }: PatternSectionProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => addPatternElement('X')}
-                  className={getElementColor('X')}
+                  className={`${getElementColor('X')} border-gray-300 text-gray-800 hover:text-gray-900 hover:bg-gray-50`}
                 >
                   {t('anyCharacter')}
                 </Button>

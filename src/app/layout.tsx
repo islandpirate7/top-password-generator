@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import './mobile-fixes.css'
 
 export const metadata: Metadata = {
   title: "Password Generator - Create Strong & Secure Random Passwords",

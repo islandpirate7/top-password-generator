@@ -427,13 +427,14 @@ export function PasswordGenerator() {
             </div>
             <div className="password-display-container">
               <div className="password-text">
-                <code id="generated-password" className="text-sm font-mono break-all block p-2 border rounded-md bg-gray-50">{password}</code>
+                <code id="generated-password" className="text-sm font-mono break-all block p-2 border rounded-md bg-white text-gray-800 border-gray-300">{password}</code>
               </div>
               <div className="copy-button">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleCopyToClipboard}
+                  className="border-gray-300 text-gray-700 hover:text-gray-900"
                 >
                   {copied ? (
                     <>
@@ -449,7 +450,6 @@ export function PasswordGenerator() {
                 </Button>
               </div>
             </div>
-          </div>
           
           {passwordStrength && (
             <div className="space-y-2">

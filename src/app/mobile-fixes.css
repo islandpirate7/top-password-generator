@@ -1,0 +1,28 @@
+/* Mobile visibility fixes */
+@media (max-width: 768px) {
+    /* Improve text contrast */
+    .text-muted-foreground {
+      color: rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    /* Improve input text visibility */
+    input, select, textarea {
+      color: #333 !important;
+    }
+    
+    /* Improve placeholder text visibility */
+    ::placeholder {
+      color: #666 !important;
+      opacity: 1 !important;
+    }
+    
+    /* Improve switch visibility */
+    [data-state=unchecked].bg-input {
+      background-color: #d1d5db !important;
+    }
+    
+    /* Improve icon visibility */
+    svg.opacity-50 {
+      opacity: 0.8 !important;
+    }
+  }
