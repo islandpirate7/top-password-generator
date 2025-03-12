@@ -90,4 +90,53 @@
   [role="tab"][aria-selected="true"] {
     color: white !important;
   }
+  
+  /* Fix "Check if Password is Breached" button text color */
+  button.bg-secondary,
+  .bg-secondary,
+  button[variant="secondary"],
+  button.w-full.bg-secondary {
+    color: white !important;
+  }
+  
+  /* Ad display fixes for mobile */
+  
+  /* Ensure ads don't overflow their containers */
+  .adsbygoogle {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  /* Add more space between ads to prevent density issues */
+  .my-6 {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+  
+  /* Ensure bottom ad has proper spacing */
+  .mt-8.mb-4 {
+    margin-top: 2.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  /* Improve ad loading states */
+  .ad-loading, .ad-error {
+    min-height: 100px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #f9fafb !important;
+    border-radius: 0.375rem !important;
+    width: 100% !important;
+  }
+  
+  /* Limit ad width on mobile */
+  ins.adsbygoogle {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 250px !important;
+  }
 }
