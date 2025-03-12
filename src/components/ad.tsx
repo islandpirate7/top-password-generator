@@ -47,9 +47,12 @@ export function Ad({
 
   // Determine ad size based on container width
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const updateAdWidth = () => {
       if (adRef.current) {
-        setAdWidth(adRef.current.offsetWidth);
+        const width = adRef.current.getBoundingClientRect().width;
+        setAdWidth(width);
       }
     };
 
@@ -64,15 +67,13 @@ export function Ad({
   // Load AdSense script
   useEffect(() => {
     // Only load in production
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('AdSense disabled in development mode');
+    if (typeof window === 'undefined' || process.env.NODE_ENV !== 'production') {
       return;
     }
 
     // Check if the AdSense script is available
     const checkScriptLoaded = () => {
-      if (typeof window !== 'undefined' &&
-          (window as any).adsbygoogle !== undefined) {
+      if ((window as any).adsbygoogle !== undefined) {
         console.log('AdSense script loaded successfully');
         setScriptLoaded(true);
         return true;
@@ -88,8 +89,6 @@ export function Ad({
     const timer = setInterval(() => {
       if (checkScriptLoaded()) {
         clearInterval(timer);
-      } else {
-        console.log('AdSense not available yet');
       }
     }, 1000);
 
@@ -110,71 +109,92 @@ export function Ad({
 
   // Create an intersection observer to detect when the ad is in the viewport
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          } else {
-            setIsVisible(false);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '200px' }
-    );
-
-    if (adRef.current) {
-      observer.observe(adRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  // Initialize AdSense when the ad is visible and the script is loaded
-  useEffect(() => {
-    if (process.env.NODE_ENV !== 'production' || !isVisible || isInitialized || adWidth === 0 || !scriptLoaded) {
+    if (typeof window === 'undefined' || process.env.NODE_ENV !== 'production') {
       return;
     }
 
     try {
-      console.log('Initializing AdSense ad with format:', format, 'slot:', slot);
-      
-      // Make sure adsbygoogle is defined
-      if (typeof (window as any).adsbygoogle === 'undefined') {
-        console.error('AdSense script not loaded properly');
-        setAdError('Advertisement not available');
-        return;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setIsVisible(true);
+              
+              // Measure width when visible
+              if (adRef.current) {
+                const width = adRef.current.getBoundingClientRect().width;
+                setAdWidth(width);
+              }
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '200px' }
+      );
+
+      if (adRef.current) {
+        observer.observe(adRef.current);
       }
 
-      // Check if this specific ad element already has an ad
-      const adElement = adRef.current?.querySelector('.adsbygoogle');
-      if (adElement && (adElement as any).__adInitialized) {
-        console.log('Ad already initialized, skipping');
-        setIsInitialized(true);
-        return;
-      }
-
-      // Push the ad configuration
-      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-      (window as any).adsbygoogle.push({});
-      
-      // Mark this ad as initialized to prevent multiple initializations
-      if (adElement) {
-        (adElement as any).__adInitialized = true;
-      }
-      
-      console.log('AdSense ad initialized successfully');
-      setIsInitialized(true);
+      return () => {
+        observer.disconnect();
+      };
     } catch (error) {
-      console.error('Error initializing AdSense:', error);
-      setAdError('Failed to load advertisement');
+      console.error('Error setting up intersection observer:', error);
+      setIsVisible(true); // Fallback to always visible
     }
+  }, []);
+
+  // Initialize AdSense when the ad is visible and the script is loaded
+  useEffect(() => {
+    if (
+      typeof window === 'undefined' || 
+      process.env.NODE_ENV !== 'production' || 
+      !isVisible || 
+      isInitialized || 
+      adWidth <= 0 || 
+      !scriptLoaded
+    ) {
+      return;
+    }
+
+    // Add a delay to ensure the container is stable
+    const timer = setTimeout(() => {
+      try {
+        console.log(`Initializing AdSense ad with format: ${format} slot: ${slot} width: ${adWidth}px`);
+        
+        // Make sure adsbygoogle is defined
+        if (typeof (window as any).adsbygoogle === 'undefined') {
+          console.error('AdSense script not loaded properly');
+          setAdError('Advertisement not available');
+          return;
+        }
+
+        // Check if this specific ad element already has an ad
+        const adElement = adRef.current?.querySelector('.adsbygoogle');
+        if (adElement && (adElement as any).__adInitialized) {
+          console.log('Ad already initialized, skipping');
+          setIsInitialized(true);
+          return;
+        }
+
+        // Push the ad configuration
+        (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+        (window as any).adsbygoogle.push({});
+        
+        // Mark this ad as initialized to prevent multiple initializations
+        if (adElement) {
+          (adElement as any).__adInitialized = true;
+        }
+        
+        console.log('AdSense ad initialized successfully');
+        setIsInitialized(true);
+      } catch (error) {
+        console.error('Error initializing AdSense:', error);
+        setAdError('Failed to load advertisement');
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [isVisible, isInitialized, adWidth, slot, format, scriptLoaded]);
 
   // Get appropriate ad size based on format and container width
@@ -205,84 +225,119 @@ export function Ad({
     return { width, height };
   };
 
-  const adSize = getAdSize();
-
-  // Don't render anything if we're in development mode or if there's an error
+  // Don't render in development mode
   if (process.env.NODE_ENV === 'development') {
     return (
       <div
-        className={cn('ad-container', className)}
+        className={cn('ad-placeholder', className)}
         style={{
-          height: `${adSize.height}px`,
-          border: '1px dashed #ccc',
+          width: '100%',
+          height: format === 'vertical' ? '600px' : '250px',
+          backgroundColor: '#f0f0f0',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#f9f9f9'
+          border: '1px dashed #ccc',
+          margin: '10px 0',
+          padding: '10px',
+          boxSizing: 'border-box',
         }}
       >
-        <p className="text-sm text-gray-400">Ad Placeholder (Dev Mode)</p>
+        <div className="text-center text-gray-400">
+          <p>Advertisement Placeholder</p>
+          <p className="text-xs">{format} format - {slot}</p>
+        </div>
       </div>
     );
   }
 
-  // Render the ad
+  // Get the appropriate size
+  const { width: adSizeWidth, height: adSizeHeight } = getAdSize();
+
   return (
-    <div className={cn('ad-container relative overflow-hidden', className)}>
+    <div
+      ref={adRef}
+      className={cn('ad-container relative', className)}
+      style={{
+        width: '100%',
+        minHeight: `${adSizeHeight}px`,
+        margin: '10px 0',
+        overflow: 'hidden',
+      }}
+    >
       {adError ? (
-        <div className="ad-error text-center text-gray-400 text-sm py-4">{adError}</div>
+        <div className="text-center text-gray-400 text-xs py-2">{adError}</div>
       ) : (
-        <div
-          ref={adRef}
-          className="ad-slot"
+        <ins
+          className="adsbygoogle"
           style={{
             display: 'block',
-            minHeight: adSize.height,
-            minWidth: adSize.width,
-            width: '100%',
-            maxWidth: '100%',
+            width: adWidth > 0 ? `${adWidth}px` : '100%', 
+            height: `${adSizeHeight}px`,
             overflow: 'hidden',
           }}
-        >
-          <ins
-            className="adsbygoogle"
-            style={{
-              display: 'block',
-              minHeight: adSize.height,
-              minWidth: adSize.width,
-              width: '100%',
-            }}
-            data-ad-client="ca-pub-7164870963379403"
-            data-ad-slot={slot}
-            data-ad-format={format}
-            data-full-width-responsive="true"
-            id={uniqueId}
-          />
-        </div>
+          data-ad-client="ca-pub-7164870963379403"
+          data-ad-slot={slot}
+          data-ad-format={format}
+          data-full-width-responsive={format === 'auto' ? 'true' : 'false'}
+          id={uniqueId}
+        />
       )}
     </div>
   );
 }
 
-// Use a single ad component with consistent slot ID
+// Sidebar ad component (vertical format)
 export function SidebarAd() {
-  return <Ad slot={AD_SLOTS.sidebar} format="vertical" className="hidden md:block" uniqueId="sidebar-ad" />;
+  return <Ad slot={AD_SLOTS.sidebar} format="vertical" className="sidebar-ad" />;
 }
 
+// Bottom banner ad component (horizontal format)
 export function BottomBannerAd() {
-  // Use responsive format on mobile for better display
   return (
-    <div className="w-full">
-      <div className="hidden sm:block">
-        <Ad slot={AD_SLOTS.bottom} format="horizontal" className="mt-8 mb-4" uniqueId="bottom-ad-desktop" />
-      </div>
-      <div className="sm:hidden">
-        <Ad slot={AD_SLOTS.bottom} format="auto" className="mt-8 mb-4" uniqueId="bottom-ad-mobile" />
-      </div>
+    <div className="bottom-banner-ad-container w-full overflow-hidden">
+      <Ad 
+        slot={AD_SLOTS.bottom} 
+        format="horizontal" 
+        className="bottom-banner-ad"
+        uniqueId="bottom-banner-ad"
+      />
     </div>
   );
 }
 
+// In-content ad component (auto format)
 export function InContentAd() {
-  return <Ad slot={AD_SLOTS.content} format="auto" className="my-6 w-full max-w-full overflow-hidden" uniqueId="content-ad" />;
+  return <Ad slot={AD_SLOTS.content} format="auto" className="in-content-ad my-6" />;
+}
+
+// Mobile-specific bottom ad
+export function MobileBottomAd() {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  if (!isMobile) return null;
+  
+  return (
+    <div className="mobile-only-ad w-full mt-4">
+      <Ad 
+        slot={AD_SLOTS.bottom} 
+        format="horizontal" 
+        className="mobile-bottom-ad"
+        uniqueId="mobile-bottom-ad"
+      />
+    </div>
+  );
 }

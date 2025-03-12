@@ -8,7 +8,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { PASSWORD_LENGTHS, PIN_LENGTHS } from '@/lib/constants'
 import { generatePassword, generateMemorablePassword, generatePin, evaluatePasswordStrength, PasswordStrength } from '@/lib/utils'
 import { checkPasswordBreach } from '@/lib/breach-check'
-import { InContentAd } from '@/components/ad'
+import { InContentAd, MobileBottomAd } from '@/components/ad'
 import { Copy, Check, RefreshCw, Lock } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
@@ -48,456 +48,267 @@ export function PasswordGenerator() {
   useEffect(() => {
     setPassword('')
     setPasswordStrength(null)
-    
-    // Reset length based on password type
-    if (passwordType === 'random') {
-      setLength(12)
-      setOptions({
-        uppercase: true,
-        lowercase: true,
-        numbers: true,
-        symbols: true,
-      })
-    } else if (passwordType === 'memorable') {
-      setLength(3)
-      setOptions({
-        uppercase: false,
-        lowercase: true,
-        numbers: false,
-        symbols: false,
-      })
-    } else if (passwordType === 'pin') {
-      setLength(6)
-    }
+    setBreachResult(null)
   }, [passwordType])
 
-  // Evaluate password strength whenever password changes
+  // Generate a password on initial load
   useEffect(() => {
-    if (password) {
-      setPasswordStrength(evaluatePasswordStrength(password))
-    } else {
-      setPasswordStrength(null)
-    }
-  }, [password])
+    generateNewPassword()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
+  // Generate a new password based on the current settings
   const generateNewPassword = () => {
     let newPassword = ''
-
+    
     if (passwordType === 'random') {
       newPassword = generatePassword(length, options)
     } else if (passwordType === 'memorable') {
-      newPassword = generateMemorablePassword(length, options, locale)
+      newPassword = generateMemorablePassword(locale)
     } else if (passwordType === 'pin') {
       newPassword = generatePin(length)
     }
-
-    setPassword(newPassword)
-  }
-
-  const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(password)
-    setCopied(true)
     
-    toast({
-      title: t('copied'),
-      description: t('copiedDescription'),
-    })
-
-    setTimeout(() => {
-      setCopied(false)
-    }, 2000)
-  }
-
-  const handleGenerate = () => {
-    let newPassword = ''
-
-    switch (activeTab) {
-      case 'random':
-        newPassword = generatePassword(length, options)
-        break
-      case 'memorable':
-        newPassword = generateMemorablePassword(length, options, locale)
-        break
-      case 'pin':
-        newPassword = generatePin(length)
-        break
-    }
-
     setPassword(newPassword)
-  }
-
-  const handleTabChange = (value: string) => {
-    setActiveTab(value)
-    setPassword('')
     setBreachResult(null)
-
-    // Set default options based on tab
-    if (value === 'random') {
-      setLength(12)
-      setOptions({
-        uppercase: true,
-        lowercase: true,
-        numbers: true,
-        symbols: true,
-      })
-    } else if (value === 'memorable') {
-      setLength(3)
-      setOptions({
-        uppercase: false,
-        lowercase: true,
-        numbers: false,
-        symbols: false,
-      })
-    } else if (value === 'pin') {
-      setLength(6)
+    
+    // Only evaluate strength for random and memorable passwords
+    if (passwordType !== 'pin') {
+      const strength = evaluatePasswordStrength(newPassword)
+      setPasswordStrength(strength)
+    } else {
+      setPasswordStrength(null)
     }
   }
 
-  const checkBreach = async () => {
-    if (!password) return;
-    
-    setIsCheckingBreach(true);
-    setBreachResult(null);
-    
+  // Copy the password to clipboard
+  const copyToClipboard = async () => {
     try {
-      const result = await checkPasswordBreach(password);
-      setBreachResult(result);
-    } catch (error) {
-      console.error('Error checking breach:', error);
-      setBreachResult({
-        breached: false,
-        count: 0,
-        message: 'Error checking breach status. Please try again later.'
-      });
-    } finally {
-      setIsCheckingBreach(false);
+      await navigator.clipboard.writeText(password)
+      setCopied(true)
+      toast({
+        title: t('passwordCopied'),
+        description: t('passwordCopiedDesc'),
+      })
+      
+      setTimeout(() => {
+        setCopied(false)
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to copy: ', err)
+      toast({
+        title: t('copyFailed'),
+        description: t('copyFailedDesc'),
+        variant: 'destructive',
+      })
     }
-  };
+  }
 
-  const copyPassword = () => {
-    navigator.clipboard.writeText(password);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  // Handle option changes for random passwords
+  const handleOptionChange = (option: keyof typeof options) => {
+    // Prevent disabling all options
+    const newOptions = { ...options, [option]: !options[option] }
+    if (!newOptions.uppercase && !newOptions.lowercase && !newOptions.numbers && !newOptions.symbols) {
+      toast({
+        title: t('invalidOptions'),
+        description: t('invalidOptionsDesc'),
+        variant: 'destructive',
+      })
+      return
+    }
+    
+    setOptions(newOptions)
+  }
+
+  // Handle length changes for random passwords and PINs
+  const handleLengthChange = (newLength: number[]) => {
+    setLength(newLength[0])
+  }
+
+  // Check if the password has been breached
+  const checkBreach = async () => {
+    if (!password) return
+    
+    setIsCheckingBreach(true)
+    try {
+      const result = await checkPasswordBreach(password)
+      setBreachResult(result)
+    } catch (error) {
+      console.error('Error checking breach:', error)
+      toast({
+        title: t('breachCheckError'),
+        description: t('breachCheckErrorDesc'),
+        variant: 'destructive',
+      })
+    } finally {
+      setIsCheckingBreach(false)
+    }
+  }
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <div className="mb-8 w-full header-container">
-        <div className="w-32 h-32 sm:w-40 sm:h-40 relative mb-2 header-icon mx-auto">
-          <div className="w-full h-full flex items-center justify-center">
-            {/* Colorful lock icon matching the shared image */}
-            <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
-              {/* Lock body */}
-              <div className="absolute inset-0 rounded-t-full overflow-hidden">
-                <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-cyan-400 to-blue-500"></div>
-                <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-r from-fuchsia-500 to-pink-500"></div>
-              </div>
-              
-              {/* Lock base */}
-              <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden">
-                <div className="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-r from-blue-500 to-cyan-400"></div>
-                <div className="absolute bottom-0 right-0 w-1/2 h-full bg-gradient-to-r from-orange-500 to-red-500"></div>
-              </div>
-              
-              {/* Lock hole */}
-              <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 w-1/4 h-1/4 bg-white rounded-full"></div>
-            </div>
-          </div>
-        </div>
-        <h1 className="text-3xl md:text-4xl font-bold font-montserrat text-black dark:text-white text-center">{t('appTitle')}</h1>
-      </div>
-      
-      <Tabs defaultValue="random" onValueChange={handleTabChange} className="w-full">
-        <div className="w-full tabs-container">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
-            <TabsTrigger value="random" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('random')}</TabsTrigger>
-            <TabsTrigger value="memorable" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('memorable')}</TabsTrigger>
-            <TabsTrigger value="mnemonic" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('mnemonic')}</TabsTrigger>
-          </TabsList>
-          
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="pattern" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('pattern')}</TabsTrigger>
-            <TabsTrigger value="pin" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('pin')}</TabsTrigger>
-            <TabsTrigger value="qrcode" className="data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm">{t('qrcode')}</TabsTrigger>
-          </TabsList>
-        </div>
+    <div className="password-generator-container">
+      <Tabs defaultValue="random" value={activeTab} onValueChange={(value) => {
+        setActiveTab(value)
+        setPasswordType(value as PasswordType)
+      }}>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="random">{t('randomPassword')}</TabsTrigger>
+          <TabsTrigger value="memorable">{t('memorablePassword')}</TabsTrigger>
+          <TabsTrigger value="pin">{t('pinCode')}</TabsTrigger>
+        </TabsList>
         
-        <TabsContent value="random" className="mt-4 w-full content-container">
-          <Card className="w-full">
-            <CardHeader className="border-b border-gray-100">
-              <CardTitle className="text-primary">{t('randomPassword')}</CardTitle>
-              <CardDescription className="text-left">{t('randomPasswordDescription')}</CardDescription>
+        <TabsContent value="random">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('generateRandomPassword')}</CardTitle>
+              <CardDescription>{t('randomPasswordDesc')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="password-length">{t('passwordLength')}</Label>
-                  <span className="text-sm text-gray-500">{length} {t('characters')}</span>
+                <div className="flex justify-between items-center">
+                  <Label>{t('length')}: {length}</Label>
+                  <span className="text-sm text-muted-foreground">{length} {t('characters')}</span>
                 </div>
                 <Slider
-                  id="password-length"
-                  min={4}
-                  max={64}
-                  step={1}
                   value={[length]}
-                  onValueChange={(value) => setLength(value[0])}
-                  className="w-full mobile-slider-container"
+                  min={PASSWORD_LENGTHS.min}
+                  max={PASSWORD_LENGTHS.max}
+                  step={1}
+                  onValueChange={handleLengthChange}
                 />
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                <div className="switch-container">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center space-x-2">
                   <Switch
                     id="uppercase"
                     checked={options.uppercase}
-                    onCheckedChange={(checked) => setOptions({ ...options, uppercase: checked })}
+                    onCheckedChange={() => handleOptionChange('uppercase')}
                   />
-                  <Label htmlFor="uppercase">{t('includeUppercase')}</Label>
+                  <Label htmlFor="uppercase">{t('uppercase')}</Label>
                 </div>
                 
-                <div className="switch-container">
+                <div className="flex items-center space-x-2">
                   <Switch
                     id="lowercase"
                     checked={options.lowercase}
-                    onCheckedChange={(checked) => setOptions({ ...options, lowercase: checked })}
+                    onCheckedChange={() => handleOptionChange('lowercase')}
                   />
-                  <Label htmlFor="lowercase">{t('includeLowercase')}</Label>
+                  <Label htmlFor="lowercase">{t('lowercase')}</Label>
                 </div>
                 
-                <div className="switch-container">
+                <div className="flex items-center space-x-2">
                   <Switch
                     id="numbers"
                     checked={options.numbers}
-                    onCheckedChange={(checked) => setOptions({ ...options, numbers: checked })}
+                    onCheckedChange={() => handleOptionChange('numbers')}
                   />
-                  <Label htmlFor="numbers">{t('includeNumbers')}</Label>
+                  <Label htmlFor="numbers">{t('numbers')}</Label>
                 </div>
                 
-                <div className="switch-container">
+                <div className="flex items-center space-x-2">
                   <Switch
                     id="symbols"
                     checked={options.symbols}
-                    onCheckedChange={(checked) => setOptions({ ...options, symbols: checked })}
+                    onCheckedChange={() => handleOptionChange('symbols')}
                   />
-                  <Label htmlFor="symbols">{t('includeSymbols')}</Label>
+                  <Label htmlFor="symbols">{t('symbols')}</Label>
                 </div>
               </div>
-              
-              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
-                {t('generate')}
-              </Button>
             </CardContent>
           </Card>
         </TabsContent>
         
-        <TabsContent value="memorable" className="mt-4 w-full content-container">
-          <Card className="w-full">
-            <CardHeader className="border-b border-gray-100">
-              <CardTitle className="text-primary">{t('memorablePassword')}</CardTitle>
-              <CardDescription className="text-left">{t('memorablePasswordDescription')}</CardDescription>
+        <TabsContent value="memorable">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('generateMemorablePassword')}</CardTitle>
+              <CardDescription>{t('memorablePasswordDesc')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <MnemonicSection locale={locale} onPasswordGenerated={setPassword} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="pin">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('generatePin')}</CardTitle>
+              <CardDescription>{t('pinDesc')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="memorable-length">{t('numberOfWords')}</Label>
-                  <span className="text-sm text-gray-500">{length} {t('words')}</span>
+                <div className="flex justify-between items-center">
+                  <Label>{t('length')}: {length}</Label>
+                  <span className="text-sm text-muted-foreground">{length} {t('digits')}</span>
                 </div>
                 <Slider
-                  id="memorable-length"
-                  min={2}
-                  max={8}
-                  step={1}
                   value={[length]}
-                  onValueChange={(value) => setLength(value[0])}
-                  className="w-full mobile-slider-container"
+                  min={PIN_LENGTHS.min}
+                  max={PIN_LENGTHS.max}
+                  step={1}
+                  onValueChange={handleLengthChange}
                 />
               </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                <div className="switch-container">
-                  <Switch
-                    id="memorable-uppercase"
-                    checked={options.uppercase}
-                    onCheckedChange={(checked) => setOptions({ ...options, uppercase: checked })}
-                  />
-                  <Label htmlFor="memorable-uppercase">{t('includeUppercase')}</Label>
-                </div>
-                
-                <div className="switch-container">
-                  <Switch
-                    id="memorable-lowercase"
-                    checked={options.lowercase}
-                    onCheckedChange={(checked) => setOptions({ ...options, lowercase: checked })}
-                  />
-                  <Label htmlFor="memorable-lowercase">{t('includeLowercase')}</Label>
-                </div>
-                
-                <div className="switch-container">
-                  <Switch
-                    id="memorable-numbers"
-                    checked={options.numbers}
-                    onCheckedChange={(checked) => setOptions({ ...options, numbers: checked })}
-                  />
-                  <Label htmlFor="memorable-numbers">{t('includeNumbers')}</Label>
-                </div>
-                
-                <div className="switch-container">
-                  <Switch
-                    id="memorable-symbols"
-                    checked={options.symbols}
-                    onCheckedChange={(checked) => setOptions({ ...options, symbols: checked })}
-                  />
-                  <Label htmlFor="memorable-symbols">{t('includeSymbols')}</Label>
-                </div>
-              </div>
-              
-              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
-                {t('generate')}
-              </Button>
             </CardContent>
           </Card>
-        </TabsContent>
-        
-        <TabsContent value="pin" className="mt-4 w-full content-container">
-          <Card className="w-full">
-            <CardHeader className="border-b border-gray-100">
-              <CardTitle className="text-primary">{t('pinGenerator')}</CardTitle>
-              <CardDescription className="text-left">{t('pinGeneratorDescription')}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="pin-length">{t('pinLength')}</Label>
-                  <span className="text-sm text-gray-500">{length} {t('digits')}</span>
-                </div>
-                <Slider
-                  id="pin-length"
-                  min={4}
-                  max={12}
-                  step={1}
-                  value={[length]}
-                  onValueChange={(value) => setLength(value[0])}
-                  className="w-full mobile-slider-container"
-                />
-              </div>
-              
-              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
-                {t('generate')}
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="mnemonic" className="mt-4 w-full content-container">
-          <MnemonicSection onPasswordGenerated={setPassword} />
-        </TabsContent>
-        
-        <TabsContent value="pattern" className="mt-4 w-full content-container">
-          <PatternSection onPasswordGenerated={setPassword} />
-        </TabsContent>
-        
-        <TabsContent value="qrcode" className="mt-4 w-full content-container">
-          <QRCodeSection password={password} />
         </TabsContent>
       </Tabs>
       
-      {password && (
-        <div className="mt-6 space-y-4">
-          <div className="mb-4">
-            {password && (
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-sm font-medium text-gray-800">{t('generatedPassword')}</h3>
-                {passwordStrength && (
-                  <span className="text-sm text-gray-700">
-                    {t('passwordStrength')}: 
-                    <span className={`ml-1 font-medium ${
-                      passwordStrength?.strength === 'weak' ? 'text-red-500' : 
-                      passwordStrength?.strength === 'medium' ? 'text-yellow-500' : 
-                      passwordStrength?.strength === 'strong' ? 'text-green-500' : 
-                      'text-blue-500'
-                    }`}>
-                      {passwordStrength?.strength === 'weak' ? t('strengthWeak') : 
-                       passwordStrength?.strength === 'medium' ? t('strengthMedium') : 
-                       passwordStrength?.strength === 'strong' ? t('strengthStrong') : 
-                       t('strengthVeryStrong')}
-                    </span>
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-          <div className="password-display-container">
-            <div className="password-text">
-              <code id="generated-password" className="text-sm font-mono break-all block p-2 border rounded-md bg-white text-gray-800 border-gray-300">{password}</code>
-            </div>
-            <div className="copy-button">
+      <div className="mt-6">
+        <div className="flex flex-col space-y-4">
+          <div className="flex items-center space-x-2">
+            <div className="relative flex-1">
+              <Input
+                type="text"
+                value={password}
+                readOnly
+                className="pr-10 font-mono"
+              />
               <Button
-                size="sm"
-                variant="outline"
-                onClick={handleCopyToClipboard}
-                className="border-gray-300 text-gray-700 hover:text-gray-900"
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 top-0 h-full"
+                onClick={copyToClipboard}
+                title={t('copyToClipboard')}
               >
-                {copied ? (
-                  <>
-                    <Check className="h-4 w-4 mr-2" />
-                    {t('copied')}
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-4 w-4 mr-2" />
-                    {t('copy')}
-                  </>
-                )}
+                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
             </div>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={generateNewPassword}
+              title={t('generateNew')}
+            >
+              <RefreshCw className="h-4 w-4" />
+            </Button>
           </div>
+          
           {passwordStrength && (
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">{t('passwordStrength')}: {passwordStrength.strength}</div>
-                  <div className="text-sm text-gray-500">{passwordStrength.feedback}</div>
-                </div>
+              <div className="flex justify-between text-sm">
+                <span>{t('passwordStrength')}: {t(passwordStrength.strength)}</span>
+                <span>{passwordStrength.score}/4</span>
               </div>
-              <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
                 <div
                   className={`h-full ${getStrengthColorClass(passwordStrength.score)}`}
-                  style={{ width: `${passwordStrength.score * 25}%` }}
-                ></div>
+                  style={{ width: `${(passwordStrength.score / 4) * 100}%` }}
+                />
               </div>
+              {passwordStrength.feedback && (
+                <p className="text-sm text-muted-foreground">{passwordStrength.feedback}</p>
+              )}
             </div>
           )}
-          <div className="button-container">
-            <Button
-              variant="outline"
-              onClick={generateNewPassword}
-              className="border-gray-600 text-gray-900 hover:text-gray-900"
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              {t('regenerate')}
-            </Button>
+          
+          <div className="flex flex-col space-y-4">
+            <QRCodeSection password={password} />
+            <PatternSection password={password} />
             
             <Button
-              variant="outline"
-              onClick={handleCopyToClipboard}
-              className="border-gray-600 text-gray-900 hover:text-gray-900"
-            >
-              {copied ? (
-                <>
-                  <Check className="h-4 w-4 mr-2" />
-                  {t('copied')}
-                </>
-              ) : (
-                <>
-                  <Copy className="h-4 w-4 mr-2" />
-                  {t('copy')}
-                </>
-              )}
-            </Button>
-          </div>
-          <div className="pt-2">
-            <Button
-              variant="secondary"
               className="w-full bg-secondary hover:bg-secondary/90 breach-check-button text-white"
               onClick={checkBreach}
               disabled={isCheckingBreach || !password}
@@ -512,9 +323,10 @@ export function PasswordGenerator() {
             )}
           </div>
         </div>
-      )}
+      </div>
       
       <InContentAd />
+      <MobileBottomAd />
     </div>
   )
 }
