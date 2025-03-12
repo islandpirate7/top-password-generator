@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { Navigation } from '@/components/navigation'
 import { setRequestLocale } from 'next-intl/server'
 import { MultilingualStructuredData } from '@/components/multilingual-structured-data'
+import Link from 'next/link'
 
 // Define the locales we support
 export const locales = ['en', 'es', 'fr', 'de']
@@ -70,21 +71,21 @@ function LocaleLayoutContent({
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-              <a href={`/${locale === 'en' ? '' : locale}/legal/privacy-policy`} className="hover:text-primary transition-colors">
+              <Link href={`/legal/privacy-policy`} locale={locale} className="hover:text-primary transition-colors">
                 {t('footer.privacyPolicy')}
-              </a>
+              </Link>
               <span className="text-gray-400">•</span>
-              <a href={`/${locale === 'en' ? '' : locale}/legal/terms-of-service`} className="hover:text-primary transition-colors">
+              <Link href={`/legal/terms-of-service`} locale={locale} className="hover:text-primary transition-colors">
                 {t('footer.termsOfService')}
-              </a>
+              </Link>
               <span className="text-gray-400">•</span>
-              <a href={`/${locale === 'en' ? '' : locale}/legal/disclaimer`} className="hover:text-primary transition-colors">
+              <Link href={`/legal/disclaimer`} locale={locale} className="hover:text-primary transition-colors">
                 {t('footer.disclaimer')}
-              </a>
+              </Link>
               <span className="text-gray-400">•</span>
-              <a href={`/${locale === 'en' ? '' : locale}/legal/cookie-policy`} className="hover:text-primary transition-colors">
+              <Link href={`/legal/cookie-policy`} locale={locale} className="hover:text-primary transition-colors">
                 {t('footer.cookiePolicy')}
-              </a>
+              </Link>
             </div>
             <div className="text-center text-sm text-gray-600">
               &copy; {new Date().getFullYear()} {t('appTitle')}. {t('footer.allRightsReserved')}.
