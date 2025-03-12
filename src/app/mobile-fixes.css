@@ -1,28 +1,62 @@
 /* Mobile visibility fixes */
 @media (max-width: 768px) {
-    /* Improve text contrast */
-    .text-muted-foreground {
-      color: rgba(0, 0, 0, 0.7) !important;
-    }
-    
-    /* Improve input text visibility */
-    input, select, textarea {
-      color: #333 !important;
-    }
-    
-    /* Improve placeholder text visibility */
-    ::placeholder {
-      color: #666 !important;
-      opacity: 1 !important;
-    }
-    
-    /* Improve switch visibility */
-    [data-state=unchecked].bg-input {
-      background-color: #d1d5db !important;
-    }
-    
-    /* Improve icon visibility */
-    svg.opacity-50 {
-      opacity: 0.8 !important;
-    }
+  /* Improve text contrast */
+  .text-muted-foreground {
+    color: rgba(0, 0, 0, 0.7) !important;
   }
+  
+  /* Improve input text visibility */
+  input, select, textarea {
+    color: #333 !important;
+  }
+  
+  /* Improve placeholder text visibility */
+  ::placeholder {
+    color: #666 !important;
+    opacity: 1 !important;
+  }
+  
+  /* Improve switch visibility */
+  [data-state=unchecked].bg-input {
+    background-color: #d1d5db !important;
+  }
+  
+  /* Improve icon visibility */
+  svg.opacity-50 {
+    opacity: 0.8 !important;
+  }
+
+  /* Fix layout issues on mobile */
+  .w-full.max-w-4xl.mx-auto {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    max-width: calc(100vw - 32px) !important;
+    width: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure password display doesn't overflow */
+  .password-display-container {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .password-text {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Make sure buttons don't overflow */
+  .button-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* Ensure form controls fit within screen */
+  .form-control {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+}

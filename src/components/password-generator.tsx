@@ -403,12 +403,12 @@ export function PasswordGenerator() {
       
       {password && (
         <div className="mt-6 space-y-4">
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <Label htmlFor="generated-password">{t('generatedPassword')}</Label>
-              {password && (
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">
+          <div className="mb-4">
+            {password && (
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-sm font-medium text-gray-800">{t('generatedPassword')}</h3>
+                {passwordStrength && (
+                  <span className="text-sm text-gray-700">
                     {t('passwordStrength')}: 
                     <span className={`ml-1 font-medium ${
                       passwordStrength?.strength === 'weak' ? 'text-red-500' : 
@@ -422,33 +422,33 @@ export function PasswordGenerator() {
                        t('strengthVeryStrong')}
                     </span>
                   </span>
-                </div>
-              )}
+                )}
+              </div>
+            )}
+          </div>
+          <div className="password-display-container">
+            <div className="password-text">
+              <code id="generated-password" className="text-sm font-mono break-all block p-2 border rounded-md bg-white text-gray-800 border-gray-300">{password}</code>
             </div>
-            <div className="password-display-container">
-              <div className="password-text">
-                <code id="generated-password" className="text-sm font-mono break-all block p-2 border rounded-md bg-white text-gray-800 border-gray-300">{password}</code>
-              </div>
-              <div className="copy-button">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={handleCopyToClipboard}
-                  className="border-gray-300 text-gray-700 hover:text-gray-900"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="h-4 w-4 mr-2" />
-                      {t('copied')}
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="h-4 w-4 mr-2" />
-                      {t('copy')}
-                    </>
-                  )}
-                </Button>
-              </div>
+            <div className="copy-button">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleCopyToClipboard}
+                className="border-gray-300 text-gray-700 hover:text-gray-900"
+              >
+                {copied ? (
+                  <>
+                    <Check className="h-4 w-4 mr-2" />
+                    {t('copied')}
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-4 w-4 mr-2" />
+                    {t('copy')}
+                  </>
+                )}
+              </Button>
             </div>
           </div>
           {passwordStrength && (
@@ -470,7 +470,8 @@ export function PasswordGenerator() {
           <div className="button-container">
             <Button
               variant="outline"
-              onClick={handleGenerate}
+              onClick={generateNewPassword}
+              className="border-gray-600 text-gray-900 hover:text-gray-900"
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               {t('regenerate')}
@@ -479,6 +480,7 @@ export function PasswordGenerator() {
             <Button
               variant="outline"
               onClick={handleCopyToClipboard}
+              className="border-gray-600 text-gray-900 hover:text-gray-900"
             >
               {copied ? (
                 <>
