@@ -93,7 +93,7 @@ const structuredData = {
         name: 'How often should I change my passwords?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Security experts now recommend changing passwords only when there's a reason to believe they've been compromised, rather than on a fixed schedule. However, using unique passwords for each account is essential.',
+          text: 'Security experts now recommend changing passwords only when there is a reason to believe they have been compromised, rather than on a fixed schedule. However, using unique passwords for each account is essential.',
         },
       },
     ],
