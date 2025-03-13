@@ -1,5 +1,5 @@
 import { Metadata, Viewport } from 'next';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const locale = params.locale;
@@ -9,19 +9,19 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   switch(locale) {
     case 'es':
       title = 'Términos de Servicio - Generador de Contraseñas';
-      description = 'Nuestros términos de servicio establecen las reglas para el uso de nuestro generador de contraseñas.';
+      description = 'Términos y condiciones para el uso de nuestro generador de contraseñas. Lea nuestras políticas antes de usar el servicio.';
       break;
     case 'fr':
       title = 'Conditions d\'Utilisation - Générateur de Mots de Passe';
-      description = 'Nos conditions d\'utilisation établissent les règles d\'utilisation de notre générateur de mots de passe.';
+      description = 'Termes et conditions pour l\'utilisation de notre générateur de mots de passe. Lisez nos politiques avant d\'utiliser le service.';
       break;
     case 'de':
       title = 'Nutzungsbedingungen - Passwort-Generator';
-      description = 'Unsere Nutzungsbedingungen legen die Regeln für die Verwendung unseres Passwort-Generators fest.';
+      description = 'Allgemeine Geschäftsbedingungen für die Nutzung unseres Passwort-Generators. Lesen Sie unsere Richtlinien, bevor Sie den Dienst nutzen.';
       break;
     default: // English
       title = 'Terms of Service - Password Generator';
-      description = 'Our terms of service establish the rules for using our password generator.';
+      description = 'Terms and conditions for using our password generator. Read our policies before using the service.';
   }
   
   return {
@@ -37,59 +37,64 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default function TermsOfService() {
-  const t = useTranslations();
+export default async function TermsOfService({ params }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: 'Legal' });
   
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-primary">
-        {t('legal.termsOfService.title')}
+        Terms of Service
       </h1>
       
       <div className="prose prose-lg max-w-none">
-        <h2>{t('legal.termsOfService.acceptance.title')}</h2>
+        <h2>Acceptance of Terms</h2>
         <p>
-          {t('legal.termsOfService.acceptance.description')}
+          By accessing or using Top Password Generator, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.
         </p>
         
-        <h2>{t('legal.termsOfService.description.title')}</h2>
+        <h2>Use of Service</h2>
         <p>
-          {t('legal.termsOfService.description.description')}
+          Top Password Generator provides tools for generating secure passwords. You agree to use these tools responsibly and in accordance with all applicable laws and regulations.
         </p>
         
-        <h2>{t('legal.termsOfService.userConduct.title')}</h2>
+        <h2>Password Security</h2>
         <p>
-          {t('legal.termsOfService.userConduct.description')}
+          While we strive to provide secure password generation tools, we are not responsible for:
         </p>
         <ul>
-          <li>{t('legal.termsOfService.userConduct.list.illegal')}</li>
-          <li>{t('legal.termsOfService.userConduct.list.interfere')}</li>
-          <li>{t('legal.termsOfService.userConduct.list.circumvent')}</li>
-          <li>{t('legal.termsOfService.userConduct.list.scrape')}</li>
+          <li>How you store or use the passwords you generate</li>
+          <li>Any security breaches resulting from password compromise</li>
+          <li>The strength of passwords if you modify our recommended settings</li>
         </ul>
         
-        <h2>{t('legal.termsOfService.intellectualProperty.title')}</h2>
+        <h2>Intellectual Property</h2>
         <p>
-          {t('legal.termsOfService.intellectualProperty.description')}
+          All content, features, and functionality of Top Password Generator, including but not limited to text, graphics, logos, and code, are the exclusive property of Top Password Generator and are protected by copyright, trademark, and other intellectual property laws.
         </p>
         
-        <h2>{t('legal.termsOfService.limitation.title')}</h2>
+        <h2>Prohibited Activities</h2>
         <p>
-          {t('legal.termsOfService.limitation.description')}
+          You agree not to:
+        </p>
+        <ul>
+          <li>Use our service for any illegal purpose</li>
+          <li>Attempt to gain unauthorized access to our systems</li>
+          <li>Interfere with or disrupt the service or servers</li>
+          <li>Reverse engineer or decompile any aspect of the service</li>
+        </ul>
+        
+        <h2>Termination</h2>
+        <p>
+          We reserve the right to terminate or suspend access to our service immediately, without prior notice, for any reason whatsoever, including without limitation if you breach the Terms of Service.
         </p>
         
-        <h2>{t('legal.termsOfService.changes.title')}</h2>
+        <h2>Changes to Terms</h2>
         <p>
-          {t('legal.termsOfService.changes.description')}
-        </p>
-        
-        <h2>{t('legal.termsOfService.contact.title')}</h2>
-        <p>
-          {t('legal.termsOfService.contact.description')}
+          We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting on this page.
         </p>
         
         <p className="text-sm text-gray-500 mt-8">
-          {t('legal.lastUpdated')}: {t('legal.termsOfService.lastUpdatedDate')}
+          Last updated: March 10, 2025
         </p>
       </div>
     </div>

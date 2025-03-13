@@ -1,5 +1,5 @@
 import { Metadata, Viewport } from 'next';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 // Separate metadata and viewport exports to fix the warnings
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
@@ -41,62 +41,64 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default function PrivacyPolicy() {
-  const t = useTranslations();
+export default async function PrivacyPolicy({ params }: { params: { locale: string } }) {
+  // Use getTranslations instead of useTranslations for server components
+  const t = await getTranslations({ locale: params.locale, namespace: 'Legal' });
   
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-primary">
-        {t('legal.privacyPolicy.title')}
+        Privacy Policy
       </h1>
       
       <div className="prose prose-lg max-w-none">
-        <h2>{t('legal.privacyPolicy.introduction.title')}</h2>
+        <h2>Introduction</h2>
         <p>
-          {t('legal.privacyPolicy.introduction.description')}
+          This Privacy Policy explains how Top Password Generator ("we", "us", or "our") collects, uses, and protects 
+          your information when you use our password generation service.
         </p>
         
-        <h2>{t('legal.privacyPolicy.dontCollect.title')}</h2>
+        <h2>Information We Don't Collect</h2>
         <p>
-          {t('legal.privacyPolicy.dontCollect.description')}
-        </p>
-        <ul>
-          <li>{t('legal.privacyPolicy.dontCollect.list.passwords')}</li>
-          <li>{t('legal.privacyPolicy.dontCollect.list.history')}</li>
-          <li>{t('legal.privacyPolicy.dontCollect.list.personal')}</li>
-          <li>{t('legal.privacyPolicy.dontCollect.list.analytics')}</li>
-        </ul>
-        
-        <h2>{t('legal.privacyPolicy.collect.title')}</h2>
-        <p>
-          {t('legal.privacyPolicy.collect.description')}
+          Our password generator is designed with privacy in mind. We do not:
         </p>
         <ul>
-          <li>{t('legal.privacyPolicy.collect.list.language')}</li>
-          <li>{t('legal.privacyPolicy.collect.list.settings')}</li>
+          <li>Store any passwords you generate</li>
+          <li>Track your password generation history</li>
+          <li>Collect personal information about you</li>
+          <li>Use analytics to track your behavior</li>
         </ul>
         
-        <h2>{t('legal.privacyPolicy.thirdParty.title')}</h2>
+        <h2>Information We Do Collect</h2>
         <p>
-          {t('legal.privacyPolicy.thirdParty.description')}
+          We collect minimal information necessary to provide our service:
         </p>
         <ul>
-          <li>{t('legal.privacyPolicy.thirdParty.list.hosting')}</li>
-          <li>{t('legal.privacyPolicy.thirdParty.list.ads')}</li>
+          <li>Your language preference (stored in your browser)</li>
+          <li>Your password generation settings (stored locally in your browser)</li>
         </ul>
         
-        <h2>{t('legal.privacyPolicy.security.title')}</h2>
+        <h2>Third-Party Services</h2>
         <p>
-          {t('legal.privacyPolicy.security.description')}
+          Our website may use third-party services for specific functions:
+        </p>
+        <ul>
+          <li>Hosting services to serve the website</li>
+          <li>Advertising services to display ads</li>
+        </ul>
+        
+        <h2>Security</h2>
+        <p>
+          We prioritize the security of your information. Since we don't collect passwords or personal data, there is minimal risk to your privacy when using our service.
         </p>
         
-        <h2>{t('legal.privacyPolicy.changes.title')}</h2>
+        <h2>Changes to This Privacy Policy</h2>
         <p>
-          {t('legal.privacyPolicy.changes.description')}
+          We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
         </p>
         
         <p className="text-sm text-gray-500 mt-8">
-          {t('legal.lastUpdated')}: {t('legal.privacyPolicy.lastUpdatedDate')}
+          Last updated: March 10, 2025
         </p>
       </div>
     </div>

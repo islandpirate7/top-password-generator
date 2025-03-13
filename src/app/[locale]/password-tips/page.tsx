@@ -1,5 +1,5 @@
-import { Metadata, Viewport } from 'next'
-import { useTranslations } from 'next-intl'
+import { Metadata, Viewport } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const locale = params.locale;
@@ -57,8 +57,9 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default function PasswordTipsPage({ params }: { params: { locale: string } }) {
-  const t = useTranslations('PasswordTips');
+export default async function PasswordTipsPage({ params }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: 'PasswordTips' });
+  
   const locale = params.locale;
   
   const getContent = () => {

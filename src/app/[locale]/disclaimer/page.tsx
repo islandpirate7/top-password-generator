@@ -1,5 +1,5 @@
 import { Metadata, Viewport } from 'next';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 // Separate metadata and viewport exports to fix the warnings
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
@@ -12,19 +12,19 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   switch(locale) {
     case 'es':
       title = 'Aviso Legal - Generador de Contraseñas';
-      description = 'Nuestro aviso legal explica las limitaciones de responsabilidad al usar nuestro generador de contraseñas.';
+      description = 'Aviso legal para el uso de nuestro generador de contraseñas. Limitaciones de responsabilidad y condiciones de uso.';
       break;
     case 'fr':
       title = 'Avis de Non-Responsabilité - Générateur de Mots de Passe';
-      description = 'Notre avis de non-responsabilité explique les limitations de responsabilité lors de l\'utilisation de notre générateur de mots de passe.';
+      description = 'Avis de non-responsabilité pour l\'utilisation de notre générateur de mots de passe. Limitations de responsabilité et conditions d\'utilisation.';
       break;
     case 'de':
       title = 'Haftungsausschluss - Passwort-Generator';
-      description = 'Unser Haftungsausschluss erklärt die Haftungsbeschränkungen bei der Verwendung unseres Passwort-Generators.';
+      description = 'Haftungsausschluss für die Nutzung unseres Passwort-Generators. Haftungsbeschränkungen und Nutzungsbedingungen.';
       break;
     default: // English
       title = 'Disclaimer - Password Generator';
-      description = 'Our disclaimer explains the limitations of liability when using our password generator.';
+      description = 'Legal disclaimer for using our password generator. Liability limitations and terms of use.';
   }
   
   return {
@@ -41,49 +41,50 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default function Disclaimer() {
-  const t = useTranslations();
+export default async function Disclaimer({ params }: { params: { locale: string } }) {
+  // Use getTranslations instead of useTranslations for server components
+  const t = await getTranslations({ locale: params.locale, namespace: 'Legal' });
   
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-primary">
-        {t('legal.disclaimer.title')}
+        Disclaimer
       </h1>
       
       <div className="prose prose-lg max-w-none">
-        <h2>{t('legal.disclaimer.passwordSecurity.title')}</h2>
+        <h2>Password Security</h2>
         <p>
-          {t('legal.disclaimer.passwordSecurity.description')}
+          While Top Password Generator strives to provide secure password generation tools, we cannot guarantee that passwords generated using our service will be immune to all forms of attack. The security of your passwords depends on various factors, including how you store and use them.
         </p>
         
-        <h2>{t('legal.disclaimer.noStorage.title')}</h2>
+        <h2>No Warranty</h2>
         <p>
-          {t('legal.disclaimer.noStorage.description')}
+          The password generation service is provided "as is" without any warranties, expressed or implied. We do not warrant that the service will be error-free, uninterrupted, or free from harmful components.
         </p>
         
-        <h2>{t('legal.disclaimer.noGuarantee.title')}</h2>
+        <h2>Limitation of Liability</h2>
         <p>
-          {t('legal.disclaimer.noGuarantee.description')}
+          Top Password Generator shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages resulting from your use of the service, including but not limited to damages for loss of profits, goodwill, data, or other intangible losses.
         </p>
         
-        <h2>{t('legal.disclaimer.limitation.title')}</h2>
+        <h2>User Responsibility</h2>
         <p>
-          {t('legal.disclaimer.limitation.description')}
-        </p>
-        
-        <h2>{t('legal.disclaimer.userResponsibility.title')}</h2>
-        <p>
-          {t('legal.disclaimer.userResponsibility.description')}
+          You are solely responsible for:
         </p>
         <ul>
-          <li>{t('legal.disclaimer.userResponsibility.list.unique')}</li>
-          <li>{t('legal.disclaimer.userResponsibility.list.manager')}</li>
-          <li>{t('legal.disclaimer.userResponsibility.list.mfa')}</li>
-          <li>{t('legal.disclaimer.userResponsibility.list.update')}</li>
+          <li>Selecting appropriate password generation settings</li>
+          <li>Securely storing your passwords</li>
+          <li>Determining the suitability of generated passwords for your specific needs</li>
+          <li>Implementing appropriate security measures to protect your accounts</li>
         </ul>
         
+        <h2>Changes to This Disclaimer</h2>
+        <p>
+          We reserve the right to modify this disclaimer at any time. Changes will be effective immediately upon posting on this page.
+        </p>
+        
         <p className="text-sm text-gray-500 mt-8">
-          {t('legal.lastUpdated')}: {t('legal.disclaimer.lastUpdatedDate')}
+          Last updated: March 10, 2025
         </p>
       </div>
     </div>
