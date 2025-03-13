@@ -1,7 +1,9 @@
-import type { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
 import { useTranslations } from 'next-intl'
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const locale = params.locale;
+  
   let title, description, keywords, ogLocale;
   
   switch(locale) {
@@ -18,13 +20,13 @@ export async function generateMetadata({ params: { locale } }: { params: { local
       ogLocale = 'fr_FR';
       break;
     case 'de':
-      title = 'Passwort-Sicherheitstipps - Beste Praktiken für sichere Passwörter';
-      description = 'Lernen Sie, wie Sie sichere Passwörter erstellen und verwalten. Expertentipps zum Schutz Ihrer Online-Konten und zur Verhinderung von Hacking.';
-      keywords = 'Passwort-Tipps, sichere Passwörter, Passwort-Sicherheit, Konten schützen, Hacking verhindern';
+      title = 'Sichere Passwort-Tipps - Bewährte Sicherheitspraktiken';
+      description = 'Lernen Sie, wie Sie sichere Passwörter erstellen und verwalten. Expertentipps zum Schutz Ihrer Online-Konten und zur Vermeidung von Hacking.';
+      keywords = 'Passwort-Tipps, sichere Passwörter, Passwort-Sicherheit, Konten schützen, Hacking vermeiden';
       ogLocale = 'de_DE';
       break;
     default: // English
-      title = 'Password Security Tips - Best Practices for Secure Passwords';
+      title = 'Secure Password Tips - Best Security Practices';
       description = 'Learn how to create and manage secure passwords. Expert tips to protect your online accounts and prevent hacking.';
       keywords = 'password tips, secure passwords, password security, protect accounts, prevent hacking';
       ogLocale = 'en_US';
@@ -37,11 +39,23 @@ export async function generateMetadata({ params: { locale } }: { params: { local
     openGraph: {
       title,
       description,
-      type: 'article',
       locale: ogLocale,
+      type: 'website',
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+    metadataBase: new URL('https://toppasswordgenerator.com'),
   }
 }
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export default function PasswordTipsPage({ params }: { params: { locale: string } }) {
   const t = useTranslations('PasswordTips');
