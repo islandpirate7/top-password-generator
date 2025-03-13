@@ -1,0 +1,50 @@
+/* Ad display fixes for mobile */
+@media (max-width: 768px) {
+  /* Ensure ads don't overflow their containers */
+  .adsbygoogle {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  
+  /* Add more space between ads */
+  .my-6 {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+  
+  /* Ensure bottom ad has proper spacing */
+  .mt-8.mb-4 {
+    margin-top: 2.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  /* Limit the number of ads on small screens */
+  .mobile-ad-limit {
+    display: none !important;
+  }
+}
+
+/* Ensure ads are properly sized */
+.adsbygoogle {
+  display: block;
+  width: 100%;
+}
+
+/* Better ad loading states */
+.ad-loading {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9fafb;
+  border-radius: 0.375rem;
+}
+
+.ad-error {
+  padding: 1rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  background-color: #f9fafb;
+  border-radius: 0.375rem;
+}

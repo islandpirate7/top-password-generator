@@ -1,4 +1,50 @@
-export default function PrivacyPolicy() {
+import { Metadata, Viewport } from 'next';
+import { getTranslations } from 'next-intl/server';
+
+// Separate metadata and viewport exports to fix the warnings
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  // Access locale properly to avoid the "params.locale" error
+  const locale = params.locale;
+  
+  // Metadata for different locales
+  let title, description;
+  
+  switch(locale) {
+    case 'es':
+      title = 'Política de Privacidad - Generador de Contraseñas';
+      description = 'Nuestra política de privacidad explica cómo protegemos tu información cuando utilizas nuestro generador de contraseñas.';
+      break;
+    case 'fr':
+      title = 'Politique de Confidentialité - Générateur de Mots de Passe';
+      description = 'Notre politique de confidentialité explique comment nous protégeons vos informations lorsque vous utilisez notre générateur de mots de passe.';
+      break;
+    case 'de':
+      title = 'Datenschutzrichtlinie - Passwort-Generator';
+      description = 'Unsere Datenschutzrichtlinie erklärt, wie wir Ihre Informationen schützen, wenn Sie unseren Passwort-Generator verwenden.';
+      break;
+    default: // English
+      title = 'Privacy Policy - Password Generator';
+      description = 'Our privacy policy explains how we protect your information when you use our password generator.';
+  }
+  
+  return {
+    title,
+    description,
+    metadataBase: new URL('https://toppasswordgenerator.com'),
+  };
+}
+
+// Separate viewport export to fix the warning
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
+export default async function PrivacyPolicy({ params }: { params: { locale: string } }) {
+  // Use getTranslations instead of useTranslations for server components
+  const t = await getTranslations({ locale: params.locale, namespace: 'Legal' });
+  
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-primary">
@@ -19,37 +65,36 @@ export default function PrivacyPolicy() {
         <ul>
           <li>Store any passwords you generate</li>
           <li>Track your password generation history</li>
-          <li>Collect personally identifiable information</li>
-          <li>Share any data with third parties</li>
+          <li>Collect personal information about you</li>
+          <li>Use analytics to track your behavior</li>
         </ul>
         
-        <h2>Client-Side Processing</h2>
+        <h2>Information We Do Collect</h2>
         <p>
-          All password generation occurs entirely in your browser. Your passwords are never transmitted to our servers.
+          We collect minimal information necessary to provide our service:
+        </p>
+        <ul>
+          <li>Your language preference (stored in your browser)</li>
+          <li>Your password generation settings (stored locally in your browser)</li>
+        </ul>
+        
+        <h2>Third-Party Services</h2>
+        <p>
+          Our website may use third-party services for specific functions:
+        </p>
+        <ul>
+          <li>Hosting services to serve the website</li>
+          <li>Advertising services to display ads</li>
+        </ul>
+        
+        <h2>Security</h2>
+        <p>
+          We prioritize the security of your information. Since we don't collect passwords or personal data, there is minimal risk to your privacy when using our service.
         </p>
         
-        <h2>Cookies</h2>
+        <h2>Changes to This Privacy Policy</h2>
         <p>
-          We use only essential cookies to remember your language preference and other basic settings. 
-          No tracking or advertising cookies are used.
-        </p>
-        
-        <h2>QR Code Expiration</h2>
-        <p>
-          If you use our QR code feature with expiration enabled, we store only a timestamp and encrypted hash to 
-          validate expiration. This data cannot be used to recover your password and is automatically deleted after 
-          the expiration period.
-        </p>
-        
-        <h2>Changes to This Policy</h2>
-        <p>
-          We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new 
-          Privacy Policy on this page.
-        </p>
-        
-        <h2>Contact Us</h2>
-        <p>
-          If you have any questions about this Privacy Policy, please contact us at privacy@toppasswordgenerator.com.
+          We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
         </p>
         
         <p className="text-sm text-gray-500 mt-8">
