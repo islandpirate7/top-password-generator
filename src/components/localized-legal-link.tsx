@@ -12,8 +12,12 @@ export function LocalizedLegalLink({ path, children, className }: LocalizedLegal
   const params = useParams();
   const locale = params.locale as string || 'en';
   
-  // Always point to the English legal pages since localized versions don't exist yet
-  const href = `/${path}`;
+  // Convert old legal paths to the new format
+  // For example, "legal/privacy-policy" becomes "privacy-policy"
+  const newPath = path.replace('legal/', '');
+  
+  // Use the current locale for the link
+  const href = `/${locale}/${newPath}`;
   
   return (
     <a href={href} className={className}>

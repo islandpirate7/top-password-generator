@@ -1,5 +1,4 @@
 import { Metadata, Viewport } from 'next';
-import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const locale = params.locale;
@@ -37,9 +36,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default async function TermsOfService({ params }: { params: { locale: string } }) {
-  const t = await getTranslations({ locale: params.locale, namespace: 'Legal' });
-  
+export default function TermsOfService() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-primary">

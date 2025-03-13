@@ -1,11 +1,14 @@
 import Link from 'next/link'
 import type { Metadata, Viewport } from 'next'
 
+// Separate metadata export to fix the warning
 export const metadata: Metadata = {
   title: 'Page Not Found - Top Password Generator',
   description: 'The page you are looking for does not exist.',
+  // Remove any viewport configuration from metadata
 }
 
+// Separate viewport export to fix the warning
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
