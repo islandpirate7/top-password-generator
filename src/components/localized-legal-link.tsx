@@ -12,8 +12,8 @@ export function LocalizedLegalLink({ path, children, className }: LocalizedLegal
   const params = useParams();
   const locale = params.locale as string || 'en';
   
-  // Always point to the English legal pages since localized versions don't exist yet
-  const href = `/${path}`;
+  // Use the current locale for the link
+  const href = `/${locale}/${path}`;
   
   return (
     <a href={href} className={className}>
