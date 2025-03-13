@@ -71,19 +71,19 @@ function LocaleLayoutContent({
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-              <LocalizedLegalLink path="legal/privacy-policy" className="hover:text-primary transition-colors">
+              <LocalizedLegalLink path="privacy-policy" className="hover:text-primary transition-colors">
                 {t('footer.privacyPolicy')}
               </LocalizedLegalLink>
               <span className="text-gray-400">•</span>
-              <LocalizedLegalLink path="legal/terms-of-service" className="hover:text-primary transition-colors">
+              <LocalizedLegalLink path="terms-of-service" className="hover:text-primary transition-colors">
                 {t('footer.termsOfService')}
               </LocalizedLegalLink>
               <span className="text-gray-400">•</span>
-              <LocalizedLegalLink path="legal/disclaimer" className="hover:text-primary transition-colors">
+              <LocalizedLegalLink path="disclaimer" className="hover:text-primary transition-colors">
                 {t('footer.disclaimer')}
               </LocalizedLegalLink>
               <span className="text-gray-400">•</span>
-              <LocalizedLegalLink path="legal/cookie-policy" className="hover:text-primary transition-colors">
+              <LocalizedLegalLink path="cookie-policy" className="hover:text-primary transition-colors">
                 {t('footer.cookiePolicy')}
               </LocalizedLegalLink>
             </div>
