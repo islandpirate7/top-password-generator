@@ -1,5 +1,4 @@
 import { Metadata, Viewport } from 'next';
-import { getTranslations } from 'next-intl/server';
 
 // Separate metadata and viewport exports to fix the warnings
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
@@ -41,10 +40,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default async function CookiePolicy({ params }: { params: { locale: string } }) {
-  // Use getTranslations instead of useTranslations for server components
-  const t = await getTranslations({ locale: params.locale, namespace: 'Legal' });
-  
+export default function CookiePolicy() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-primary">

@@ -1,5 +1,4 @@
 import { Metadata, Viewport } from 'next';
-import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const locale = params.locale;
@@ -9,19 +8,19 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   switch(locale) {
     case 'es':
       title = 'Términos de Servicio - Generador de Contraseñas';
-      description = 'Términos y condiciones para el uso de nuestro generador de contraseñas. Lea nuestras políticas antes de usar el servicio.';
+      description = 'Nuestros términos de servicio establecen las reglas y pautas para el uso de nuestro generador de contraseñas.';
       break;
     case 'fr':
       title = 'Conditions d\'Utilisation - Générateur de Mots de Passe';
-      description = 'Termes et conditions pour l\'utilisation de notre générateur de mots de passe. Lisez nos politiques avant d\'utiliser le service.';
+      description = 'Nos conditions d\'utilisation établissent les règles et directives pour l\'utilisation de notre générateur de mots de passe.';
       break;
     case 'de':
       title = 'Nutzungsbedingungen - Passwort-Generator';
-      description = 'Allgemeine Geschäftsbedingungen für die Nutzung unseres Passwort-Generators. Lesen Sie unsere Richtlinien, bevor Sie den Dienst nutzen.';
+      description = 'Unsere Nutzungsbedingungen legen die Regeln und Richtlinien für die Verwendung unseres Passwort-Generators fest.';
       break;
     default: // English
       title = 'Terms of Service - Password Generator';
-      description = 'Terms and conditions for using our password generator. Read our policies before using the service.';
+      description = 'Our terms of service establish the rules and guidelines for using our password generator.';
   }
   
   return {
@@ -37,9 +36,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default async function TermsOfService({ params }: { params: { locale: string } }) {
-  const t = await getTranslations({ locale: params.locale, namespace: 'Legal' });
-  
+export default function TermsOfService() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-primary">
@@ -54,17 +51,13 @@ export default async function TermsOfService({ params }: { params: { locale: str
         
         <h2>Use of Service</h2>
         <p>
-          Top Password Generator provides tools for generating secure passwords. You agree to use these tools responsibly and in accordance with all applicable laws and regulations.
-        </p>
-        
-        <h2>Password Security</h2>
-        <p>
-          While we strive to provide secure password generation tools, we are not responsible for:
+          You may use our password generation service for lawful purposes only. You agree not to:
         </p>
         <ul>
-          <li>How you store or use the passwords you generate</li>
-          <li>Any security breaches resulting from password compromise</li>
-          <li>The strength of passwords if you modify our recommended settings</li>
+          <li>Use the service to violate any laws or regulations</li>
+          <li>Attempt to interfere with or disrupt the service</li>
+          <li>Reverse engineer or attempt to extract the source code of our service</li>
+          <li>Use automated methods to access or use the service</li>
         </ul>
         
         <h2>Intellectual Property</h2>
@@ -72,25 +65,19 @@ export default async function TermsOfService({ params }: { params: { locale: str
           All content, features, and functionality of Top Password Generator, including but not limited to text, graphics, logos, and code, are the exclusive property of Top Password Generator and are protected by copyright, trademark, and other intellectual property laws.
         </p>
         
-        <h2>Prohibited Activities</h2>
+        <h2>Modifications to Service</h2>
         <p>
-          You agree not to:
+          We reserve the right to modify, suspend, or discontinue any part of the service at any time without prior notice. We will not be liable to you or any third party for any modification, suspension, or discontinuation of the service.
         </p>
-        <ul>
-          <li>Use our service for any illegal purpose</li>
-          <li>Attempt to gain unauthorized access to our systems</li>
-          <li>Interfere with or disrupt the service or servers</li>
-          <li>Reverse engineer or decompile any aspect of the service</li>
-        </ul>
         
         <h2>Termination</h2>
         <p>
-          We reserve the right to terminate or suspend access to our service immediately, without prior notice, for any reason whatsoever, including without limitation if you breach the Terms of Service.
+          We may terminate or suspend your access to the service immediately, without prior notice, for conduct that we believe violates these Terms of Service or is harmful to other users of the service, us, or third parties, or for any other reason.
         </p>
         
         <h2>Changes to Terms</h2>
         <p>
-          We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting on this page.
+          We reserve the right to modify these Terms of Service at any time. Changes will be effective immediately upon posting on this page. Your continued use of the service after any changes indicates your acceptance of the new terms.
         </p>
         
         <p className="text-sm text-gray-500 mt-8">
