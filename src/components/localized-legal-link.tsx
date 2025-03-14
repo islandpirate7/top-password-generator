@@ -1,23 +1,24 @@
 'use client'
 
-import { useParams } from 'next/navigation'
+import { useLocale } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 
 interface LocalizedLegalLinkProps {
-  path: string;
+  href: string;
   children: React.ReactNode;
   className?: string;
 }
 
-export function LocalizedLegalLink({ path, children, className }: LocalizedLegalLinkProps) {
-  const params = useParams();
-  const locale = params.locale as string || 'en';
-  
-  // Always point to the English legal pages since localized versions don't exist yet
-  const href = `/${path}`;
+export function LocalizedLegalLink({ href, children, className }: LocalizedLegalLinkProps) {
+  const locale = useLocale();
   
   return (
-    <a href={href} className={className}>
+    <Link 
+      href={href} 
+      locale={locale} 
+      className={className}
+    >
       {children}
-    </a>
-  );
+    </Link>
+  )
 }

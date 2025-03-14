@@ -1,63 +1,37 @@
 "use client"
 
 import React, { useState } from 'react'
-import Link from 'next/link'
+import { useTranslations, useLocale } from 'next-intl'
+import { Link, usePathname, useRouter } from '@/i18n/navigation'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
-import { usePathname, useRouter } from 'next/navigation'
+import { locales } from '@/i18n/routing'
 
 export function Navigation() {
   const t = useTranslations('Navigation')
   const pathname = usePathname()
   const router = useRouter()
+  const locale = useLocale()
   const [showLanguageMenu, setShowLanguageMenu] = useState(false)
-  
-  // Determine the current locale from the pathname
-  const locale = pathname.startsWith('/es') 
-    ? 'es' 
-    : pathname.startsWith('/fr')
-      ? 'fr'
-      : pathname.startsWith('/de')
-        ? 'de'
-        : 'en'
-  
-  // Create localized paths
-  const getLocalizedPath = (path = '') => {
-    if (locale === 'en') return path ? `/en${path}` : '/'
-    return `/${locale}${path}`
-  }
-  
-  const homePath = getLocalizedPath()
-  const tipsPath = getLocalizedPath('/password-tips')
   
   // Handle language change
   const handleLanguageChange = (newLocale: string) => {
     // Close the dropdown
     setShowLanguageMenu(false)
     
-    // Get the current path without locale prefix
-    let currentPath = ''
-    if (pathname.includes('/password-tips')) {
-      currentPath = '/password-tips'
-    }
-    
-    // Navigate to the new locale path
-    if (newLocale === 'en' && currentPath === '') {
-      router.push('/')
-    } else if (newLocale === 'en') {
-      router.push(`/en${currentPath}`)
-    } else {
-      router.push(`/${newLocale}${currentPath}`)
+    // Validate locale before navigation
+    if (locales.includes(newLocale as any)) {
+      // Navigate to the new locale path
+      router.replace(pathname, { locale: newLocale })
     }
   }
   
   // Get the current language name for display
   const getCurrentLanguageName = () => {
     switch(locale) {
-      case 'es': return 'Español'
-      case 'fr': return 'Français'
-      case 'de': return 'Deutsch'
-      default: return 'English'
+      case 'es': return t('spanish')
+      case 'fr': return t('french')
+      case 'de': return t('german')
+      default: return t('english')
     }
   }
   
@@ -65,36 +39,44 @@ export function Navigation() {
     <nav className="bg-white shadow-sm">
       <div className="container mx-auto px-4 py-4 overflow-visible">
         <div className="flex justify-between items-center">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
             <Link 
-              href={homePath}
-              className="flex items-center"
+              href="/"
+              locale={locale}
+              className="flex items-center space-x-2"
             >
-              <div className="h-14 w-14 relative flex items-center justify-center">
+              <div className="relative w-8 h-8">
                 <Image 
                   src="/new-logo.svg" 
-                  alt="Password Generator Logo" 
-                  width={36} 
-                  height={36} 
+                  alt={t('logoAlt')} 
+                  fill
                   className="object-contain"
                   priority
                 />
               </div>
+              <span className="font-bold text-lg text-primary hidden sm:inline-block">
+                {t('appTitle')}
+              </span>
             </Link>
+            
+            <div className="hidden md:flex space-x-6">
+              <Link 
+                href="/"
+                locale={locale}
+                className={`text-gray-700 hover:text-blue-600 ${pathname === '/' || pathname.endsWith('/') && pathname.length <= 4 ? 'font-medium text-blue-600' : ''}`}
+              >
+                {t('generator')}
+              </Link>
+              <Link 
+                href="/password-tips"
+                locale={locale}
+                className={`text-gray-700 hover:text-blue-600 ${pathname.includes('/password-tips') ? 'font-medium text-blue-600' : ''}`}
+              >
+                {t('tips')}
+              </Link>
+            </div>
           </div>
           <div className="flex space-x-6">
-            <Link 
-              href={homePath}
-              className={`text-gray-700 hover:text-blue-600 ${pathname === '/' || pathname.endsWith('/') && pathname.length <= 4 ? 'font-medium text-blue-600' : ''}`}
-            >
-              {t('generator')}
-            </Link>
-            <Link 
-              href={tipsPath}
-              className={`text-gray-700 hover:text-blue-600 ${pathname.includes('/password-tips') ? 'font-medium text-blue-600' : ''}`}
-            >
-              {t('tips')}
-            </Link>
             <div className="border-l border-gray-300 mx-2"></div>
             <div className="relative">
               <button 
@@ -113,25 +95,25 @@ export function Navigation() {
                     onClick={() => handleLanguageChange('en')}
                     className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${locale === 'en' ? 'bg-gray-100' : ''}`}
                   >
-                    English
+                    {t('english')}
                   </button>
                   <button
                     onClick={() => handleLanguageChange('es')}
                     className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${locale === 'es' ? 'bg-gray-100' : ''}`}
                   >
-                    Español
+                    {t('spanish')}
                   </button>
                   <button
                     onClick={() => handleLanguageChange('fr')}
                     className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${locale === 'fr' ? 'bg-gray-100' : ''}`}
                   >
-                    Français
+                    {t('french')}
                   </button>
                   <button
                     onClick={() => handleLanguageChange('de')}
                     className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${locale === 'de' ? 'bg-gray-100' : ''}`}
                   >
-                    Deutsch
+                    {t('german')}
                   </button>
                 </div>
               )}

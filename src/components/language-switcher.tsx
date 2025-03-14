@@ -1,7 +1,7 @@
 'use client'
 
 import { useLocale, useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { GlobeIcon } from 'lucide-react'
 import {
@@ -10,30 +10,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { locales } from '@/i18n/routing'
 
 export function LanguageSwitcher() {
   const t = useTranslations()
   const locale = useLocale()
   const router = useRouter()
+  const pathname = usePathname()
 
   const languages = [
     { code: 'en', name: t('english') },
     { code: 'es', name: t('spanish') },
+    { code: 'fr', name: t('french') },
+    { code: 'de', name: t('german') },
   ]
 
   const switchLanguage = (newLocale: string) => {
-    const path = window.location.pathname
-    const segments = path.split('/')
-    
-    // Handle the case where we're at the root or the locale is already in the path
-    if (segments.length > 1 && (segments[1] === 'en' || segments[1] === 'es')) {
-      segments[1] = newLocale
-    } else {
-      segments.splice(1, 0, newLocale)
+    if (locales.includes(newLocale as any)) {
+      router.replace(pathname, { locale: newLocale })
     }
-    
-    const newPath = segments.join('/')
-    router.push(newPath)
   }
 
   return (
