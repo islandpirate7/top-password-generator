@@ -1,100 +1,84 @@
-import { NextIntlClientProvider, useTranslations } from 'next-intl'
+import { NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { LanguageSwitcher } from '@/components/language-switcher'
-import { Toaster } from "@/components/ui/toaster"
 import { Navigation } from '@/components/navigation'
-import { setRequestLocale } from 'next-intl/server'
 import { MultilingualStructuredData } from '@/components/multilingual-structured-data'
 import { LocalizedLegalLink } from '@/components/localized-legal-link'
-
-// Define the locales we support
-export const locales = ['en', 'es', 'fr', 'de']
+import { locales } from '@/i18n/routing'
+import { setRequestLocale } from 'next-intl/server'
 
 // Get messages for a specific locale
 async function getMessages(locale: string) {
   try {
-    return (await import(`../../messages/${locale}.json`)).default
+    return (await import(`@/messages/${locale}.json`)).default
   } catch (error) {
     notFound()
   }
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return locales.map(locale => ({ locale }))
 }
 
 export default async function LocaleLayout({
   children,
-  params: { locale }
+  params,
 }: {
   children: React.ReactNode
   params: { locale: string }
 }) {
-  // Validate that the locale is supported
-  if (!locales.includes(locale)) notFound()
+  // Get the locale from params
+  const locale = params.locale;
   
-  // Enable static rendering
-  setRequestLocale(locale)
+  // Validate that the incoming locale is supported
+  if (!locales.includes(locale as any)) {
+    notFound();
+  }
 
-  const messages = await getMessages(locale)
+  // Enable static rendering
+  setRequestLocale(locale);
+  
+  let messages;
+  try {
+    messages = await getMessages(locale);
+  } catch (error) {
+    notFound();
+  }
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <LocaleLayoutContent locale={locale}>
-        {children}
-      </LocaleLayoutContent>
-    </NextIntlClientProvider>
-  )
-}
-
-// Client component to use translations
-function LocaleLayoutContent({ 
-  children, 
-  locale 
-}: { 
-  children: React.ReactNode
-  locale: string
-}) {
-  const t = useTranslations()
-  
-  return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b bg-white">
+      <div className="relative flex min-h-screen flex-col">
         <Navigation />
-      </header>
-      
-      <main className="flex-grow">
-        {children}
-      </main>
-      
-      <footer className="mt-auto border-t py-8 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-              <LocalizedLegalLink path="legal/privacy-policy" className="hover:text-primary transition-colors">
-                {t('footer.privacyPolicy')}
-              </LocalizedLegalLink>
-              <span className="text-gray-400">•</span>
-              <LocalizedLegalLink path="legal/terms-of-service" className="hover:text-primary transition-colors">
-                {t('footer.termsOfService')}
-              </LocalizedLegalLink>
-              <span className="text-gray-400">•</span>
-              <LocalizedLegalLink path="legal/disclaimer" className="hover:text-primary transition-colors">
-                {t('footer.disclaimer')}
-              </LocalizedLegalLink>
-              <span className="text-gray-400">•</span>
-              <LocalizedLegalLink path="legal/cookie-policy" className="hover:text-primary transition-colors">
-                {t('footer.cookiePolicy')}
-              </LocalizedLegalLink>
-            </div>
-            <div className="text-center text-sm text-gray-600">
-              &copy; {new Date().getFullYear()} {t('appTitle')}. {t('footer.allRightsReserved')}.
+        <div className="flex-1">
+          {children}
+        </div>
+        <footer className="bg-gray-100 py-6 mt-12">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="mb-4 md:mb-0">
+                <p className="text-sm text-gray-500">
+                  &copy; {new Date().getFullYear()} Top Password Generator. All rights reserved.
+                </p>
+              </div>
+              <div className="flex space-x-6">
+                <LocalizedLegalLink href="/privacy-policy" className="text-sm text-gray-500 hover:text-blue-600">
+                  Privacy Policy
+                </LocalizedLegalLink>
+                <LocalizedLegalLink href="/terms-of-service" className="text-sm text-gray-500 hover:text-blue-600">
+                  Terms of Service
+                </LocalizedLegalLink>
+                <LocalizedLegalLink href="/disclaimer" className="text-sm text-gray-500 hover:text-blue-600">
+                  Disclaimer
+                </LocalizedLegalLink>
+                <LocalizedLegalLink href="/cookie-policy" className="text-sm text-gray-500 hover:text-blue-600">
+                  Cookie Policy
+                </LocalizedLegalLink>
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
-      <Toaster />
-      <MultilingualStructuredData />
-    </div>
+        </footer>
+        <MultilingualStructuredData locale={locale} />
+      </div>
+    </NextIntlClientProvider>
   )
 }

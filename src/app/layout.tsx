@@ -1,12 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 import './mobile-fixes.css'
+import { Toaster } from "@/components/ui/toaster";
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false
+};
 
 export const metadata: Metadata = {
   title: "Password Generator - Create Strong & Secure Random Passwords",
   description: "Generate strong, secure, and random passwords instantly. Free online password generator tool with options for random strings, PINs, and memorable phrases.",
-  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
   keywords: "password generator, random password, strong password, secure password, password creator, online password generator, free password generator, PIN generator, password tool",
   icons: {
     icon: [
@@ -106,7 +112,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="light">
+    <html className="light">
       <head>
         {/* Google AdSense Script */}
         <script 
@@ -117,7 +123,6 @@ export default function RootLayout({
         ></script>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="alternate icon" href="/favicon.ico" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         
         <script
           type="application/ld+json"
@@ -128,7 +133,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.faq) }}
         />
       </head>
-      <body className="body-font">
+      <body className="min-h-screen bg-background font-sans antialiased">
         {children}
         <Toaster />
       </body>

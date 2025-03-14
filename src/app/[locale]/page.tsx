@@ -1,11 +1,26 @@
 import { PasswordGenerator } from '@/components/password-generator'
 import { SidebarAd, BottomBannerAd } from '@/components/ad'
 import { useTranslations } from 'next-intl'
-import type { Metadata, Viewport } from 'next'
-import { getTranslations } from 'next-intl/server'
+import type { Metadata, Viewport, NextPage } from 'next'
+import { locales } from '@/i18n/routing'
+import { setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  const t = await getTranslations({ locale, namespace: 'Metadata' })
+export function generateStaticParams() {
+  return locales.map(locale => ({ locale }))
+}
+
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  // Get the locale from params
+  const locale = params.locale;
+  
+  // Validate that the incoming locale is supported
+  if (!locales.includes(locale as any)) {
+    notFound();
+  }
+  
+  // Enable static rendering
+  setRequestLocale(locale);
   
   let title, description, keywords, ogLocale, twitterImage, ogImage, canonical;
   
@@ -30,17 +45,17 @@ export async function generateMetadata({ params: { locale } }: { params: { local
       break;
     case 'de':
       title = 'Passwort-Generator - Erstellen Sie Starke und Sichere Passwörter';
-      description = 'Generieren Sie sofort sichere, starke und einzigartige Passwörter. Kostenloses Online-Tool zur Generierung von zufälligen Zeichenfolgen, PINs und einprägsamen Passwörtern.';
-      keywords = 'Passwort-Generator, starkes Passwort, sicheres Passwort, zufälliges Passwort, PIN-Generator, einprägsames Passwort, mnemonisches Passwort, Passwort-Sicherheit';
+      description = 'Generieren Sie sofort sichere, starke und einzigartige Passwörter. Kostenloses Online-Tool zur Generierung von zufälligen Zeichenfolgen, PINs und einprägsamen Phrasen.';
+      keywords = 'Passwort-Generator, sicheres Passwort, starkes Passwort, zufälliges Passwort, PIN-Generator, einprägsames Passwort, mnemonische Phrase, Passwortsicherheit';
       ogLocale = 'de_DE';
       ogImage = '/images/og-image.jpg';
       twitterImage = '/images/twitter-image.jpg';
       canonical = 'https://toppasswordgenerator.com/de';
       break;
-    default: // English
+    default: // 'en'
       title = 'Password Generator - Create Strong & Secure Random Passwords';
       description = 'Generate strong, secure, and random passwords instantly. Free online password generator tool with options for random strings, PINs, and memorable phrases.';
-      keywords = 'password generator, strong password, secure password, random password, PIN generator, memorable password, mnemonic password, password security, secure password generator';
+      keywords = 'password generator, random password, strong password, secure password, password creator, online password generator, free password generator, PIN generator, password tool';
       ogLocale = 'en_US';
       ogImage = '/images/og-image.jpg';
       twitterImage = '/images/twitter-image.jpg';
@@ -55,9 +70,7 @@ export async function generateMetadata({ params: { locale } }: { params: { local
       type: 'website',
       locale: ogLocale,
       url: canonical,
-      siteName: locale === 'es' ? 'Generador de Contraseñas' : 
-               locale === 'fr' ? 'Générateur de Mots de Passe' :
-               locale === 'de' ? 'Passwort-Generator' : 'Top Password Generator',
+      siteName: 'Password Generator',
       title,
       description,
       images: [
@@ -77,7 +90,7 @@ export async function generateMetadata({ params: { locale } }: { params: { local
       creator: '@toppasswordgen',
     },
     alternates: {
-      canonical: canonical,
+      canonical,
       languages: {
         'en': 'https://toppasswordgenerator.com',
         'es': 'https://toppasswordgenerator.com/es',
@@ -92,27 +105,36 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-}
+  userScalable: false
+};
 
-export default function Home() {
-  const t = useTranslations()
+export default function Home({
+  params,
+}: {
+  params: { locale: string }
+}) {
+  // Validate locale and enable static rendering
+  const locale = params.locale;
+  if (!locales.includes(locale as any)) {
+    notFound();
+  }
+  
+  // Set the locale for the request
+  setRequestLocale(locale);
   
   return (
-    <div className="min-h-screen bg-white">
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
-          <div className="flex-1">
-            <PasswordGenerator />
-          </div>
-          <aside className="w-full lg:w-auto">
-            <SidebarAd />
-          </aside>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="lg:w-3/4">
+          <PasswordGenerator />
         </div>
-        
-        <div className="mt-12">
-          <BottomBannerAd />
+        <div className="lg:w-1/4">
+          <SidebarAd />
         </div>
-      </main>
+      </div>
+      <div className="mt-8">
+        <BottomBannerAd />
+      </div>
     </div>
   )
 }
